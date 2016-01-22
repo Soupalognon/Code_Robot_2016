@@ -29,6 +29,7 @@ extern "C" {
     #include "fonctions_deplacements.h"
     #include "gestion_AX12.h"
     #include "autom.h"
+    #include "I2C.h"
     
 
 /******************************************************************************/

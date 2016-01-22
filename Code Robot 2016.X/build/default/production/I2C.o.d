@@ -1,5 +1,5 @@
-build/default/production/pwm.o:  \
-pwm.c  \
+build/default/production/I2C.o:  \
+I2C.c  \
 system.h  \
 codeurs.h  \
 Config_robots.h  \

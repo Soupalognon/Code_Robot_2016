@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=Fonctions_deplacements.c Uart.c asserv.c autom_R1.c autom_R2.c codeurs.c debug.c gestion_AX12.c interruptions.c main.c pwm.c strategie.c system.c
+SOURCEFILES_QUOTED_IF_SPACED=Fonctions_deplacements.c Uart.c asserv.c autom_R1.c autom_R2.c codeurs.c debug.c gestion_AX12.c interruptions.c main.c pwm.c strategie.c system.c I2C.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Fonctions_deplacements.o ${OBJECTDIR}/Uart.o ${OBJECTDIR}/asserv.o ${OBJECTDIR}/autom_R1.o ${OBJECTDIR}/autom_R2.o ${OBJECTDIR}/codeurs.o ${OBJECTDIR}/debug.o ${OBJECTDIR}/gestion_AX12.o ${OBJECTDIR}/interruptions.o ${OBJECTDIR}/main.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/strategie.o ${OBJECTDIR}/system.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/Fonctions_deplacements.o.d ${OBJECTDIR}/Uart.o.d ${OBJECTDIR}/asserv.o.d ${OBJECTDIR}/autom_R1.o.d ${OBJECTDIR}/autom_R2.o.d ${OBJECTDIR}/codeurs.o.d ${OBJECTDIR}/debug.o.d ${OBJECTDIR}/gestion_AX12.o.d ${OBJECTDIR}/interruptions.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/pwm.o.d ${OBJECTDIR}/strategie.o.d ${OBJECTDIR}/system.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Fonctions_deplacements.o ${OBJECTDIR}/Uart.o ${OBJECTDIR}/asserv.o ${OBJECTDIR}/autom_R1.o ${OBJECTDIR}/autom_R2.o ${OBJECTDIR}/codeurs.o ${OBJECTDIR}/debug.o ${OBJECTDIR}/gestion_AX12.o ${OBJECTDIR}/interruptions.o ${OBJECTDIR}/main.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/strategie.o ${OBJECTDIR}/system.o ${OBJECTDIR}/I2C.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/Fonctions_deplacements.o.d ${OBJECTDIR}/Uart.o.d ${OBJECTDIR}/asserv.o.d ${OBJECTDIR}/autom_R1.o.d ${OBJECTDIR}/autom_R2.o.d ${OBJECTDIR}/codeurs.o.d ${OBJECTDIR}/debug.o.d ${OBJECTDIR}/gestion_AX12.o.d ${OBJECTDIR}/interruptions.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/pwm.o.d ${OBJECTDIR}/strategie.o.d ${OBJECTDIR}/system.o.d ${OBJECTDIR}/I2C.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Fonctions_deplacements.o ${OBJECTDIR}/Uart.o ${OBJECTDIR}/asserv.o ${OBJECTDIR}/autom_R1.o ${OBJECTDIR}/autom_R2.o ${OBJECTDIR}/codeurs.o ${OBJECTDIR}/debug.o ${OBJECTDIR}/gestion_AX12.o ${OBJECTDIR}/interruptions.o ${OBJECTDIR}/main.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/strategie.o ${OBJECTDIR}/system.o
+OBJECTFILES=${OBJECTDIR}/Fonctions_deplacements.o ${OBJECTDIR}/Uart.o ${OBJECTDIR}/asserv.o ${OBJECTDIR}/autom_R1.o ${OBJECTDIR}/autom_R2.o ${OBJECTDIR}/codeurs.o ${OBJECTDIR}/debug.o ${OBJECTDIR}/gestion_AX12.o ${OBJECTDIR}/interruptions.o ${OBJECTDIR}/main.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/strategie.o ${OBJECTDIR}/system.o ${OBJECTDIR}/I2C.o
 
 # Source Files
-SOURCEFILES=Fonctions_deplacements.c Uart.c asserv.c autom_R1.c autom_R2.c codeurs.c debug.c gestion_AX12.c interruptions.c main.c pwm.c strategie.c system.c
+SOURCEFILES=Fonctions_deplacements.c Uart.c asserv.c autom_R1.c autom_R2.c codeurs.c debug.c gestion_AX12.c interruptions.c main.c pwm.c strategie.c system.c I2C.c
 
 
 CFLAGS=
@@ -173,6 +173,13 @@ ${OBJECTDIR}/system.o: system.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE)  system.c  -o ${OBJECTDIR}/system.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/system.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/system.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/I2C.o: I2C.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/I2C.o.d 
+	@${RM} ${OBJECTDIR}/I2C.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  I2C.c  -o ${OBJECTDIR}/I2C.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/I2C.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/I2C.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 else
 ${OBJECTDIR}/Fonctions_deplacements.o: Fonctions_deplacements.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -264,6 +271,13 @@ ${OBJECTDIR}/system.o: system.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/system.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  system.c  -o ${OBJECTDIR}/system.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/system.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/system.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/I2C.o: I2C.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/I2C.o.d 
+	@${RM} ${OBJECTDIR}/I2C.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  I2C.c  -o ${OBJECTDIR}/I2C.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/I2C.o.d"        -g -omf=elf -legacy-libc  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/I2C.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 
