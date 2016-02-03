@@ -50,17 +50,30 @@ void strategie()
 
         
     #ifdef PETIT_ROBOT
-        init_position_robot (153, 1030, 0);
+        init_position_robot (0, 0, 0);
         EVITEMENT_ADV_AVANT = OFF;
 
         //Init départ
-        init_pinces_jack();
+        //init_pinces_jack();
 
         while(!SYS_JACK);
         TIMER_90s = ACTIVE;
 
         STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
-        FLAG_ACTION = INIT_PINCES_DEMARRAGE;       
+        
+        while(1)
+        {
+            //angle_AX12(PORTE_G ,650, 1023, SANS_ATTENTE);
+            synchro_AX12(PORTE_G, - 90, 1023, SANS_ATTENTE);
+            delay_ms(1000);
+            synchro_AX12(PORTE_D, 90, 1023, SANS_ATTENTE);
+            delay_ms(2000);
+            synchro_AX12(PORTE_D, 0, 1023, SANS_ATTENTE);
+            delay_ms(1000);
+            synchro_AX12(PORTE_G, 0, 1023, SANS_ATTENTE);
+            delay_ms(2000);
+        
+        }
         
     #endif
 }
@@ -106,7 +119,6 @@ void homologation()
         TIMER_90s = ACTIVE;
 
         STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
-        FLAG_ACTION = INIT_PINCES_DEMARRAGE;
 
     #endif
 

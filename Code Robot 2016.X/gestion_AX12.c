@@ -75,19 +75,19 @@ void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage d
 
 #endif
 #ifdef PETIT_ROBOT
-    decalage[BRAS_DROIT].angle = 0;
-    decalage[BRAS_DROIT].position = 512;
-    decalage[BRAS_DROIT].etat = INDEPENDANT;
-    decalage[BRAS_DROIT].suivant = AUCUN_AX;
-    decalage[BRAS_DROIT].sens_rotation = SENS_DIRECT;
-    decalage[BRAS_DROIT].symetrique = BRAS_GAUCHE;
+    decalage[PORTE_D].angle = 90;
+    decalage[PORTE_D].position = PINCE_D_OUVERTE;
+    decalage[PORTE_D].etat = INDEPENDANT;
+    decalage[PORTE_D].suivant = AUCUN_AX;
+    decalage[PORTE_D].sens_rotation = ROT_EN_BAS;
+    decalage[PORTE_D].symetrique = - PORTE_G;
 
-    decalage[BRAS_GAUCHE].angle = 0;
-    decalage[BRAS_GAUCHE].position = 512;
-    decalage[BRAS_GAUCHE].etat = INDEPENDANT;
-    decalage[BRAS_GAUCHE].suivant = AUCUN_AX;
-    decalage[BRAS_GAUCHE].sens_rotation = SENS_INDIRECT;
-    decalage[BRAS_GAUCHE].symetrique = BRAS_DROIT;
+    decalage[PORTE_G].angle = -90;
+    decalage[PORTE_G].position = 650;
+    decalage[PORTE_G].etat = INDEPENDANT;
+    decalage[PORTE_G].suivant = AUCUN_AX;
+    decalage[PORTE_G].sens_rotation = ROT_EN_BAS;
+    decalage[PORTE_G].symetrique = - PORTE_D;
 #endif
 }
 
@@ -103,8 +103,8 @@ void init_position_AX12 (void)      //Force l'état premier des AX12 à l'angle 0
 #endif
     
 #ifdef PETIT_ROBOT
-    calcul_position(BRAS_DROIT,0);
-    calcul_position(BRAS_GAUCHE,0);
+    calcul_position(PORTE_D,0);
+    calcul_position(PORTE_G,0);
 #endif
 }
 

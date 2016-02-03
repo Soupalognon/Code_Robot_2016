@@ -80,22 +80,14 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
     static uint8_t etat_autom = 0;
     COMPTEUR_TEMPS_MATCH ++;
 
-
+    // Action à réaliser si on dépasse tant de temps dans le match
     if (COMPTEUR_TEMPS_MATCH >= 55 && etat_autom == 0)
     {
-        #ifdef GROS_ROBOT
-        if (FLAG_EVITEMENT_STRATEGIQUE != EN_ROUTE_MONTEE_MARCHE)
-            FLAG_EVITEMENT_STRATEGIQUE = PREPARATION_MARCHE;
-        #endif
+        
         etat_autom = 1;
     }
     else if (COMPTEUR_TEMPS_MATCH >= 85 && etat_autom == 1 )
     {
-        #ifdef PETIT_ROBOT
-            if (FLAG_ACTION != FIN_DE_MATCH)
-                FLAG_ACTION = DEPOSE_PIEDS;
-        #endif
-
         etat_autom = 2;
     }
     else if (COMPTEUR_TEMPS_MATCH >= 90)
@@ -125,10 +117,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
         IPC7bits.U2RXIP = 7;
 
     #ifdef PETIT_ROBOT
-        pinces(PINCE_HAUT, RANGEMENT);
-        pinces(PINCE_MILIEU, RANGEMENT);
-        pinces(PINCE_BAS, RANGEMENT);
-        pinces(PINCE_ASCENSEUR, RACLETTE);
+        //pinces(PINCE_HAUT, RANGEMENT);
+        //pinces(PINCE_MILIEU, RANGEMENT);
+        //pinces(PINCE_BAS, RANGEMENT);
+        //pinces(PINCE_ASCENSEUR, RACLETTE);
     #endif
 
         
