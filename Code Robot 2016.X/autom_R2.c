@@ -79,6 +79,19 @@ void autom_10ms (void)
         {
             case NE_RIEN_FAIRE:
                 break;
+            /*
+             * Ecrire fermeture des portes pour retenir coquillages
+             */
+            case FERMER_PORTES:
+                synchro_AX12(PORTE_G, - 20, 1023, SANS_ATTENTE);
+                synchro_AX12(PORTE_D,  20, 1023, SANS_ATTENTE);
+                FLAG_ACTION = NE_RIEN_FAIRE;
+            /*
+             * Ecrire sequence lever de drapeaux
+             */
+            case LEVER_DRAPEAU:
+                break;
+                
             default :
                 break;
         }

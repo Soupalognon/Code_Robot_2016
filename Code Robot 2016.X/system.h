@@ -233,6 +233,7 @@ extern "C" {
     extern uint8_t ETAT_AUTOM;
     extern uint16_t COMPTEUR_MARCHE;
     extern uint8_t COMPTEUR_TEMPS_MATCH;
+    extern uint8_t CONFIG_COQUILLAGE;
 
     extern _ax12 ax12;
 

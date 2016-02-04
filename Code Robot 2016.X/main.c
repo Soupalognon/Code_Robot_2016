@@ -77,6 +77,7 @@
     uint8_t ETAT_AUTOM;
     uint16_t COMPTEUR_MARCHE;
     uint8_t COMPTEUR_TEMPS_MATCH;
+    uint8_t CONFIG_COQUILLAGE;
 
 
     int obstacle[30][20];
@@ -121,7 +122,6 @@ int main(int argc, char** argv)
 #endif
     
 
-    while(SYS_JACK);
     strategie();
 
     //reglage_odometrie();

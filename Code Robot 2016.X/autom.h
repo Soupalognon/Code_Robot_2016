@@ -54,6 +54,12 @@ extern "C" {
 
 #define DISTANCE_STOP       5
 #define ANGLE_STOP          5
+    
+#define CONFIG_1            1
+#define CONFIG_2            2
+#define CONFIG_3            3
+#define CONFIG_4            4
+#define CONFIG_5            5
 
     /**************************************************************************/
     /*************************** DEFINE ID AX12 *******************************/
@@ -105,7 +111,8 @@ extern "C" {
 #define FIN_DE_MATCH                    1
 
 #ifdef  PETIT_ROBOT
-  
+    #define FERMER_PORTES               2
+    #define LEVER_DRAPEAU               3
 #endif
 
 #ifdef GROS_ROBOT
