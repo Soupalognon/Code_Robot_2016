@@ -896,22 +896,22 @@ __FUID3
 .comment
  *(.comment)
 
-.debug_info       0x000000       0xec64
+.debug_info       0x000000       0xec9c
  *(.debug_info)
- .debug_info      0x000000       0x182d build/default/production/Fonctions_deplacements.o
- .debug_info      0x00182d        0xe57 build/default/production/Uart.o
- .debug_info      0x002684        0xfe3 build/default/production/asserv.o
- .debug_info      0x003667        0x15b build/default/production/autom_R1.o
- .debug_info      0x0037c2        0x841 build/default/production/autom_R2.o
- .debug_info      0x004003        0x975 build/default/production/codeurs.o
- .debug_info      0x004978        0x55b build/default/production/debug.o
- .debug_info      0x004ed3        0xf6c build/default/production/gestion_AX12.o
- .debug_info      0x005e3f       0x1bf6 build/default/production/interruptions.o
- .debug_info      0x007a35        0x51d build/default/production/main.o
- .debug_info      0x007f52        0x9d1 build/default/production/pwm.o
- .debug_info      0x008923        0x475 build/default/production/strategie.o
- .debug_info      0x008d98       0x53d9 build/default/production/system.o
- .debug_info      0x00e171        0xaf3 build/default/production/I2C.o
+ .debug_info      0x000000       0x1831 build/default/production/Fonctions_deplacements.o
+ .debug_info      0x001831        0xe5b build/default/production/Uart.o
+ .debug_info      0x00268c        0xfe7 build/default/production/asserv.o
+ .debug_info      0x003673        0x15f build/default/production/autom_R1.o
+ .debug_info      0x0037d2        0x845 build/default/production/autom_R2.o
+ .debug_info      0x004017        0x979 build/default/production/codeurs.o
+ .debug_info      0x004990        0x55f build/default/production/debug.o
+ .debug_info      0x004eef        0xf70 build/default/production/gestion_AX12.o
+ .debug_info      0x005e5f       0x1bfa build/default/production/interruptions.o
+ .debug_info      0x007a59        0x521 build/default/production/main.o
+ .debug_info      0x007f7a        0x9d5 build/default/production/pwm.o
+ .debug_info      0x00894f        0x479 build/default/production/strategie.o
+ .debug_info      0x008dc8       0x53dd build/default/production/system.o
+ .debug_info      0x00e1a5        0xaf7 build/default/production/I2C.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000       0x11a3
