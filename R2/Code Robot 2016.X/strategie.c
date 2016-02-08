@@ -27,7 +27,7 @@ void strategie()
     /*
      * Definit la configuration des coquillages CONFIG_1 - CONFIG_5
      */
-    CONFIG_COQUILLAGE = CONFIG_4;
+    CONFIG_COQUILLAGE = CONFIG_5;
     
     #ifdef GROS_ROBOT
         // Inits avant démarage du robot :
@@ -54,7 +54,7 @@ void strategie()
 
         
     #ifdef PETIT_ROBOT
-        init_position_robot (65, 1100, 0);
+        init_position_robot (175, 965, 270);
         EVITEMENT_ADV_AVANT = OFF;
         
 
@@ -78,9 +78,10 @@ void strategie()
          * Pousser blocs du milieu jusqu'a la zone
          */
         
-            passe_part(550, 1100, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-            passe_part(1200, 1100, MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
-            rejoindre(1050, 1100, MARCHE_ARRIERE, 100);
+            passe_part(500, 1050, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+            passe_part(750,1000,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+            passe_part(1200, 1000, MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
+            rejoindre(1050, 1000, MARCHE_ARRIERE, 100);
             FLAG_ACTION=OUVRIR_PORTES;
             
         /*
@@ -91,21 +92,43 @@ void strategie()
         switch(CONFIG_COQUILLAGE)
         {
             case CONFIG_1:
-
+                passe_part(1450, 450, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                passe_part(1500, 150, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
                 break;
             case CONFIG_2:
+                passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                passe_part(900, 550, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(450, 350, MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
                 break;
             case CONFIG_3:
+                passe_part(700, 750, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                passe_part(1200, 350, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(300, 350, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
                 break;
             case CONFIG_4:
                 passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
                 passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                 passe_part(250, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                 passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(250, 810, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                
+                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
                 break;
             case CONFIG_5:
+                passe_part(700, 150, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                rejoindre(230,500, MARCHE_ARRIERE,100);
+                passe_part(700,750, MARCHE_AVANT,100, DEBUT_TRAJECTOIRE);
+                passe_part(230, 1000,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
                 break;
             default:
                 break;
