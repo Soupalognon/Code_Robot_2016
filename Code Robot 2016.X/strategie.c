@@ -27,7 +27,7 @@ void strategie()
     /*
      * Definit la configuration des coquillages CONFIG_1 - CONFIG_5
      */
-    CONFIG_COQUILLAGE = CONFIG_1;
+    CONFIG_COQUILLAGE = CONFIG_4;
     
     #ifdef GROS_ROBOT
         // Inits avant démarage du robot :
@@ -54,7 +54,7 @@ void strategie()
 
         
     #ifdef PETIT_ROBOT
-        init_position_robot (0, 0, 0);
+        init_position_robot (65, 1100, 0);
         EVITEMENT_ADV_AVANT = OFF;
         
 
@@ -69,15 +69,20 @@ void strategie()
 
         STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
         
-            synchro_AX12(PORTE_D, -10, 1023, SANS_ATTENTE);
+            synchro_AX12(PORTE_D, 90, 1023, SANS_ATTENTE);
             delay_ms(1000);
-            synchro_AX12(PORTE_G, 10, 1023, SANS_ATTENTE);
+            synchro_AX12(PORTE_G, -90, 1023, SANS_ATTENTE);
             delay_ms(2000);
         
         /*
          * Pousser blocs du milieu jusqu'a la zone
          */
         
+            passe_part(550, 1100, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+            passe_part(1200, 1100, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
+            passe_part(1100, 1100, MARCHE_ARRIERE, 100, MILIEU_TRAJECTOIRE);
+            FLAG_ACTION=OUVRIR_PORTES;
+            
         /*
          * Ecrire deplacement pour chacune des configurations possibles
          * utiliser : FLAG_ACTION = FERMER_PORTES pour fermer les portes
@@ -86,12 +91,20 @@ void strategie()
         switch(CONFIG_COQUILLAGE)
         {
             case CONFIG_1:
+
                 break;
             case CONFIG_2:
                 break;
             case CONFIG_3:
                 break;
             case CONFIG_4:
+                passe_part(1200, 350, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(700, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(200, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(200, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(900, 1000, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                
                 break;
             case CONFIG_5:
                 break;
