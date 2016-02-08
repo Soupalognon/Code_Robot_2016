@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Code Robot 2015.X
+PROJECTNAME=Code Robot 2016.X
 
 # Active Configuration
 DEFAULTCONF=default
