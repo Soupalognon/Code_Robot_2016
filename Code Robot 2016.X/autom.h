@@ -107,7 +107,7 @@ extern "C" {
     /************************* DEFINE FLAG_ACTION *****************************/
     /**************************************************************************/
 
-#define NE_RIEN_FAIRE                   0
+ #define NE_RIEN_FAIRE                   0
 #define FIN_DE_MATCH                    1
 
 #ifdef  PETIT_ROBOT

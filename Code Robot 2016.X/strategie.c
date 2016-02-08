@@ -79,8 +79,8 @@ void strategie()
          */
         
             passe_part(550, 1100, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-            passe_part(1200, 1100, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
-            passe_part(1050, 1100, MARCHE_ARRIERE, 100, FIN_TRAJECTOIRE);
+            passe_part(1200, 1100, MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
+            rejoindre(1050, 1100, MARCHE_ARRIERE, 100);
             FLAG_ACTION=OUVRIR_PORTES;
             
         /*
