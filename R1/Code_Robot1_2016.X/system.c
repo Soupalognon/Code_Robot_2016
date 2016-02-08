@@ -54,7 +54,7 @@ void init_system (void)
     // AUTOMS
     FLAG_ACTION = NE_RIEN_FAIRE;
     ETAT_AUTOM = NE_RIEN_FAIRE;
-    COULEUR = JAUNE;
+    COULEUR = VIOLET;
     COMPTEUR_MARCHE = 0;
 
     COMPTEUR_TEMPS_MATCH = 0;

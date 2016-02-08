@@ -112,18 +112,19 @@ int main(int argc, char** argv)
     delay_ms(500);
 
     
-    init_decalage_AX12();
-    init_position_AX12();
+    //init_decalage_AX12();
+    //init_position_AX12();
 
+    
+    
+    synchro_AX12(AX_CALAGE_CONE, 0, 512, SANS_ATTENTE);
+    
     
     //Init Supplémentaire
 #ifdef GROS_ROBOT
-    synchro_AX12(AX_US, 0, 1023, SANS_ATTENTE);
 #endif
     
-
-    strategie();
-
+    //strategie();
     //reglage_odometrie();
     
     while(1);

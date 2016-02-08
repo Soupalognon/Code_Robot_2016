@@ -24,14 +24,14 @@
 uint8_t couleur_depart()
 {
     if (SYS_COULEUR == 0)
-        return JAUNE;
+        return VIOLET;
     else
         return VERT;
 }
 
 double inversion_couleur (double param_inversable)
 {
-    if (COULEUR == JAUNE)
+    if (COULEUR == VIOLET)
         return param_inversable;
     else
         return (- param_inversable);
@@ -104,13 +104,11 @@ void action_evitement (void)
 
     if (check_capteur(DROIT))
     {
-        pince(DROIT, OUVERT);
-        presence = 1;
+       
     }
     if (check_capteur(DROIT))
     {
-        pince(GAUCHE, OUVERT);
-        presence = 1;
+        
     }
 
     if (presence == 1)
@@ -118,10 +116,6 @@ void action_evitement (void)
         delay_ms(500);
         avancer_reculer(-100, 100);
         delay_ms (500);
-        pince(DROITE, RANGEMENT);
-        pince(GAUCHE, RANGEMENT);
-        ascenseur(ARRIERE);
-
     }
 
 
@@ -135,7 +129,7 @@ void action_evitement (void)
          plus_court(1200, 830, MARCHE_AVANT, 70, rej, 0);
     }
 
-    if (COULEUR == JAUNE)
+    if (COULEUR == VIOLET)
         plus_court(1200, 1240, MARCHE_AVANT, 70, rej, 0);
     else
         plus_court(1240, 1240, MARCHE_AVANT, 70, rej, 0);
@@ -143,9 +137,7 @@ void action_evitement (void)
 
     // on s'aligne puis on monte
     orienter(90, 100);
-
-    marche();
-
+    
     while(1);
 #endif 
 }
@@ -195,7 +187,7 @@ void orienter (double angle, double pourcentage_vitesse)
 void rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vitesse)
 {
 #ifdef GROS_ROBOT
-     if (FLAG_EVITEMENT_STRATEGIQUE != PREPARATION_MARCHE )
+     if (FLAG_EVITEMENT_STRATEGIQUE != A_MODIFIER )
      {
 #endif
         uint8_t erreur = _rejoindre (x, y, sens_marche, pourcentage_vitesse);
@@ -227,7 +219,7 @@ void rejoindre (double x, double y, int8_t sens_marche, double pourcentage_vites
 void avancer_reculer (double distance, double pourcentage_vitesse)
 {
 #ifdef GROS_ROBOT
-     if (FLAG_EVITEMENT_STRATEGIQUE != PREPARATION_MARCHE)
+     if (FLAG_EVITEMENT_STRATEGIQUE != A_MODIFIER)
      {
 #endif
         uint8_t erreur = _avancer_reculer (distance, pourcentage_vitesse);
@@ -259,7 +251,7 @@ void avancer_reculer (double distance, double pourcentage_vitesse)
 void passe_part (double x, double y, int8_t sens_marche, double pourcentage_vitesse, char last)
 {
 #ifdef GROS_ROBOT
-     if (FLAG_EVITEMENT_STRATEGIQUE != PREPARATION_MARCHE)
+     if (FLAG_EVITEMENT_STRATEGIQUE != A_MODIFIER)
      {
 #endif
         uint8_t erreur = _passe_part (x, y, sens_marche, pourcentage_vitesse, last);

@@ -36,7 +36,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
         asserv();
 
 #ifdef GROS_ROBOT
-   if (FLAG_ACTION == ARRIVEE_MARCHE)
+   if (FLAG_ACTION == A_MODIFIER)
        COMPTEUR_MARCHE = COMPTEUR_MARCHE + 1;
 #endif
 
@@ -83,7 +83,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void)
     // Action à réaliser si on dépasse tant de temps dans le match
     if (COMPTEUR_TEMPS_MATCH >= 55 && etat_autom == 0)
     {
-        
         etat_autom = 1;
     }
     else if (COMPTEUR_TEMPS_MATCH >= 85 && etat_autom == 1 )

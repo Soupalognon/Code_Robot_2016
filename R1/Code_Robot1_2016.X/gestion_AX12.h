@@ -45,8 +45,8 @@ extern "C" {
 #define PAS_DE_REPONSE          3
 
 
-    #define EMISSION                1
-    #define RECEPTION               0
+    #define EMISSION            1
+    #define RECEPTION           0
 
 #define MAX_TENTATIVES          10
 
@@ -166,7 +166,7 @@ extern "C" {
 /******************************************************************************/
 
 
-    typedef struct decal
+    typedef struct
     {
         int16_t angle;
         uint16_t position;
@@ -176,7 +176,7 @@ extern "C" {
         int8_t symetrique;
     }decal;
 
-    typedef struct pos
+    typedef struct
     {
         uint16_t point;
         //int point_mini;   //si implémentation de limite mini et max dans le code

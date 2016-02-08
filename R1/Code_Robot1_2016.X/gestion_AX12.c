@@ -51,6 +51,7 @@ void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage d
 {
     //US
 #ifdef GROS_ROBOT
+    /*
     decalage[AX_US].angle = 0;
     decalage[AX_US].position = 512;
     decalage[AX_US].etat = INDEPENDANT;
@@ -71,7 +72,7 @@ void init_decalage_AX12 (void)      //Declaration de l'enchainement de montage d
     decalage[BRAS_GAUCHE].suivant = AUCUN_AX;
     decalage[BRAS_GAUCHE].sens_rotation = ROT_EN_HAUT;
     decalage[BRAS_GAUCHE].symetrique = - BRAS_DROIT;
-
+*/
 
 #endif
 #ifdef PETIT_ROBOT
@@ -95,11 +96,11 @@ void init_position_AX12 (void)      //Force l'état premier des AX12 à l'angle 0
 {
 #ifdef GROS_ROBOT
     //us
-    position_AX12[AX_US].angle = 0;
-    position_AX12[AX_US].point = 512;
+    //position_AX12[AX_US].angle = 0;
+    //position_AX12[AX_US].point = 512;
     
-    calcul_position(BRAS_DROIT, 0);
-    calcul_position(BRAS_GAUCHE, 0);
+    //calcul_position(BRAS_DROIT, 0);
+    //calcul_position(BRAS_GAUCHE, 0);
 #endif
     
 #ifdef PETIT_ROBOT
@@ -207,7 +208,7 @@ void calcul_modif_angle (uint8_t ID, float angle)
  */
 void synchro_AX12 (uint8_t ID, float angle, uint16_t vitesse, uint8_t attente)
 {
-    if (COULEUR == JAUNE)
+    if (COULEUR == VIOLET)
     {
         if( decalage[ID].symetrique > 0)
         {

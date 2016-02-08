@@ -25,8 +25,8 @@ extern "C" {
 /***************************** Defines ****************************************/
 /******************************************************************************/
 
-//#define GROS_ROBOT
-#define PETIT_ROBOT
+#define GROS_ROBOT
+//#define PETIT_ROBOT
 //#define ROBOT_TEST
 
 #define _Pi                             3.14159265359
@@ -163,13 +163,13 @@ extern "C" {
     //Dans le fichier system.h
     
     #define CAPT_US_BALISE              CAPTEUR1
-    #define CAPT_GOBELET_D              CAPTEUR3
-    #define CAPT_GOBELET_G              CAPTEUR4
+    #define CAPT_PINCE                  CAPTEUR4
+    #define CAPT_US_AR_GAUCHE           CAPTEUR7
+    #define CAPT_US_AR_DROITE           CAPTEUR7
     #define CAPT_US_ARRIERE             CAPTEUR7
     #define CAPT_US_AV_GAUCHE           CAPTEUR2
-    #define CAPT_US_AV_DROIT            CAPTEUR8
-
-    #define INCLINOMETRE                CAPTEUR5
+    #define CAPT_US_AV_DROIT            CAPTEUR3
+    #define CAPT_US_AV                  CAPTEUR8
 
     #define _CAPTEUR1_ANALOGIQUE        DIGITAL
     #define _CAPTEUR2_ANALOGIQUE        DIGITAL

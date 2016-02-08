@@ -4,7 +4,7 @@
 /* Fichier 	: autom.c
  * Auteur  	: Quentin
  * Revision	: 1.0
- * Date		: 01 février 2015, 17:11
+ * Date		: 08 fevrier 2016, 19:00
  *******************************************************************************
  *
  *
@@ -37,14 +37,14 @@ void rotation_us(void)
    // {
         if (sens == 0)
         {
-            synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
+            //synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
             angle -= 6;
             if (angle < -60)
                 sens = 1;
         }
         else
         {
-            synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
+            //synchro_AX12(AX_US, angle, 1023, SANS_ATTENTE);
             angle += 6;
             if (angle > 60)
             sens = 0;
@@ -89,7 +89,7 @@ void rotation_us_avant ()
 
 uint8_t inversion_autom (uint8_t cote)
 {
-    if (COULEUR == JAUNE)
+    if (COULEUR == VIOLET)
         return cote;
     else
     {
@@ -107,9 +107,9 @@ uint8_t check_capteur (uint8_t cote)
     cote = inversion_autom(cote);
 
     if (cote == DROIT)
-        return CAPT_GOBELET_D;
+        return 1;
     else if (cote == GAUCHE)
-        return CAPT_GOBELET_G;
+        return 1;
     else
         return 1;
 }
@@ -119,7 +119,7 @@ uint8_t check_capteur (uint8_t cote)
 /********************************  FONCTION AX12  *****************************/
 /******************************************************************************/
 
-
+/*
 void chenilles(uint8_t action)
 {
     if(action==DESCENDRE)
@@ -285,7 +285,7 @@ void descendre_balise (void)
     lancer_autom_AX12();
 }
 
-
+*/
 /******************************************************************************/
 /**************************** FONCTIONS D'INITS *******************************/
 /******************************************************************************/
@@ -294,36 +294,21 @@ void descendre_balise (void)
 void init_jack()
 {
     allumer_LED_AX12(TOUS_LES_AX12);
-    pince(DROITE, RANGEMENT);
-    pince(GAUCHE, RANGEMENT);
-    chenilles(MONTER);
-
-    bras(DROITE, FERMER);
-    bras(GAUCHE, FERMER);
-
-    tapis(DROIT, RANGEMENT);
-    tapis (GAUCHE, RANGEMENT);
-
-    monter_balise();
-
     delay_ms(1000);
-    ascenseur(ARRIERE);
 }
 
 void init_depart()
 {
     if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
     {
-        pince(DROITE, OUVERTE);
-        pince(GAUCHE, OUVERTE);
-        FLAG_ACTION = ATTRAPE_GOBELET;
+        FLAG_ACTION = A_MODIFIER;   //Première Action
     }
 }
 
 /******************************************************************************/
 /******************************** FONCTIONS AUTOM *****************************/
 /******************************************************************************/
-
+/*
 void attrape_gobelet (uint8_t reinit)
 {
     static uint8_t statut_pince_D = LIBRE, status_pince_G = LIBRE;
@@ -363,11 +348,13 @@ void montee_des_marches ()
         alimenter_moteur_Y(ON, MARCHE_AVANT);
         etat = 2;
     }
+    
     else if (etat == 2)
     {
         if (INCLINOMETRE == 1)
                 etat = 3;
     }
+    
     else if (etat == 3)
     {
         chenilles(INTERMEDIAIRE);
@@ -453,7 +440,7 @@ void arrive_marche ()
         FLAG_ACTION = NE_RIEN_FAIRE;
     }
 }
-
+*/
 
 /******************************************************************************/
 /******************************** FONCTION BOUCLE *****************************/
@@ -476,24 +463,10 @@ void autom_10ms (void)
             case NE_RIEN_FAIRE:
                 break;
             case INIT_ASCENSEUR :
-                ascenseur(AVANT);
                 FLAG_ACTION = INIT_DEPART;
                 break;
             case INIT_DEPART :
                 init_depart();
-                break;
-            case ATTRAPE_GOBELET :
-                attrape_gobelet(ON);
-                FLAG_ACTION = ATTRAPE_GOBELET2;
-                break;
-            case ATTRAPE_GOBELET2 :
-                attrape_gobelet(OFF);
-                break;
-            case MONTEE_MARCHE :
-                montee_des_marches();
-                break;
-            case ARRIVEE_MARCHE :
-                arrive_marche();
                 break;
             default :
                 break;

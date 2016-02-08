@@ -36,7 +36,7 @@ extern "C" {
 
     //Couleurs de départs
 #define VERT                0
-#define JAUNE               1
+#define VIOLET              1
 
     //Conditions
 
@@ -55,23 +55,46 @@ extern "C" {
 #define DISTANCE_STOP       5
 #define ANGLE_STOP          5
     
+    //Les différentes configs pour les coquillages (année 2016))
 #define CONFIG_1            1
 #define CONFIG_2            2
 #define CONFIG_3            3
 #define CONFIG_4            4
 #define CONFIG_5            5
-
     /**************************************************************************/
     /*************************** DEFINE ID AX12 *******************************/
     /**************************************************************************/
 
 #ifdef PETIT_ROBOT
-    #define PORTE_D                 11
-    #define PORTE_G                 8
+    #define PINCE_ASCENSEUR         9
+    #define PINCE_BAS               15
+    #define PINCE_MILIEU            8
+    #define PINCE_HAUT              5
+    #define ASCENSEUR               13
+    #define BRAS_DROIT              7
+    #define BRAS_GAUCHE             4
+    #define SYS_BALLE               11
 #endif
 
 #ifdef  GROS_ROBOT
-     
+    //Pince
+     #define PINCE_D                19
+     #define PINCE_G                20
+     #define ASCENSEUR              13
+     #define AX_CALAGE_CONE         17
+    
+     //Capteurs Avant     
+    #define AX_US_DROIT             24
+    #define AX_US_GAUCHE            9
+    
+    //Filet à Poissons
+    #define DEPLOIMENT_BRAS_FILET   5
+    #define ROT_FILET               4
+    #define OUVERTURE_FILET         15
+    
+    //Funny Action
+    #define PARASOL                 2
+
 #endif
 
     /**************************************************************************/
@@ -79,7 +102,22 @@ extern "C" {
     /**************************************************************************/
 
 #ifdef  PETIT_ROBOT
-    #define PINCE_D_OUVERTE     370
+    #define PINCE_ASC_FERME     780//760
+    #define PINCE_ASC_RELACHE   738
+    #define PINCE_ASC_RACLETTE  658
+    #define PINCE_ASC_RANGE     516
+
+    #define PINCES_FERME        520//538
+    #define PINCES_RELACHE      570//545
+    #define PINCES_RANGE        770
+
+    #define ASC_BAS             0
+    #define ASC_DEPOSE          330
+    #define ASC_DEMARAGE        500
+    #define ASC_HAUT            975
+
+    #define INIT_BALLE          785
+    #define EJECTER_BALLE       470
 #endif
 
 #ifdef GROS_ROBOT
@@ -97,38 +135,57 @@ extern "C" {
 #define RACLETTE            4
 #define RANGEMENT           5
 //#define EN_COURS            6 -> fichier asserv
+#define MONTER              7
+#define DESCENDRE           8
+#define HAUTEUR_DEMMARAGE   9
+#define EN_HAUT             10
+#define ACCOMPLI            11
+#define DEPOSE              12
+#define EN_BAS              13
+#define INTERMEDIAIRE       14
 
+#define EN_ATTENTE          16
+#define EN_DESCENTE         17
+#define EN_MONTER           18
+#define LIBRE               19
 
 #define DROITE              30
 #define DROIT               30
 #define GAUCHE              31
 
+#define AVANT               32
+#define ARRIERE             33
+
     /**************************************************************************/
     /************************* DEFINE FLAG_ACTION *****************************/
     /**************************************************************************/
 
- #define NE_RIEN_FAIRE                   0
+#define NE_RIEN_FAIRE                   0
 #define FIN_DE_MATCH                    1
 
 #ifdef  PETIT_ROBOT
-    #define FERMER_PORTES               2
-    #define OUVRIR_PORTES               3
-    #define LEVER_DRAPEAU               4
+    #define ATTRAPE_PIEDS               2
+    #define INIT_PINCES_DEMARRAGE       3
+    #define DEPOSE_PIEDS                4
+    #define PREPARATION_DEPOSE_PIEDS    5
+    #define ATTRAPE_GOBELET             6
+    #define DEPOSE_GOBELET              7
+    #define ATTRAPE_BALLE               8
+    #define CLAP                        9
+    #define ZONE_DEPART                 10
+    #define FERMETURE_PINCE             11
+    #define PIEDS_4                     12
+    #define EMPILEMENT                  13
+    #define DESACTIVATION_EVITEMENT     14
 #endif
 
 #ifdef GROS_ROBOT
     #define INIT_ASCENSEUR              2
     #define INIT_DEPART                 3
     #define INIT_JACK                   4
-    #define ATTRAPE_GOBELET             5
-    #define ATTRAPE_GOBELET2            6
-    #define MONTEE_MARCHE               7
-    #define PREPARATION_MARCHE          8
-    #define EN_ROUTE_MONTEE_MARCHE      9   
-    #define ARRIVEE_MARCHE              10
     #define MONTEE_EVITEMENT_EN_COURS   11
 
-
+#define A_MODIFIER     -1
 #endif
 
 /******************************************************************************/
@@ -181,7 +238,7 @@ extern "C" {
     void init_jack();
     void init_depart();
 
-    void marche();
+    //void marche();
     void rotation_us_avant();;
     
     //Fonction AX12
@@ -199,38 +256,38 @@ extern "C" {
      * Fonction qui déploie les chenilles
      * @param action : MONTER pour ranger les chenilles, DESCENDRE pour les descendre
      */
-    void chenilles(uint8_t action);
+    //void chenilles(uint8_t action);
 
     /**
      * Fonction pour ouvrir les bras du robot
      * @param cote : DROIT / GAUCHE
      * @param action : OUVERT / FERMER
      */
-    void bras(uint8_t cote, uint8_t action);
+    //void bras(uint8_t cote, uint8_t action);
 
     /**
      * Fonction qui ouvre les bras des tapis
      * @param cote : DROIT / GAUCHE
      * @param action : RANGEMENT / OUVERT / DEPOSE
      */
-    void tapis(uint8_t cote, uint8_t action);
+    //void tapis(uint8_t cote, uint8_t action);
 
     /**
      * Fonction qui ouvre les pinces avant
      * @param cote DROIT / GAUCHE
      * @param action : OUVERTE / FERMER / RANGEMENT
      */
-    void pince(uint8_t cote,uint8_t action);
+    //void pince(uint8_t cote,uint8_t action);
 
     /**
      * Foncion qui range les pinces à l'interieur du robot
      * @param action : AVANT / ARRIERE
      */
-    void ascenseur(uint8_t action);
+    //void ascenseur(uint8_t action);
 
-    void monter_balise ();
+    //void monter_balise ();
 
-    void descendre_balise();
+    //void descendre_balise();
 
 
 
@@ -239,9 +296,9 @@ extern "C" {
     /**************************************************************************/
 
 
-    void attrape_gobelet (uint8_t reinit);
-    void arrive_marche ();
-    void montee_des_marches ();
+    //void attrape_gobelet (uint8_t reinit);
+    //void arrive_marche ();
+    //void montee_des_marches ();
     
 #endif
 
