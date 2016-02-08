@@ -112,7 +112,8 @@ extern "C" {
 
 #ifdef  PETIT_ROBOT
     #define FERMER_PORTES               2
-    #define LEVER_DRAPEAU               3
+    #define OUVRIR_PORTES               3
+    #define LEVER_DRAPEAU               4
 #endif
 
 #ifdef GROS_ROBOT
