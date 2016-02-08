@@ -80,7 +80,7 @@ void strategie()
         
             passe_part(550, 1100, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
             passe_part(1200, 1100, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
-            passe_part(1100, 1100, MARCHE_ARRIERE, 100, MILIEU_TRAJECTOIRE);
+            passe_part(1050, 1100, MARCHE_ARRIERE, 100, FIN_TRAJECTOIRE);
             FLAG_ACTION=OUVRIR_PORTES;
             
         /*
@@ -98,12 +98,11 @@ void strategie()
             case CONFIG_3:
                 break;
             case CONFIG_4:
-                passe_part(1200, 350, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(700, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(200, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(200, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
                 passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(900, 1000, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                passe_part(250, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                passe_part(250, 810, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
                 
                 break;
             case CONFIG_5:
