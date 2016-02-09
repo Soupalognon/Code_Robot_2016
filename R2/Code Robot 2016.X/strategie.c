@@ -27,7 +27,7 @@ void strategie()
     /*
      * Definit la configuration des coquillages CONFIG_1 - CONFIG_5
      */
-    CONFIG_COQUILLAGE = CONFIG_5;
+    CONFIG_COQUILLAGE = CONFIG_1;
     
     #ifdef GROS_ROBOT
         // Inits avant démarage du robot :
@@ -92,11 +92,11 @@ void strategie()
         switch(CONFIG_COQUILLAGE)
         {
             case CONFIG_1:
-                passe_part(1450, 450, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                passe_part(1410, 475, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE); /*  */
                 passe_part(1500, 150, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                 passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                 passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                passe_part(230, 820, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
                 break;
             case CONFIG_2:
                 passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
