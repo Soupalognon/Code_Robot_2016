@@ -107,18 +107,17 @@
 int main(int argc, char** argv)
 {
     init_system();
-    init_evitement();
+    //init_evitement();
     //TIMER_DEBUG = ACTIVE;
     delay_ms(500);
 
     
     //init_decalage_AX12();
     //init_position_AX12();
-
-    
-    
-    synchro_AX12(AX_CALAGE_CONE, 0, 512, SANS_ATTENTE);
-    
+    while(1)
+    {
+        Action_poisson_rapide();
+    }
     
     //Init Supplémentaire
 #ifdef GROS_ROBOT
@@ -131,3 +130,130 @@ int main(int argc, char** argv)
     return (EXIT_SUCCESS);
 }
 
+
+/*
+ * angle_AX12(AX_CALAGE_CONE, 450, 1023, SANS_ATTENTE);    //Position déplié
+ * angle_AX12(AX_CALAGE_CONE, 750, 1023, SANS_ATTENTE);    //Position replié
+ * 
+ * angle_AX12(ASCENSEUR, 500, 512, SANS_ATTENTE);   //Position haut
+ * angle_AX12(ASCENSEUR, 265, 512, SANS_ATTENTE);   //Position basse
+ * 
+ * angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 200, SANS_ATTENTE);   //Position déployé
+ * angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
+ * angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 150, SANS_ATTENTE);   //Position intermédiaire (pour passé la barre du filet)
+ * 
+ * angle_AX12(ROT_FILET, 85, 300, SANS_ATTENTE);    //Position relevé (Tout début)
+ * angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+ * angle_AX12(ROT_FILET, 690, 300, SANS_ATTENTE);   //Position dans l'eau
+ * angle_AX12(ROT_FILET, 1005, 300, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+ * 
+ * angle_AX12(OUVERTURE_FILET, 256, 300, SANS_ATTENTE);    //Position fermé
+ * angle_AX12(OUVERTURE_FILET, 860, 300, SANS_ATTENTE);    //Position ouverte
+ * 
+ * angle_AX12(PINCE_D, 285, 300, SANS_ATTENTE); //Position rangé
+ * angle_AX12(PINCE_D, 835, 300, SANS_ATTENTE); //Position où il attrappe
+ * angle_AX12(PINCE_D, 720, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+ * 
+ * angle_AX12(PINCE_G, 735, 300, SANS_ATTENTE); //Position rangé
+ * angle_AX12(PINCE_G, 200, 300, SANS_ATTENTE); //Positions où il attrappe
+ * angle_AX12(PINCE_G, 320, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+ * 
+ * angle_AX12(PARASOL, 350, 512, SANS_ATTENTE); //Position replié
+ * 
+ *        angle_AX12(PARASOL, 570, 150, SANS_ATTENTE);
+        delay_ms(3000);
+        angle_AX12(PARASOL, 350, 150, SANS_ATTENTE);
+        delay_ms(3000);
+ */
+
+
+void Action_poisson_lente()
+{
+        delay_ms(3000);
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 200, SANS_ATTENTE);   //Position déployé
+        delay_ms(3000);
+        angle_AX12(OUVERTURE_FILET, 860, 300, SANS_ATTENTE);    //Position ouverte
+        delay_ms(3000);
+        angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+        delay_ms(3000);
+        angle_AX12(ROT_FILET, 690, 300, SANS_ATTENTE);   //Position dans l'eau
+        delay_ms(3000);
+        angle_AX12(ROT_FILET, 1005, 300, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+        delay_ms(3000);
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 150, SANS_ATTENTE);   //Position intermédiaire (pour passé la barre du filet)
+        delay_ms(3000);
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 150, SANS_ATTENTE);   //Position déployé
+        delay_ms(3000);
+        angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+        delay_ms(3000);
+        angle_AX12(ROT_FILET, 85, 300, SANS_ATTENTE);    //Position relevé (Tout début)
+        delay_ms(3000);
+        angle_AX12(OUVERTURE_FILET, 256, 300, SANS_ATTENTE);    //Position fermé
+        delay_ms(3000);
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
+        delay_ms(3000);
+}
+
+void Action_poisson_rapide()
+{
+        delay_ms(3000);
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 200, SANS_ATTENTE);   //Position déployé
+        delay_ms(1000);
+        angle_AX12(OUVERTURE_FILET, 860, 300, AVEC_ATTENTE);    //Position ouverte
+        delay_ms(10);
+        angle_AX12(ROT_FILET, 375, 300, AVEC_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+        delay_ms(10);
+        lancer_autom_AX12();
+        delay_ms(1000);
+        angle_AX12(ROT_FILET, 690, 300, SANS_ATTENTE);   //Position dans l'eau
+        delay_ms(1000);
+        angle_AX12(ROT_FILET, 1005, 300, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+        delay_ms(2000);
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 150, SANS_ATTENTE);   //Position intermédiaire (pour passé la barre du filet)
+        delay_ms(500);
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 150, SANS_ATTENTE);   //Position déployé
+        delay_ms(500);
+        angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+        delay_ms(1500);
+        angle_AX12(ROT_FILET, 85, 300, AVEC_ATTENTE);    //Position relevé (Tout début)
+        delay_ms(10);
+        angle_AX12(OUVERTURE_FILET, 256, 300, AVEC_ATTENTE);    //Position fermé
+        delay_ms(10);
+        lancer_autom_AX12();
+        delay_ms(1000);
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
+        delay_ms(3000);
+}
+
+void Action_attraper_cubes()
+{
+        delay_ms(3000);
+        angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
+        delay_ms(20);
+        angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
+        delay_ms(20);
+        angle_AX12(AX_CALAGE_CONE, 750, 1023, AVEC_ATTENTE);    //Position replié
+        delay_ms(20);
+        angle_AX12(ASCENSEUR, 265, 512, AVEC_ATTENTE);   //Position basse
+        delay_ms(20);
+        lancer_autom_AX12();
+        delay_ms(2000);
+        angle_AX12(PINCE_D, 720, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        delay_ms(10);
+        angle_AX12(PINCE_G, 320, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        delay_ms(10);
+        lancer_autom_AX12();
+        delay_ms(5000);
+        angle_AX12(PINCE_D, 835, 300, AVEC_ATTENTE); //Position où il attrappe
+        delay_ms(10);
+        angle_AX12(PINCE_G, 200, 300, AVEC_ATTENTE); //Positions où il attrappe
+        delay_ms(10);
+        lancer_autom_AX12();
+        delay_ms(1500);
+        angle_AX12(AX_CALAGE_CONE, 450, 1023, SANS_ATTENTE);    //Position déplié
+        delay_ms(1500);
+        angle_AX12(ASCENSEUR, 500, 200, SANS_ATTENTE);   //Position haut
+        delay_ms(3000);
+        angle_AX12(ASCENSEUR, 265, 512, SANS_ATTENTE);   //Position basse
+        delay_ms(3000);
+}

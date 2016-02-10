@@ -79,7 +79,7 @@ extern "C" {
 #ifdef  GROS_ROBOT
     //Pince
      #define PINCE_D                19
-     #define PINCE_G                20
+     #define PINCE_G                10
      #define ASCENSEUR              13
      #define AX_CALAGE_CONE         17
     
