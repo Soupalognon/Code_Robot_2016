@@ -108,25 +108,38 @@ int main(int argc, char** argv)
 {
     init_system();
     //init_evitement();
-    //TIMER_DEBUG = ACTIVE;
+    TIMER_DEBUG = ACTIVE;
     delay_ms(500);
 
     
     //init_decalage_AX12();
     //init_position_AX12();
-    while(1)
-    {
-        Action_poisson_rapide();
-    }
     
     //Init Supplémentaire
 #ifdef GROS_ROBOT
 #endif
-    
-    //strategie();
+    strategie();
     //reglage_odometrie();
     
     while(1);
+    /*
+    {
+        //angle_AX12(PINCE_G, 735, 300, SANS_ATTENTE); //Position rangé
+        //angle_AX12(ASCENSEUR, 500, 512, SANS_ATTENTE);   //Position haut
+        //delay_ms(100);
+        //angle_AX12(PINCE_G, 200, 300, SANS_ATTENTE); //Positions où il attrappe
+        //angle_AX12(ASCENSEUR, 265, 512, SANS_ATTENTE);   //Position basse
+        //delay_ms(100);
+        //angle_AX12(PINCE_G, 320, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        //delay_ms(100);
+        angle_AX12(PINCE_D, 285, 300, SANS_ATTENTE); //Position rangé
+        delay_ms(100);
+        angle_AX12(PINCE_D, 835, 300, SANS_ATTENTE); //Position où il attrappe
+        delay_ms(100);
+        //angle_AX12(PINCE_D, 720, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        //delay_ms(100);
+    }
+    */
     return (EXIT_SUCCESS);
 }
 
@@ -156,7 +169,7 @@ int main(int argc, char** argv)
  * 
  * angle_AX12(PINCE_G, 735, 300, SANS_ATTENTE); //Position rangé
  * angle_AX12(PINCE_G, 200, 300, SANS_ATTENTE); //Positions où il attrappe
- * angle_AX12(PINCE_G, 320, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+ * angle_AX12(PINCE_G, 320, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
  * 
  * angle_AX12(PARASOL, 350, 512, SANS_ATTENTE); //Position replié
  * 

@@ -141,11 +141,11 @@ extern "C" {
     #define _SENS_ROT_D                  -1L
     #define _SENS_ROT_G                  1L
 
-    #define _AVANCER_MOTEUR_D            1
-    #define _RECULER_MOTEUR_D            0
+    #define _AVANCER_MOTEUR_D            0
+    #define _RECULER_MOTEUR_D            1
 
-    #define _AVANCER_MOTEUR_G            1
-    #define _RECULER_MOTEUR_G            0
+    #define _AVANCER_MOTEUR_G            0
+    #define _RECULER_MOTEUR_G            1
 
     #define _AVANCER_MOTEUR_X            0
     #define _RECULER_MOTEUR_X            1
@@ -162,13 +162,13 @@ extern "C" {
     //La définition des ports relatif à chaque carte se trouve
     //Dans le fichier system.h
     
-    #define CAPT_US_BALISE              CAPTEUR1
-    #define CAPT_PINCE                  CAPTEUR4
-    #define CAPT_US_AR_GAUCHE           CAPTEUR7
-    #define CAPT_US_AR_DROITE           CAPTEUR7
+    #define CAPT_US_BALISE              CAPTEUR8
+    #define CAPT_PINCE                  CAPTEUR3
+    #define CAPT_US_AR_GAUCHE           CAPTEUR4
+    #define CAPT_US_AR_DROITE           CAPTEUR1
     #define CAPT_US_ARRIERE             CAPTEUR7
     #define CAPT_US_AV_GAUCHE           CAPTEUR2
-    #define CAPT_US_AV_DROIT            CAPTEUR3
+    #define CAPT_US_AV_DROIT            CAPTEUR5
     #define CAPT_US_AV                  CAPTEUR8
 
     #define _CAPTEUR1_ANALOGIQUE        DIGITAL

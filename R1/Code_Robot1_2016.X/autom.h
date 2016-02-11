@@ -84,8 +84,8 @@ extern "C" {
      #define AX_CALAGE_CONE         17
     
      //Capteurs Avant     
-    #define AX_US_DROIT             24
-    #define AX_US_GAUCHE            9
+    #define AX_US_DROIT             1  //24
+    #define AX_US_GAUCHE            6   //9
     
     //Filet à Poissons
     #define DEPLOIMENT_BRAS_FILET   5
