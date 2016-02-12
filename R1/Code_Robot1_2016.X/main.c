@@ -109,7 +109,7 @@ int main(int argc, char** argv)
     init_system();
     //init_evitement();
     TIMER_DEBUG = ACTIVE;
-    delay_ms(500);
+    delay_ms(100);
 
     
     //init_decalage_AX12();
@@ -269,4 +269,30 @@ void Action_attraper_cubes()
         delay_ms(3000);
         angle_AX12(ASCENSEUR, 265, 512, SANS_ATTENTE);   //Position basse
         delay_ms(3000);
+}
+
+
+void aller_chercher_cubes()
+{
+    //delay_ms(1000);
+        
+        angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
+        angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
+        angle_AX12(ASCENSEUR, 235, 512, AVEC_ATTENTE);   //Position basse
+        lancer_autom_AX12();
+        delay_ms(10);
+        rejoindre(200, 1235,MARCHE_AVANT, 100);
+        //rejoindre(650, 1600,MARCHE_AVANT, 100);
+        angle_AX12(PINCE_D, 720, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        angle_AX12(PINCE_G, 320, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        lancer_autom_AX12();
+        rejoindre(885, 1600,MARCHE_AVANT, 100);
+        //cibler(885, 1900, 50);
+        rejoindre(885, 1735, MARCHE_AVANT, 30);
+        angle_AX12(PINCE_D, 815, 300, AVEC_ATTENTE); //Position où il attrappe
+        angle_AX12(PINCE_G, 180, 300, AVEC_ATTENTE); //Positions où il attrappe
+        lancer_autom_AX12();
+        delay_ms(100);
+        angle_AX12(ASCENSEUR, 380, 512, SANS_ATTENTE);   //Position haut
+        
 }

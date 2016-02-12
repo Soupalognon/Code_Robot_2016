@@ -48,37 +48,62 @@ void strategie()
         init_position_robot(78., 1235., 0.);
         //FLAG_ACTION = INIT_ASCENSEUR;
         
-        //delay_ms(1000);
+        //Init de départ
         angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
         angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
         angle_AX12(ASCENSEUR, 235, 512, AVEC_ATTENTE);   //Position basse
+        angle_AX12(ROT_FILET, 85, 300, AVEC_ATTENTE);    //Position relevé (Tout début)
+        angle_AX12(OUVERTURE_FILET, 256, 300, AVEC_ATTENTE);    //Position fermé
+        angle_AX12(AX_CALAGE_CONE, 750, 1023, AVEC_ATTENTE);
         lancer_autom_AX12();
-        delay_ms(10);
-        rejoindre(200, 1235,MARCHE_AVANT, 100);
-        //rejoindre(650, 1600,MARCHE_AVANT, 100);
-        angle_AX12(PINCE_D, 720, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
-        angle_AX12(PINCE_G, 320, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
-        lancer_autom_AX12();
-        rejoindre(885, 1600,MARCHE_AVANT, 100);
-        //cibler(885, 1900, 50);
-        rejoindre(885, 1735, MARCHE_AVANT, 30);
-        angle_AX12(PINCE_D, 815, 300, AVEC_ATTENTE); //Position où il attrappe
-        angle_AX12(PINCE_G, 180, 300, AVEC_ATTENTE); //Positions où il attrappe
-        lancer_autom_AX12();
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
         delay_ms(100);
-        angle_AX12(ASCENSEUR, 380, 512, SANS_ATTENTE);   //Position haut
-        /*
-        passe_part(75, , MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-        passe_part(683, 991, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(675, 998, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-        passe_part(742, 1112,MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-        */
+        
+        passe_part(500, 1235, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+        passe_part(1100, 250, MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
+        passe_part(1000, 200,MARCHE_AVANT, 40, MILIEU_TRAJECTOIRE);
+        passe_part(900, 175,MARCHE_AVANT, 40, MILIEU_TRAJECTOIRE);
+        passe_part(800, 157,MARCHE_AVANT, 40, MILIEU_TRAJECTOIRE);
+        passe_part(430, 157,MARCHE_AVANT, 40, FIN_TRAJECTOIRE);
+        
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 200, SANS_ATTENTE);   //Position déployé
+        delay_ms(100);
+        angle_AX12(OUVERTURE_FILET, 860, 300, SANS_ATTENTE);    //Position ouverte
+        delay_ms(100);
+        angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+        delay_ms(100);
+        
+        rejoindre(635, 158, MARCHE_ARRIERE, 40);
+        
+        angle_AX12(ROT_FILET, 690, 150, SANS_ATTENTE);   //Position dans l'eau
+        delay_ms(100);
+        
+        rejoindre(795, 158, MARCHE_ARRIERE, 40);
+        
+        angle_AX12(ROT_FILET, 1005, 600, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+        delay_ms(100);
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 350, SANS_ATTENTE);   //Position intermédiaire (pour passé la barre du filet)
+        delay_ms(200);
+        
+        passe_part(900, 210, MARCHE_ARRIERE, 40, DEBUT_TRAJECTOIRE);
+        passe_part(1000, 210,MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
+        passe_part(1200, 155,MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
+        passe_part(1300, 158,MARCHE_ARRIERE, 70, FIN_TRAJECTOIRE);
+        
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 150, AVEC_ATTENTE);   //Position déployé
+        angle_AX12(ROT_FILET, 375, 300, AVEC_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+        lancer_autom_AX12();
+        delay_ms(1000);
     #endif
   
     #ifdef PETIT_ROBOT
-        
+            passe_part(500, 1050, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+            passe_part(750,1000,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+            passe_part(1200, 1000, MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
+            rejoindre(1050, 1000, MARCHE_ARRIERE, 100);
     #endif
 }
+
 
 
 void homologation()
