@@ -31,7 +31,7 @@ uint8_t couleur_depart()
 
 double inversion_couleur (double param_inversable)
 {
-    if (COULEUR == VIOLET)
+    if (COULEUR == VERT)
         return param_inversable;
     else
         return (- param_inversable);

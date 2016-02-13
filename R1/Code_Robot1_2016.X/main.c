@@ -109,37 +109,19 @@ int main(int argc, char** argv)
     init_system();
     //init_evitement();
     TIMER_DEBUG = ACTIVE;
-    delay_ms(100);
-
+    delay_ms(500);
     
     //init_decalage_AX12();
     //init_position_AX12();
     
+    //while(SYS_JACK);
     //Init Supplémentaire
 #ifdef GROS_ROBOT
 #endif
     strategie();
     //reglage_odometrie();
-    
+   
     while(1);
-    /*
-    {
-        //angle_AX12(PINCE_G, 735, 300, SANS_ATTENTE); //Position rangé
-        //angle_AX12(ASCENSEUR, 500, 512, SANS_ATTENTE);   //Position haut
-        //delay_ms(100);
-        //angle_AX12(PINCE_G, 200, 300, SANS_ATTENTE); //Positions où il attrappe
-        //angle_AX12(ASCENSEUR, 265, 512, SANS_ATTENTE);   //Position basse
-        //delay_ms(100);
-        //angle_AX12(PINCE_G, 320, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
-        //delay_ms(100);
-        angle_AX12(PINCE_D, 285, 300, SANS_ATTENTE); //Position rangé
-        delay_ms(100);
-        angle_AX12(PINCE_D, 835, 300, SANS_ATTENTE); //Position où il attrappe
-        delay_ms(100);
-        //angle_AX12(PINCE_D, 720, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
-        //delay_ms(100);
-    }
-    */
     return (EXIT_SUCCESS);
 }
 
@@ -173,10 +155,13 @@ int main(int argc, char** argv)
  * 
  * angle_AX12(PARASOL, 350, 512, SANS_ATTENTE); //Position replié
  * 
- *        angle_AX12(PARASOL, 570, 150, SANS_ATTENTE);
-        delay_ms(3000);
-        angle_AX12(PARASOL, 350, 150, SANS_ATTENTE);
-        delay_ms(3000);
+ * angle_AX12(AX_US_GAUCHE, 100, 200, SANS_ATTENTE);    //Position regarde coté droit
+ * angle_AX12(AX_US_GAUCHE, 650, 1023, SANS_ATTENTE);   //Position regarde derrière gauche
+ * angle_AX12(AX_US_GAUCHE, 350, 1023, SANS_ATTENTE);   //Position regarde avant gauche
+ * 
+ * angle_AX12(AX_US_DROIT, 100, 1023, SANS_ATTENTE);    //Position regarde derrière droit
+ * angle_AX12(AX_US_DROIT, 400, 1023, SANS_ATTENTE);    //Position regarde avant droit
+ * angle_AX12(AX_US_DROIT, 625, 1023, SANS_ATTENTE);    //Position regarde coté gauche
  */
 
 
@@ -295,4 +280,72 @@ void aller_chercher_cubes()
         delay_ms(100);
         angle_AX12(ASCENSEUR, 380, 512, SANS_ATTENTE);   //Position haut
         
+}
+
+
+void recuperer_poissons()
+{
+    init_position_robot(78., 1235., 0.);
+
+    //Init de départ
+    angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
+    angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
+    angle_AX12(ASCENSEUR, 235, 512, AVEC_ATTENTE);   //Position basse
+    angle_AX12(ROT_FILET, 85, 300, AVEC_ATTENTE);    //Position relevé (Tout début)
+    angle_AX12(OUVERTURE_FILET, 256, 300, AVEC_ATTENTE);    //Position fermé
+    angle_AX12(AX_CALAGE_CONE, 750, 1023, AVEC_ATTENTE);
+    lancer_autom_AX12();
+    angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
+    delay_ms(100);    
+    passe_part(500, 1235, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+    passe_part(1100, 250, MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
+    passe_part(1000, 200,MARCHE_AVANT, 40, MILIEU_TRAJECTOIRE);
+    passe_part(900, 175,MARCHE_AVANT, 40, MILIEU_TRAJECTOIRE);
+    passe_part(800, 157,MARCHE_AVANT, 40, MILIEU_TRAJECTOIRE);
+    passe_part(430, 157,MARCHE_AVANT, 40, FIN_TRAJECTOIRE);
+
+    angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 200, SANS_ATTENTE);   //Position déployé
+    delay_ms(100);
+    angle_AX12(OUVERTURE_FILET, 860, 300, SANS_ATTENTE);    //Position ouverte
+    delay_ms(100);
+    angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+    delay_ms(100);
+
+    rejoindre(635, 158, MARCHE_ARRIERE, 40);
+
+    angle_AX12(ROT_FILET, 690, 150, SANS_ATTENTE);   //Position dans l'eau
+    delay_ms(100);
+
+    rejoindre(795, 158, MARCHE_ARRIERE, 40);
+
+    angle_AX12(ROT_FILET, 1005, 600, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+    delay_ms(100);
+    angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 350, SANS_ATTENTE);   //Position intermédiaire (pour passé la barre du filet)
+    delay_ms(200);
+
+    passe_part(900, 210, MARCHE_ARRIERE, 40, DEBUT_TRAJECTOIRE);
+    passe_part(1000, 210,MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
+    passe_part(1200, 155,MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
+    passe_part(1300, 158,MARCHE_ARRIERE, 70, FIN_TRAJECTOIRE);
+
+    angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 150, AVEC_ATTENTE);   //Position déployé
+    angle_AX12(ROT_FILET, 375, 300, AVEC_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+    lancer_autom_AX12();
+    delay_ms(1000);
+}
+
+void faire_tourner_les_us_devant()
+{
+    angle_AX12(AX_US_GAUCHE, 100, 200, AVEC_ATTENTE);    //Position regarde coté droit
+    angle_AX12(AX_US_DROIT, 625, 1023, AVEC_ATTENTE);    //Position regarde coté gauche
+    lancer_autom_AX12();
+    delay_ms(100);
+    angle_AX12(AX_US_DROIT, 400, 1023, AVEC_ATTENTE);    //Position regarde avant droit
+    angle_AX12(AX_US_GAUCHE, 350, 1023, AVEC_ATTENTE);   //Position regarde avant gauche
+    lancer_autom_AX12();
+    delay_ms(100);
+    angle_AX12(AX_US_GAUCHE, 650, 1023, AVEC_ATTENTE);   //Position regarde derrière gauche
+    angle_AX12(AX_US_DROIT, 100, 1023, AVEC_ATTENTE);    //Position regarde derrière droit
+    lancer_autom_AX12();
+    delay_ms(100);
 }

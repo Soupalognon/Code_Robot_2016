@@ -60,26 +60,26 @@ void rotation_us_avant ()
     if (sens_D == 0)
     {
         position_D += 10;
-        if (position_D > 876)
+        if (position_D > 500)
             sens_D = 1;
     }
     else
     {
         position_D -= 10;
-        if (position_D < 703)
+        if (position_D < 400)
             sens_D = 0;
     }
 
     if (sens_G == 0)
     {
         position_G += 10;
-        if (position_G > 666)
+        if (position_G > 300)
             sens_G = 1;
     }
     else
     {
         position_G -= 10;
-        if (position_G < 512)
+        if (position_G < 200)
             sens_G = 0;
     }
 
@@ -452,7 +452,7 @@ void autom_10ms (void)
 
     static uint16_t compteur = 0;
     static uint8_t  evitement_en_cours = OFF;
-
+    static uint8_t compteur_temporisation_US;
         /**********************************************************************/
         /******************************* Autom ********************************/
         /**********************************************************************/
@@ -514,7 +514,11 @@ void autom_10ms (void)
                     }
                 }
             }
-            rotation_us_avant();
+            if(compteur_temporisation_US == 2)
+            {//Permet de ralentir un peu la rotation des US pour ne pas les cassés...
+                compteur_temporisation_US = 0;
+                rotation_us_avant();
+            }
         }
 
         //Evitement arrière
@@ -560,13 +564,21 @@ void autom_10ms (void)
                 }
             }
             else
-                rotation_us();
+            {
+                if(compteur_temporisation_US == 2)
+                {//Permet de ralentir un peu la rotation des US pour ne pas les cassés...
+                    compteur_temporisation_US = 0;
+                    rotation_us_avant();
+                }
+            }
         }
         else if (DETECTION == ON)
         {
             DETECTION = OFF;
             unbrake();
         }
+        
+        compteur_temporisation_US++;
 }
 
 
