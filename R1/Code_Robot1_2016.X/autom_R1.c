@@ -25,8 +25,8 @@
 void son_evitement (uint8_t melodie)
 {
     //Nop();
-    //commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
-    //commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
+    commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
+    commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
 }
 
 void rotation_us(void)
@@ -462,11 +462,14 @@ void autom_10ms (void)
         {
             case NE_RIEN_FAIRE:
                 break;
-            case INIT_ASCENSEUR :
-                FLAG_ACTION = INIT_DEPART;
-                break;
             case INIT_DEPART :
                 init_depart();
+                break;
+            case POISSONS :
+                if(get_X() < 600)
+                {
+                    EVITEMENT_ADV_AVANT = OFF;
+                }
                 break;
             default :
                 break;

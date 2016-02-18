@@ -180,9 +180,9 @@ extern "C" {
 #endif
 
 #ifdef GROS_ROBOT
-    #define INIT_ASCENSEUR              2
     #define INIT_DEPART                 3
     #define INIT_JACK                   4
+    #define POISSONS                    5
     #define MONTEE_EVITEMENT_EN_COURS   11
 
 #define A_MODIFIER     -1

@@ -90,6 +90,8 @@
     int point_obstacle[nb_point_max][3];
     int x_actuel;
     int y_actuel;
+    int x_souhaite;
+    int y_souhaite;
     int x_obj;
     int y_obj;
     int id_evitement = 0;
@@ -103,18 +105,22 @@
 /******************************************************************************/
 /******************************************************************************/
 
-    
+    /*
+     LEs capteur avant sont à l'état bas pour activé
+     * Les capteurs arrières sont à l'état haut pour activé
+     
+     */
 int main(int argc, char** argv)
 {
     init_system();
-    //init_evitement();
-    TIMER_DEBUG = ACTIVE;
-    delay_ms(500);
+    init_evitement();
+    TIMER_DEBUG = DESACTIVE;
+    delay_ms(1500);
     
     //init_decalage_AX12();
     //init_position_AX12();
     
-    //while(SYS_JACK);
+    while(SYS_JACK);
     //Init Supplémentaire
 #ifdef GROS_ROBOT
 #endif
@@ -348,4 +354,15 @@ void faire_tourner_les_us_devant()
     angle_AX12(AX_US_DROIT, 100, 1023, AVEC_ATTENTE);    //Position regarde derrière droit
     lancer_autom_AX12();
     delay_ms(100);
+}
+
+
+void foncer_dans_le_tas_de_sable()
+{
+    passe_part(650, 1235, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+    passe_part(800, 1600, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+    passe_part(1000, 1750,MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+    passe_part(1100, 1850,MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+    passe_part(1200, 1800,MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+    passe_part(1400, 1770,MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
 }

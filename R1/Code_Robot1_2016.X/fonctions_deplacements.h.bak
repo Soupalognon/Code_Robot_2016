@@ -164,7 +164,6 @@ uint8_t _passe_part (double x, double y, int8_t sens_marche, double pourcentage_
     int distance();
     int aiguillage_evitement(int x_objectif, int y_objectif, int direction,int haut);
    void plus_court(int x_objectif,int y_objectif,int8_t sens_marche,double pourcentage_deplacement,char last,int ajout);
-	void detect (uint8_t arg);	
 
 #ifdef	__cplusplus
 }

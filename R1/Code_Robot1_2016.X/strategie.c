@@ -37,8 +37,8 @@ void strategie()
             //synchro_AX12(AX_US, 45, 1023, SANS_ATTENTE);
         //else
             //synchro_AX12(AX_US, -45, 1023, SANS_ATTENTE);
-
-        //while(!SYS_JACK);
+        //delay_ms(1000);
+        while(!SYS_JACK);
 
         // Démarage du match
         TIMER_90s = ACTIVE;
@@ -46,8 +46,8 @@ void strategie()
         STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
 
         init_position_robot(78., 1235., 0.);
-        //FLAG_ACTION = INIT_ASCENSEUR;
-        
+                
+        /*
         //Init de départ
         angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
         angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
@@ -62,52 +62,77 @@ void strategie()
         delay_ms(100);
         
       
+        
     passe_part(500, 1235, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
     passe_part(1100, 250, MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
-    passe_part(1000, 200,MARCHE_AVANT, 40, MILIEU_TRAJECTOIRE);
-    passe_part(900, 175,MARCHE_AVANT, 40, MILIEU_TRAJECTOIRE);
-    passe_part(800, 157,MARCHE_AVANT, 40, MILIEU_TRAJECTOIRE);
-    passe_part(430, 157,MARCHE_AVANT, 40, FIN_TRAJECTOIRE);
+    passe_part(1000, 200,MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
+    FLAG_ACTION = POISSONS;
+    passe_part(900, 175,MARCHE_AVANT, 80, MILIEU_TRAJECTOIRE);
+    passe_part(800, 157,MARCHE_AVANT, 80, MILIEU_TRAJECTOIRE);
+    passe_part(450, 157,MARCHE_AVANT, 80, FIN_TRAJECTOIRE);
 
-    angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 200, SANS_ATTENTE);   //Position déployé
-    delay_ms(100);
-    angle_AX12(OUVERTURE_FILET, 860, 300, SANS_ATTENTE);    //Position ouverte
-    delay_ms(100);
-    angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
-    delay_ms(100);
+    angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 300, SANS_ATTENTE);   //Position déployé
+    while(read_data(DEPLOIMENT_BRAS_FILET, LIRE_POSITION_ACTU) > 520);
+    angle_AX12(OUVERTURE_FILET, 860, 400, SANS_ATTENTE);    //Position ouverte
+    while(read_data(OUVERTURE_FILET, LIRE_POSITION_ACTU) < 850);
+    angle_AX12(ROT_FILET, 375, 200, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+    while(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 370);
+    delay_ms(150);
 
-    rejoindre(635, 158, MARCHE_ARRIERE, 40);
+    rejoindre(637, 157, MARCHE_ARRIERE, 60);
 
     angle_AX12(ROT_FILET, 690, 150, SANS_ATTENTE);   //Position dans l'eau
-    delay_ms(100);
+    while(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 685);
 
-    rejoindre(795, 158, MARCHE_ARRIERE, 40);
+    rejoindre(795, 150, MARCHE_ARRIERE, 50);
 
     angle_AX12(ROT_FILET, 1005, 600, SANS_ATTENTE);  //Position Fin (poissons récupérés)
-    delay_ms(100);
-    while(read_data(ROT_FILET, LIRE_POSITION_ACTU) != 1005)
+    while(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 1000)
     {
-        if(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 800)
+        delay_ms(1000);
+        static short Compteur_Bloquage_Filet = 0;
+        if(read_data(ROT_FILET, LIRE_POSITION_ACTU) <= 1000 && read_data(ROT_FILET, LIRE_POSITION_ACTU) >= 690)
+        {//Tjr pas atteind le seuil alors reculer un peu
+            rejoindre(740, 150, MARCHE_AVANT, 35);
+            while(get_X() > 755);
+            Compteur_Bloquage_Filet = 1;
+            delay_ms(100);
+        }
+        if(read_data(ROT_FILET, LIRE_POSITION_ACTU) <= 1000 && read_data(ROT_FILET, LIRE_POSITION_ACTU) >= 690 && Compteur_Bloquage_Filet == 1)
         {//Augmente la patate!
             angle_AX12(ROT_FILET, 1005, 800, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+            delay_ms(200);
+            Compteur_Bloquage_Filet = 2;
+            //delay_ms(200);
+            //angle_AX12(ROT_FILET, 1005, 900, SANS_ATTENTE);  //Position Fin (poissons récupérés)
         }
-        if(read_data(ROT_FILET, LIRE_POSITION_ACTU) )   
-        {
-            angle_AX12(ROT_FILET, 1005, 800, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+        if(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 1000 && read_data(ROT_FILET, LIRE_POSITION_ACTU) >= 690 && Compteur_Bloquage_Filet == 2)   
+        {//Tjr pas atteind le seuil alors faire des accout
+            //angle_AX12(ROT_FILET, 790, 800, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+            unsigned short temp = 0;
+            while(temp < 3)
+            {//Répète le mouvement 3 fois
+            angle_AX12(DEPLOIMENT_BRAS_FILET, 590, 400, SANS_ATTENTE);   //Position déployé
+            delay_ms(50);
+            angle_AX12(DEPLOIMENT_BRAS_FILET, 460, 400, SANS_ATTENTE);   //Position déployé
+            delay_ms(50);
+            temp++;
+            }
         }
     }
     angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 350, SANS_ATTENTE);   //Position intermédiaire (pour passé la barre du filet)
-    delay_ms(200);
+    while(read_data(DEPLOIMENT_BRAS_FILET, LIRE_POSITION_ACTU) < 590);
     
-    passe_part(900, 210, MARCHE_ARRIERE, 40, DEBUT_TRAJECTOIRE);
-    passe_part(1000, 210,MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
-    passe_part(1200, 155,MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
-    passe_part(1300, 158,MARCHE_ARRIERE, 70, FIN_TRAJECTOIRE);
+    passe_part(1100, 250, MARCHE_ARRIERE, 50, DEBUT_TRAJECTOIRE);
+    passe_part(1150, 210,MARCHE_ARRIERE, 80, MILIEU_TRAJECTOIRE);
+    passe_part(1250, 155,MARCHE_ARRIERE, 80, MILIEU_TRAJECTOIRE);
+    passe_part(1300, 158,MARCHE_ARRIERE, 80, FIN_TRAJECTOIRE);
 
     angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 150, AVEC_ATTENTE);   //Position déployé
     angle_AX12(ROT_FILET, 375, 300, AVEC_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
     lancer_autom_AX12();
     delay_ms(1000);
+    */
     #endif
   
     #ifdef PETIT_ROBOT
@@ -142,7 +167,6 @@ void homologation()
         STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
 
         init_position_robot(180., 988., 0.);
-        FLAG_ACTION = INIT_ASCENSEUR;
 
         delay_ms(1000);
 

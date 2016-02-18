@@ -219,12 +219,6 @@ extern "C" {
     extern int y_actuel;
     extern int x_obj;
     extern int y_obj;
-	
-	//	
-	extern int x_souhaite;
-    extern int y_souhaite;
-	//
-
     extern int id_evitement;
     extern int id_evitement_initial;
     extern int chemin_court;
