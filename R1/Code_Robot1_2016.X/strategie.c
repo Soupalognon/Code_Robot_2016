@@ -38,6 +38,17 @@ void strategie()
         //else
             //synchro_AX12(AX_US, -45, 1023, SANS_ATTENTE);
         //delay_ms(1000);
+        
+         //Init de départ
+        angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
+        angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
+        angle_AX12(ASCENSEUR, 180, 512, AVEC_ATTENTE);   //Position basse
+        angle_AX12(ROT_FILET, 85, 300, AVEC_ATTENTE);    //Position relevé (Tout début)
+        angle_AX12(OUVERTURE_FILET, 256, 300, AVEC_ATTENTE);    //Position fermé
+        angle_AX12(AX_CALAGE_CONE, 750, 1023, AVEC_ATTENTE);    //Position replié
+        lancer_autom_AX12();
+        angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
+    
         while(!SYS_JACK);
 
         // Démarage du match
@@ -46,29 +57,57 @@ void strategie()
         STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
 
         init_position_robot(78., 1235., 0.);
-                
-        
-        //Init de départ
+        //init_position_robot(500., 1235., 0.);
+
+        rejoindre(200, 1235,MARCHE_AVANT, 100);
+        angle_AX12(PINCE_D, 720, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        angle_AX12(PINCE_G, 320, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        lancer_autom_AX12();
+        rejoindre(900, 1600, MARCHE_AVANT, 100);
+        rejoindre(900, 1735, MARCHE_AVANT, 30);
+        /*
+        passe_part(200, 1235,MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+        passe_part(900, 1400,MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
+        passe_part(885, 1600,MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
+        passe_part(885, 1735,MARCHE_AVANT, 30, FIN_TRAJECTOIRE);
+        */
+        //delay_ms(1000);
+        angle_AX12(PINCE_D, 850, 1023, AVEC_ATTENTE); //Position où il attrappe
+        angle_AX12(PINCE_G, 170, 1023, AVEC_ATTENTE); //Positions où il attrappe
+        angle_AX12(AX_CALAGE_CONE, 450, 1023, AVEC_ATTENTE);    //Position déplié
+        lancer_autom_AX12();
+        delay_ms(1000);
+        //angle_AX12(ASCENSEUR, 315, 512, SANS_ATTENTE);   //Position haut
+        //delay_ms(1000);
+        rejoindre(900, 1600, MARCHE_ARRIERE, 60);
+        rejoindre(200, 1000,MARCHE_ARRIERE, 60);
+        rejoindre(1050, 850,MARCHE_AVANT, 100);
+        delay_ms(1000);
+        angle_AX12(PINCE_D, 720, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        angle_AX12(PINCE_G, 320, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        lancer_autom_AX12();
+        delay_ms(1000);
+        rejoindre(800, 850,MARCHE_ARRIERE, 70);
+        //rejoindre(78, 1235,MARCHE_ARRIERE, 20);
         angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
         angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
-        angle_AX12(ASCENSEUR, 235, 512, AVEC_ATTENTE);   //Position basse
-        angle_AX12(ROT_FILET, 85, 300, AVEC_ATTENTE);    //Position relevé (Tout début)
-        angle_AX12(OUVERTURE_FILET, 256, 300, AVEC_ATTENTE);    //Position fermé
-        angle_AX12(AX_CALAGE_CONE, 750, 1023, AVEC_ATTENTE);
-        //angle_AX12(AX_US_GAUCHE, 100, 200, AVEC_ATTENTE);    //Position regarde coté droit
-        //angle_AX12(AX_US_DROIT, 625, 1023, AVEC_ATTENTE);    //Position regarde coté gauche
         lancer_autom_AX12();
-        angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
-        delay_ms(100);
-    
-        if (COULEUR == VIOLET){
-            passe_part(500, 1235, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-            passe_part(1100, 250, MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
+        
+        if (COULEUR == VERT){
+            passe_part(1100, 250, MARCHE_AVANT, 60, DEBUT_TRAJECTOIRE);
             passe_part(1000, 200,MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
             FLAG_ACTION = POISSONS;
             passe_part(900, 175,MARCHE_AVANT, 80, MILIEU_TRAJECTOIRE);
-            //passe_part(800, 157,MARCHE_AVANT, 80, MILIEU_TRAJECTOIRE);
+            passe_part(800, 157,MARCHE_AVANT, 80, MILIEU_TRAJECTOIRE);
             passe_part(450, 157,MARCHE_AVANT, 80, FIN_TRAJECTOIRE);
+            
+            //passe_part(500, 1235, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+            //passe_part(1100, 250, MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
+            //passe_part(1000, 200,MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
+            //FLAG_ACTION = POISSONS;
+            //passe_part(900, 175,MARCHE_AVANT, 80, MILIEU_TRAJECTOIRE);
+            //passe_part(800, 157,MARCHE_AVANT, 80, MILIEU_TRAJECTOIRE);
+            //passe_part(450, 157,MARCHE_AVANT, 80, FIN_TRAJECTOIRE);
             orienter(180,100);
 
             angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 300, SANS_ATTENTE);   //Position déployé
@@ -87,9 +126,9 @@ void strategie()
             rejoindre(790, 150, MARCHE_ARRIERE, 50);
 
             angle_AX12(ROT_FILET, 1005, 600, SANS_ATTENTE);  //Position Fin (poissons récupérés)
-            /*
-             * Gestion du cas ou le filet coince 
-             */
+            
+            // Gestion du cas ou le filet coince 
+             
             while(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 1000)
             {
                 delay_ms(1000);
@@ -137,7 +176,7 @@ void strategie()
             lancer_autom_AX12();
             delay_ms(1000);
         }
-        else if (COULEUR == VERT){
+        else if (COULEUR == VIOLET){
             passe_part(500, 1235, MARCHE_ARRIERE, 100, DEBUT_TRAJECTOIRE);
             passe_part(1100, 250, MARCHE_ARRIERE, 60, MILIEU_TRAJECTOIRE);
             passe_part(1000, 200,MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
@@ -163,9 +202,9 @@ void strategie()
             rejoindre(790, 150, MARCHE_AVANT, 50);
 
             angle_AX12(ROT_FILET, 1005, 600, SANS_ATTENTE);  //Position Fin (poissons récupérés)
-            /*
-             * Gestion du cas ou le filet coince 
-             */
+            
+             //Gestion du cas ou le filet coince 
+             
             while(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 1000)
             {
                 delay_ms(1000);
@@ -213,43 +252,43 @@ void strategie()
             lancer_autom_AX12();
             delay_ms(1000);
         }
-//
-//    #endif
-//  
-//    #ifdef PETIT_ROBOT
-//            passe_part(500, 1050, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-//            passe_part(750,1000,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-//            passe_part(1200, 1000, MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
-//            rejoindre(1050, 1000, MARCHE_ARRIERE, 100);
-//    #endif
-//}
-//
-//
-//
-//void homologation()
-//{
-//    COULEUR = couleur_depart();
-//
-//    #ifdef GROS_ROBOT
-//
-//      // Inits avant démarage du robot :
-//        init_jack();
-//        /*
-//        if (COULEUR == VIOLET)
-//            synchro_AX12(AX_US, 45, 1023, SANS_ATTENTE);
-//        else
-//            synchro_AX12(AX_US, -45, 1023, SANS_ATTENTE);
-//        */
-//        while(!SYS_JACK);
-//
-//        // Démarage du match
-//        TIMER_90s = ACTIVE;
-//        EVITEMENT_ADV_AVANT = ON;
-//        STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
-//
-//        init_position_robot(180., 988., 0.);
-//
-//        delay_ms(1000);
+      
+    #endif
+  
+    #ifdef PETIT_ROBOT
+            passe_part(500, 1050, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+            passe_part(750,1000,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+            passe_part(1200, 1000, MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
+            rejoindre(1050, 1000, MARCHE_ARRIERE, 100);
+    #endif
+}
+
+
+
+void homologation()
+{
+    COULEUR = couleur_depart();
+
+    #ifdef GROS_ROBOT
+
+      // Inits avant démarage du robot :
+        init_jack();
+        /*
+        if (COULEUR == VIOLET)
+            synchro_AX12(AX_US, 45, 1023, SANS_ATTENTE);
+        else
+            synchro_AX12(AX_US, -45, 1023, SANS_ATTENTE);
+        */
+        while(!SYS_JACK);
+
+        // Démarage du match
+        TIMER_90s = ACTIVE;
+        EVITEMENT_ADV_AVANT = ON;
+        STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
+
+        init_position_robot(180., 988., 0.);
+
+        delay_ms(1000);
 
     #endif
 
