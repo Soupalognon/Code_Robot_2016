@@ -137,7 +137,7 @@ int main(int argc, char** argv)
  * angle_AX12(AX_CALAGE_CONE, 750, 1023, SANS_ATTENTE);    //Position replié
  * 
  * angle_AX12(ASCENSEUR, 315, 512, SANS_ATTENTE);   //Position haut
- * angle_AX12(ASCENSEUR, 180, 512, SANS_ATTENTE);   //Position basse
+ * angle_AX12(ASCENSEUR, 183, 512, SANS_ATTENTE);   //Position basse
  * 
  * angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 200, SANS_ATTENTE);   //Position déployé
  * angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté

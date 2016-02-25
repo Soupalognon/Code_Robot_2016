@@ -299,10 +299,14 @@ void init_jack()
 
 void init_depart()
 {
-    if (read_data(ASCENSEUR, LIRE_MOUV_FLAG) == 0)
-    {
-        FLAG_ACTION = A_MODIFIER;   //Première Action
-    }
+    angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
+    angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
+    angle_AX12(ASCENSEUR, 183, 512, AVEC_ATTENTE);   //Position basse
+    angle_AX12(ROT_FILET, 85, 300, AVEC_ATTENTE);    //Position relevé (Tout début)
+    angle_AX12(OUVERTURE_FILET, 256, 300, AVEC_ATTENTE);    //Position fermé
+    angle_AX12(AX_CALAGE_CONE, 750, 1023, AVEC_ATTENTE);    //Position replié
+    lancer_autom_AX12();
+    angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
 }
 
 /******************************************************************************/
@@ -382,7 +386,7 @@ void marche (void)
 void arrive_marche ()
 {
     static uint8_t etat = 0, etat_tapis = 0, etat_pince = 0;
-    static uint16_t compteur_temporaire = 0, test = 0;;
+    static uint16_t compteur_temporaire = 0, test = 0;
 
     if (etat == 0  && COMPTEUR_MARCHE < 1600)
     {
@@ -465,12 +469,29 @@ void autom_10ms (void)
             case INIT_DEPART :
                 init_depart();
                 break;
+                
+                
+            case CUBES:
+                angle_AX12(PINCE_D, 720, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+                angle_AX12(PINCE_G, 320, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+                FLAG_ACTION = CUBES2;
+                
+            case CUBES2:
+                if(get_X() > 850)
+                {
+                    EVITEMENT_ADV_AVANT = OFF;
+                }
+                break;
+                
+                
             case POISSONS :
                 if(get_X() < 600)
                 {
                     EVITEMENT_ADV_AVANT = OFF;
                 }
                 break;
+                
+                
             default :
                 break;
         }

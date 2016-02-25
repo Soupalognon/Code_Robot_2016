@@ -32,46 +32,70 @@ void strategie()
     #ifdef GROS_ROBOT
         // Inits avant démarage du robot :
         init_jack();
-
-        //if (COULEUR == VIOLET)
-            //synchro_AX12(AX_US, 45, 1023, SANS_ATTENTE);
-        //else
-            //synchro_AX12(AX_US, -45, 1023, SANS_ATTENTE);
-        //delay_ms(1000);
-        
-         //Init de départ
-        angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
-        angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
-        angle_AX12(ASCENSEUR, 180, 512, AVEC_ATTENTE);   //Position basse
-        angle_AX12(ROT_FILET, 85, 300, AVEC_ATTENTE);    //Position relevé (Tout début)
-        angle_AX12(OUVERTURE_FILET, 256, 300, AVEC_ATTENTE);    //Position fermé
-        angle_AX12(AX_CALAGE_CONE, 750, 1023, AVEC_ATTENTE);    //Position replié
-        lancer_autom_AX12();
-        angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
-    
+        init_depart();
         while(!SYS_JACK);
 
+        
         // Démarage du match
         TIMER_90s = ACTIVE;
-        EVITEMENT_ADV_AVANT = OFF;
+        EVITEMENT_ADV_AVANT = ON;
         STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
 
         init_position_robot(78., 1235., 0.);
-        //init_position_robot(500., 1235., 0.);
-
+        FLAG_ACTION = CUBES;
+        
+        angle_AX12(PINCE_D, 720, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        angle_AX12(PINCE_G, 320, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        lancer_autom_AX12();
+        
+        passe_part(300, 1235,MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+        passe_part(800, 1400,MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(895, 1500,MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+        passe_part(895, 1600,MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+        orienter(90,100);
+        rejoindre(895, 1745, MARCHE_AVANT, 60);
+        if(CAPT_PINCE == 0)
+        {//Alors aller poser la tour
+        angle_AX12(PINCE_D, 860, 1023, AVEC_ATTENTE); //Position où il attrappe
+        angle_AX12(PINCE_G, 160, 1023, AVEC_ATTENTE); //Positions où il attrappe
+        angle_AX12(AX_CALAGE_CONE, 450, 1023, AVEC_ATTENTE);    //Position déplié
+        angle_AX12(ASCENSEUR, 200, 512, AVEC_ATTENTE);   //Position haut
+        lancer_autom_AX12();
+        while(read_data(PINCE_D, LIRE_MOUV_FLAG) != 0 && read_data(PINCE_G, LIRE_MOUV_FLAG) != 0 ); 
+        delay_ms(500);
+        //Tant que les AX12 sont en mouvement
+        }
+        else
+        {
+            angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
+            angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
+            lancer_autom_AX12();
+        }
+        EVITEMENT_ADV_ARRIERE = ON;
+        rejoindre(895, 1600, MARCHE_ARRIERE, 60);
+        passe_part(895, 1500,MARCHE_ARRIERE, 60, DEBUT_TRAJECTOIRE);
+        passe_part(800, 1400,MARCHE_ARRIERE, 60, MILIEU_TRAJECTOIRE);
+        passe_part(400, 900,MARCHE_ARRIERE, 60, FIN_TRAJECTOIRE);
+        
+        rejoindre(1000, 1000,MARCHE_AVANT, 60);
+        
+        angle_AX12(PINCE_D, 720, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        angle_AX12(PINCE_G, 320, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+        lancer_autom_AX12();
+        while(read_data(PINCE_D, LIRE_MOUV_FLAG) != 0 && read_data(PINCE_G, LIRE_MOUV_FLAG) != 0 ); 
+        avancer_reculer(-150, 60);
+        angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
+        angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
+        lancer_autom_AX12();
+        rejoindre(200, 1235,MARCHE_ARRIERE, 100);
+        
+        /*
         rejoindre(200, 1235,MARCHE_AVANT, 100);
         angle_AX12(PINCE_D, 720, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
         angle_AX12(PINCE_G, 320, 300, AVEC_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
         lancer_autom_AX12();
         rejoindre(900, 1600, MARCHE_AVANT, 100);
         rejoindre(900, 1735, MARCHE_AVANT, 30);
-        /*
-        passe_part(200, 1235,MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-        passe_part(900, 1400,MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
-        passe_part(885, 1600,MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
-        passe_part(885, 1735,MARCHE_AVANT, 30, FIN_TRAJECTOIRE);
-        */
-        //delay_ms(1000);
         angle_AX12(PINCE_D, 850, 1023, AVEC_ATTENTE); //Position où il attrappe
         angle_AX12(PINCE_G, 170, 1023, AVEC_ATTENTE); //Positions où il attrappe
         angle_AX12(AX_CALAGE_CONE, 450, 1023, AVEC_ATTENTE);    //Position déplié
@@ -92,6 +116,15 @@ void strategie()
         angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
         angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
         lancer_autom_AX12();
+
+        
+//        passe_part(200, 1235,MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+//        passe_part(900, 1400,MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
+//        passe_part(885, 1600,MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
+//        passe_part(885, 1735,MARCHE_AVANT, 30, FIN_TRAJECTOIRE);
+        
+        //delay_ms(1000);
+        
         
         if (COULEUR == VERT){
             passe_part(1100, 250, MARCHE_AVANT, 60, DEBUT_TRAJECTOIRE);
@@ -252,7 +285,7 @@ void strategie()
             lancer_autom_AX12();
             delay_ms(1000);
         }
-      
+      */
     #endif
   
     #ifdef PETIT_ROBOT
