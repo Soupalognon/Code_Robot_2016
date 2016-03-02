@@ -219,18 +219,17 @@ extern "C" {
     extern int y_actuel;
     extern int x_obj;
     extern int y_obj;
-	
-	//	
-	extern int x_souhaite;
-    extern int y_souhaite;
-	//
-
     extern int id_evitement;
     extern int id_evitement_initial;
     extern int chemin_court;
     extern uint16_t compteur_evitement;
     extern int precedent_obstacle[7];
-
+    
+    extern uint8_t etape_tour_allie;
+    extern uint8_t etape_tour_adversaire;
+    extern uint8_t etape_poissons;
+    extern uint8_t etape_coquillages;
+    extern uint8_t fin_strategie_cause_evitement;
 
     // FLAG Automs
     extern uint8_t COULEUR;
@@ -240,6 +239,7 @@ extern "C" {
     extern uint16_t COMPTEUR_MARCHE;
     extern uint8_t COMPTEUR_TEMPS_MATCH;
     extern uint8_t CONFIG_COQUILLAGE;
+    extern uint8_t mouvement_AX12;
 
     extern _ax12 ax12;
 

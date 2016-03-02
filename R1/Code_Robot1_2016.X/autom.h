@@ -51,6 +51,7 @@ extern "C" {
 #define ACTION_EVITEMENT    2
 #define EVITEMENT_NORMAL    3
 #define STOP                5
+#define DELAI_ACTION        4
 
 #define DISTANCE_STOP       5
 #define ANGLE_STOP          5
@@ -79,13 +80,13 @@ extern "C" {
 #ifdef  GROS_ROBOT
     //Pince
      #define PINCE_D                19
-     #define PINCE_G                10
+     #define PINCE_G                25
      #define ASCENSEUR              13
      #define AX_CALAGE_CONE         17
     
      //Capteurs Avant     
-    #define AX_US_DROIT             24  
-    #define AX_US_GAUCHE            7   
+    #define AX_US_DROIT             14
+    #define AX_US_GAUCHE            3
     
     //Filet à Poissons
     #define DEPLOIMENT_BRAS_FILET   5
@@ -180,13 +181,11 @@ extern "C" {
 #endif
 
 #ifdef GROS_ROBOT
-    #define INIT_DEPART                 3
-    #define INIT_JACK                   4
-    #define POISSONS                    5
-    #define CUBES                       6
-    #define MONTEE_EVITEMENT_EN_COURS   11
-
-#define A_MODIFIER     -1
+    #define TOUR_ALLIE                  2
+    #define TOUR_ADVERSAIRE             3
+    #define POISSONS                    4
+    #define OUVERTURE_PARASOL           5
+    #define COQUILLAGES                 6
 #endif
 
 /******************************************************************************/

@@ -25,8 +25,8 @@
 void son_evitement (uint8_t melodie)
 {
     //Nop();
-    commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
-    commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
+    //commande_AX12(100, _4PARAM, WRITE_DATA, 0x29, 10, NC, NC, NC);
+    //commande_AX12(100, _4PARAM, WRITE_DATA, 0x28, melodie, NC, NC, NC);
 }
 
 void rotation_us(void)
@@ -52,7 +52,7 @@ void rotation_us(void)
    // }
 }
 
-void rotation_us_avant ()
+void rotation_us_avant()
 {
     static char sens_D = 0, sens_G = 0;
     static uint16_t position_D = 0, position_G = 0;
@@ -73,13 +73,13 @@ void rotation_us_avant ()
     if (sens_G == 0)
     {
         position_G += 10;
-        if (position_G > 300)
+        if (position_G > 200)
             sens_G = 1;
     }
     else
     {
         position_G -= 10;
-        if (position_G < 200)
+        if (position_G < 100)
             sens_G = 0;
     }
 
@@ -119,173 +119,8 @@ uint8_t check_capteur (uint8_t cote)
 /********************************  FONCTION AX12  *****************************/
 /******************************************************************************/
 
-/*
-void chenilles(uint8_t action)
-{
-    if(action==DESCENDRE)
-    {
-        angle_AX12(CHENILLE_AV_G,885,200,AVEC_ATTENTE); //1023
-        angle_AX12(CHENILLE_AV_D, 138,200,AVEC_ATTENTE); //0
-        angle_AX12(CHENILLE_AR_G,885,200,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AR_D, 138,200,AVEC_ATTENTE);
-        lancer_autom_AX12();
-    }
-    else if (action == MONTER)
-    {
-        angle_AX12(CHENILLE_AV_G,512,200,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AV_D,512,200,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AR_G,512,200,AVEC_ATTENTE);
-        angle_AX12(CHENILLE_AR_D,512,200,AVEC_ATTENTE);
-        lancer_autom_AX12();
-    }
-    else
-    {
-        angle_AX12(CHENILLE_AV_G,662,200,SANS_ATTENTE); //1023
-        angle_AX12(CHENILLE_AV_D, 362,200,SANS_ATTENTE); //0
-        angle_AX12(CHENILLE_AR_G,812,200,SANS_ATTENTE);
-        angle_AX12(CHENILLE_AR_D, 212,200,SANS_ATTENTE);
-        //lancer_autom_AX12();
-    }
-}
 
-void pince(uint8_t cote,uint8_t action)
-{
 
-    cote = inversion_autom(cote);
-    if(cote == DROITE)
-    {
-       switch (action)
-      {
-        case FERMER:
-           angle_AX12(PINCE_D,855,500,SANS_ATTENTE);
-           break;
-        case RANGEMENT:
-           angle_AX12(PINCE_D,735,500,SANS_ATTENTE);
-           break;
-        case OUVERTE:
-           angle_AX12(PINCE_D,950,100,SANS_ATTENTE);
-           break;
-       }
-    }
-    else if (cote == GAUCHE)
-   {
-        switch (action)
-        {
-        case RANGEMENT:
-           angle_AX12(PINCE_G ,580,500,SANS_ATTENTE);
-           break;
-        case FERMER:
-           angle_AX12(PINCE_G ,480,500,SANS_ATTENTE);
-           break;
-        case OUVERTE:
-           angle_AX12(PINCE_G ,380,100,SANS_ATTENTE);
-           break;
-        }
-    }
-}
-
-void tapis(uint8_t cote, uint8_t action)
-{
-    cote = inversion_autom(cote);
-
-    if(cote==DROITE)
-    {
-        switch (action)
-        {
-            case RANGEMENT:
-                angle_AX12(PINCE_TAPIS_D, 745, 1023, SANS_ATTENTE);
-                break;
-            case OUVERT:
-                angle_AX12(PINCE_TAPIS_D, 580, 1023, SANS_ATTENTE);
-                break;
-            case DEPOSE:
-                angle_AX12(PINCE_TAPIS_D, 532, 1023, SANS_ATTENTE);
-                break;
-            case INTERMEDIAIRE :
-                angle_AX12(PINCE_TAPIS_D, 638, 1023, SANS_ATTENTE);
-                break;
-        }
-    }
-    else
-    {
-        switch (action)
-        {
-            case RANGEMENT:
-                angle_AX12(PINCE_TAPIS_G, 290, 1023, SANS_ATTENTE);
-                break;
-            case OUVERT:
-                angle_AX12(PINCE_TAPIS_G, 455, 1023, SANS_ATTENTE);
-                break;
-            case DEPOSE:
-                angle_AX12(PINCE_TAPIS_G, 505, 1023, SANS_ATTENTE);
-                break;
-            case INTERMEDIAIRE :
-                angle_AX12(PINCE_TAPIS_G, 372, 1023, SANS_ATTENTE);
-                break;
-        }
-    }
-}
-
-void bras(uint8_t cote, uint8_t action)
-{
-    cote = inversion_autom(cote);
-
-    if(cote == DROITE)
-    {
-        switch (action)
-        {
-            case FERMER:
-                angle_AX12(BRAS_DROIT,566,1023,SANS_ATTENTE);
-                break;
-            case OUVERTE:
-                angle_AX12(BRAS_DROIT,700,1023,SANS_ATTENTE);
-                break;
-        }
-    }
-    else
-    {
-        switch (action)
-        {
-            case FERMER:
-                angle_AX12(BRAS_GAUCHE,466,1023,SANS_ATTENTE);
-                break;
-            case OUVERTE:
-                angle_AX12(BRAS_GAUCHE,309,1023,SANS_ATTENTE);
-                break;
-        }
-    }
-}
-
-void ascenseur(uint8_t action)
-{
-        switch (action)
-        {   
-            case AVANT:
-                angle_AX12(ASCENSEUR,190,1023,SANS_ATTENTE);
-                break;
-            case ARRIERE:
-                angle_AX12(ASCENSEUR,950,1023,SANS_ATTENTE);
-                break;
-        }
-}
-
-void monter_balise ()
-{
-    angle_AX12(BALISE_GAUCHE, 512, 250, AVEC_ATTENTE);
-    angle_AX12(BALISE_DROITE, 512, 250, AVEC_ATTENTE);
-    lancer_autom_AX12();
-}
-
-void descendre_balise (void)
-{
-    angle_AX12(AX_US_DROIT, 876, 1023, SANS_ATTENTE);
-    angle_AX12(AX_US_GAUCHE, 666, 1023, SANS_ATTENTE);
-    angle_AX12(BALISE_GAUCHE, 840, 80, AVEC_ATTENTE);
-    angle_AX12(BALISE_DROITE, 166, 80, AVEC_ATTENTE);
-    lancer_autom_AX12();
-}
-
-*/
 /******************************************************************************/
 /**************************** FONCTIONS D'INITS *******************************/
 /******************************************************************************/
@@ -299,152 +134,21 @@ void init_jack()
 
 void init_depart()
 {
-    angle_AX12(PINCE_D, 285, 300, AVEC_ATTENTE); //Position rangé
-    angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
-    angle_AX12(ASCENSEUR, 183, 512, AVEC_ATTENTE);   //Position basse
-    angle_AX12(ROT_FILET, 85, 300, AVEC_ATTENTE);    //Position relevé (Tout début)
-    angle_AX12(OUVERTURE_FILET, 256, 300, AVEC_ATTENTE);    //Position fermé
-    angle_AX12(AX_CALAGE_CONE, 750, 1023, AVEC_ATTENTE);    //Position replié
-    lancer_autom_AX12();
+    angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
+    angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
+    //angle_AX12(ASCENSEUR, 183, 512, AVEC_ATTENTE);   //Position basse
+    angle_AX12(ROT_FILET, 85, 300, SANS_ATTENTE);    //Position relevé (Tout début)
+    angle_AX12(OUVERTURE_FILET, 256, 300, SANS_ATTENTE);    //Position fermé
+    angle_AX12(AX_CALAGE_CONE, 750, 1023, SANS_ATTENTE);    //Position replié
     angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
+    angle_AX12(AX_US_GAUCHE, 0, 1023, SANS_ATTENTE);    //Position regarde coté droit
+    angle_AX12(AX_US_DROIT, 625, 1023, SANS_ATTENTE);    //Position regarde coté gauche
 }
 
 /******************************************************************************/
 /******************************** FONCTIONS AUTOM *****************************/
 /******************************************************************************/
-/*
-void attrape_gobelet (uint8_t reinit)
-{
-    static uint8_t statut_pince_D = LIBRE, status_pince_G = LIBRE;
 
-    if (reinit == ON)
-    {
-        status_pince_G = LIBRE;
-        statut_pince_D = LIBRE;
-    }
-    
-    if (check_capteur(DROIT) == 0 && statut_pince_D == LIBRE)
-    {
-        pince(DROITE, FERMER);
-        statut_pince_D = FERMER;
-    }
-    if (check_capteur(GAUCHE) == 0 && status_pince_G == LIBRE)
-    {
-        pince(GAUCHE, FERMER);
-        status_pince_G = FERMER;
-    }
-}
-
-void montee_des_marches ()
-{
-    static uint8_t etat = 0;
-    
-    if (etat == 0)
-    {
-        chenilles(DESCENDRE);
-        tapis(DROIT, OUVERT);
-        tapis (GAUCHE, OUVERT);
-        etat = 1;
-    }
-    else if (etat == 1 && read_data(CHENILLE_AR_D, LIRE_MOUV_FLAG) == 0 && read_data(CHENILLE_AR_G, LIRE_MOUV_FLAG) == 0 )
-    {
-        descendre_balise();
-        alimenter_moteur_Y(ON, MARCHE_AVANT);
-        etat = 2;
-    }
-    
-    else if (etat == 2)
-    {
-        if (INCLINOMETRE == 1)
-                etat = 3;
-    }
-    
-    else if (etat == 3)
-    {
-        chenilles(INTERMEDIAIRE);
-        ascenseur(AVANT);
-        //if (read_data(CHENILLE_AV_G, LIRE_POSITION_CONSIGNE) == 662 && read_data(CHENILLE_AR_G, LIRE_POSITION_CONSIGNE) == 812)
-        //{
-         //   lancer_autom_AX12();
-            COMPTEUR_MARCHE = 0;
-            FLAG_ACTION = ARRIVEE_MARCHE;
-        //}
-    }
-}
-
-void marche (void)
-{
-     //Montée des marches
-    EVITEMENT_ADV_ARRIERE = OFF;
-    EVITEMENT_ADV_AVANT = OFF;
-
-    FLAG_ASSERV.totale = OFF;
-    FLAG_ACTION = MONTEE_MARCHE;
-    delay_ms(10000);
-}
-
-void arrive_marche ()
-{
-    static uint8_t etat = 0, etat_tapis = 0, etat_pince = 0;
-    static uint16_t compteur_temporaire = 0, test = 0;
-
-    if (etat == 0  && COMPTEUR_MARCHE < 1600)
-    {
-        if (compteur_temporaire < (COMPTEUR_MARCHE - 50))
-        {
-            if (etat_pince == 0)
-            {
-                tapis(DROIT, OUVERT);
-                tapis(GAUCHE, OUVERT);
-                etat_pince = 1;
-            }
-            else if (etat_pince == 1)
-            {
-                tapis(DROIT, INTERMEDIAIRE);
-                tapis(GAUCHE, INTERMEDIAIRE);
-                etat_pince = 0;
-            }
-            compteur_temporaire = COMPTEUR_MARCHE;
-        }
-    }
-
-    if (COMPTEUR_MARCHE >= 1600 && etat == 0)
-    {
-        tapis(DROIT, DEPOSE);
-        tapis(GAUCHE, DEPOSE);
-        etat = 1;
-    }
-    else if (COMPTEUR_MARCHE < 2800 && COMPTEUR_MARCHE >= 1600)
-    {
-        test = COMPTEUR_MARCHE - 100;
-        if (compteur_temporaire  < test)
-        {
-            compteur_temporaire = COMPTEUR_MARCHE;
-            if (etat_tapis == 0)
-            {
-                tapis(DROIT, OUVERT);
-                tapis(GAUCHE, OUVERT);
-                etat_tapis = 1;
-            }
-            else if (etat_tapis == 1)
-            {
-                tapis(DROIT, DEPOSE);
-                tapis(GAUCHE, DEPOSE);
-                etat_tapis = 0;
-            }
-        }
-    }
-    else if (etat == 1 && COMPTEUR_MARCHE >= 2800)
-    {
-        alimenter_moteur_Y(OFF, MARCHE_AVANT);
-        ascenseur(ARRIERE);
-        chenilles(MONTER);
-        tapis(DROIT, RANGEMENT);
-        tapis(GAUCHE, RANGEMENT);
-        FLAG_ACTION = NE_RIEN_FAIRE;
-    }
-}
-*/
 
 /******************************************************************************/
 /******************************** FONCTION BOUCLE *****************************/
@@ -456,45 +160,138 @@ void autom_10ms (void)
 
     static uint16_t compteur = 0;
     static uint8_t  evitement_en_cours = OFF;
-    static uint8_t compteur_temporisation_US;
+    static uint8_t compteur_moyenne_evitement = 0;
+    static uint8_t timer_delai_evitement = 0;
+    
         /**********************************************************************/
         /******************************* Autom ********************************/
         /**********************************************************************/
 
         //fonction qui definit les actions
-        switch (FLAG_ACTION)
-        {
-            case NE_RIEN_FAIRE:
-                break;
-            case INIT_DEPART :
-                init_depart();
-                break;
-                
-                
-            case CUBES:
-                angle_AX12(PINCE_D, 720, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
-                angle_AX12(PINCE_G, 320, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
-                FLAG_ACTION = CUBES2;
-                
-            case CUBES2:
-                if(get_X() > 850)
-                {
-                    EVITEMENT_ADV_AVANT = OFF;
-                }
-                break;
-                
-                
-            case POISSONS :
-                if(get_X() < 600)
-                {
-                    EVITEMENT_ADV_AVANT = OFF;
-                }
-                break;
-                
-                
-            default :
-                break;
-        }
+        switch(FLAG_ACTION)
+            {//Mettre toutes les fonctions de déplacement des AX12
+                case TOUR_ALLIE:           
+                    if(etape_tour_allie == 0)
+                    {//positionne vers la barre, s'encastre dedant
+                        if(get_X() > 800)
+                            EVITEMENT_ADV_AVANT = OFF;
+                        
+                        angle_AX12(PINCE_D, 870, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+                        angle_AX12(PINCE_G, 400, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+                    }
+                    if(etape_tour_allie == 1)
+                    {//attrappe tour et recule (sort de la barre)
+                        if(CAPT_PINCE == 0)
+                        {//Alors on récupère la tour
+                            if(mouvement_AX12 == ACTIVE)
+                            {//Si on a activé le mouvement des AX12
+                                angle_AX12(PINCE_D, 975, 800, SANS_ATTENTE); //Position où il attrappe
+                                angle_AX12(PINCE_G, 290, 800, SANS_ATTENTE); //Positions où il attrappe
+                                angle_AX12(AX_CALAGE_CONE, 450, 1023, SANS_ATTENTE);    //Position déplié
+                                //angle_AX12(ASCENSEUR, 200, 512, SANS_ATTENTE);   //Position haut
+                                mouvement_AX12 = DESACTIVE;
+                            }
+                        }
+                        else
+                        {
+                            if(mouvement_AX12 == ACTIVE)
+                            {//Si on a activé le mouvement des AX12
+                                angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
+                                angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
+                                mouvement_AX12 = DESACTIVE;
+                            }
+                        }
+                    }
+                    if(etape_tour_allie == 2)
+                    {//recule encore, se positionne pour poser la tour
+                        
+                    }
+                    if(etape_tour_allie == 3)
+                    {//avance, va dans la zone de largage
+                        if(get_X() > 800)
+                            EVITEMENT_ADV_AVANT = OFF;
+                    }
+                    if(etape_tour_allie == 4)
+                    {//pose la tour, recule pour ne pas renverser la tour
+                        if(mouvement_AX12 == ACTIVE)
+                        {//Si on a activé le mouvement des AX12
+                            angle_AX12(PINCE_D, 870, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+                            angle_AX12(PINCE_G, 400, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+                            mouvement_AX12 = DESACTIVE;
+                        }
+                    }
+                    if(etape_tour_allie == 5)
+                    {
+                        angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
+                        angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
+                    }
+                    break;
+                    
+                    
+                case TOUR_ADVERSAIRE:
+                    if(etape_tour_adversaire == 0)
+                    {//positionne vers la barre, s'encastre dedant
+                        
+                    }
+                    if(etape_tour_adversaire == 1)
+                    {//attrappe tour et recule (sort de la barre)
+                        
+                    }
+                    if(etape_tour_adversaire == 2)
+                    {//recule encore, se positionne pour poser la tour
+                        
+                    }
+                    if(etape_tour_adversaire == 3)
+                    {//avance, va dans la zone de largage, pose la tour
+                        
+                    }
+                    if(etape_tour_adversaire == 4)
+                    {//recule pour ne pas renverser la tour
+                        
+                    }
+                    break;
+                    
+                    
+                case POISSONS:
+                    if(etape_poissons == 0)
+                    {//avance vers le le bac à poissons
+                        if(get_X() < 600)
+                            EVITEMENT_ADV_AVANT = OFF;
+                        
+                    }
+                    if(etape_poissons == 1)
+                    {//recule, attrape les poissons et relève le filet
+                        if(mouvement_AX12 == ACTIVE)
+                        {
+                        angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 300, SANS_ATTENTE);   //Position déployé
+                        
+                        if(read_data(DEPLOIMENT_BRAS_FILET, LIRE_POSITION_ACTU) < 520);
+                            angle_AX12(OUVERTURE_FILET, 860, 400, SANS_ATTENTE);    //Position ouverte
+                        
+                        if(read_data(OUVERTURE_FILET, LIRE_POSITION_ACTU) > 850);
+                            angle_AX12(ROT_FILET, 375, 200, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+                        
+                        mouvement_AX12 = DESACTIVE;
+                        }
+                    }
+                    if(etape_poissons == 2)
+                    {//évite la barre de de la zone de largage des poissons, dépose les poissons
+                        
+                    }
+                    break;
+                    
+                    
+                case COQUILLAGES:
+                    break;
+                    
+                    
+                case OUVERTURE_PARASOL:
+                    break;
+                    
+                    
+                default:
+                    break;
+            }
 
         /**********************************************************************/
         /**************************** Evitement *******************************/
@@ -504,25 +301,32 @@ void autom_10ms (void)
         //Fonction permettant de lancer la fonction d'évitement
         if(EVITEMENT_ADV_AVANT == ON)
         {
-            if (  (CAPT_US_BALISE == 1 || CAPT_US_AV_DROIT == 0 || CAPT_US_AV_GAUCHE == 0)  && DETECTION == OFF )
+            if ((CAPT_US_AV_DROIT == 0 || CAPT_US_AV_GAUCHE == 0) && DETECTION == OFF )
             {
                 compteur = 0;
                 DETECTION = ON;
                 evitement_en_cours = OFF;
-                FLAG_ASSERV.erreur = EVITEMENT;
+                if(STRATEGIE_EVITEMENT != DELAI_ACTION) //On ne veut pas le lancer maintenant pour ce type d'évitement
+                    FLAG_ASSERV.erreur = EVITEMENT;
                 brake();
+                timer_delai_evitement = COMPTEUR_TEMPS_MATCH;
             }
             else if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {
                 compteur ++;
                 if (compteur > 20)
                 {
-                    compteur = 20;
-                    if (CAPT_US_BALISE == 0 ||CAPT_US_AV_DROIT == 1 || CAPT_US_AV_GAUCHE == 1)
-                    {
-                        DETECTION = OFF;
-                        unbrake();
-                    }
+                    if (CAPT_US_AV_DROIT == 1 && CAPT_US_AV_GAUCHE == 1)
+                        compteur_moyenne_evitement++;
+                    else
+                        compteur_moyenne_evitement = 0;
+                    
+                    if(compteur_moyenne_evitement > 100)
+                        {
+                            compteur_moyenne_evitement = 0;
+                            DETECTION = OFF;
+                            unbrake();
+                        }
                 }
             }
             else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
@@ -538,22 +342,43 @@ void autom_10ms (void)
                     }
                 }
             }
-            if(compteur_temporisation_US == 2)
-            {//Permet de ralentir un peu la rotation des US pour ne pas les cassés...
-                compteur_temporisation_US = 0;
-                rotation_us_avant();
+            
+            else if(DETECTION == ON && STRATEGIE_EVITEMENT == DELAI_ACTION)
+            {
+                compteur ++;
+                
+                if (compteur > 20)
+                {
+                    if (CAPT_US_AV_DROIT == 1 && CAPT_US_AV_GAUCHE == 1)
+                        compteur_moyenne_evitement++;
+                    else
+                        compteur_moyenne_evitement = 0;
+                    if(compteur_moyenne_evitement > 100)
+                        {
+                            DETECTION = OFF;
+                            unbrake();
+                        }
+                }
+                
+                if((COMPTEUR_TEMPS_MATCH - timer_delai_evitement) > 5)
+                {//Si on dépasse le temps d'attente et qu'il y a toujours l'adversaire en face on change de strat
+                    FLAG_ASSERV.erreur = EVITEMENT;
+                    fin_deplacement();
+                }
             }
+            
+            rotation_us_avant();
         }
-
         //Evitement arrière
         else if (EVITEMENT_ADV_ARRIERE == ON)
         {
-            if ( (CAPT_US_ARRIERE == 1)  && DETECTION == OFF)
+            if ( (CAPT_US_AR_GAUCHE == 1 || CAPT_US_AR_DROITE == 1)  && DETECTION == OFF)
             {
                 compteur = 0;
                 DETECTION = ON;
                 evitement_en_cours = OFF;
-                FLAG_ASSERV.erreur = EVITEMENT;
+                if(STRATEGIE_EVITEMENT != DELAI_ACTION)
+                    FLAG_ASSERV.erreur = EVITEMENT;
                 brake();
             }
             else if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
@@ -561,12 +386,15 @@ void autom_10ms (void)
                 compteur ++;
                 if (compteur > 20)
                 {
-                    compteur = 20;
-                    if (CAPT_US_ARRIERE == 0)
-                    {
-                        DETECTION = OFF;
-                        unbrake();
-                    }
+                    if (CAPT_US_AV_DROIT == 1 && CAPT_US_AV_GAUCHE == 1)
+                        compteur_moyenne_evitement++;
+                    else
+                        compteur_moyenne_evitement = 0;
+                    if(compteur_moyenne_evitement > 100)
+                        {
+                            DETECTION = OFF;
+                            unbrake();
+                        }
                 }
             }
             else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
@@ -587,22 +415,37 @@ void autom_10ms (void)
                     }
                 }
             }
-            else
+            
+            else if(DETECTION == ON && STRATEGIE_EVITEMENT == DELAI_ACTION)
             {
-                if(compteur_temporisation_US == 2)
-                {//Permet de ralentir un peu la rotation des US pour ne pas les cassés...
-                    compteur_temporisation_US = 0;
-                    rotation_us_avant();
+                compteur ++;
+                
+                if (compteur > 20)
+                {
+                    if (CAPT_US_AR_GAUCHE == 0 && CAPT_US_AR_DROITE == 0)
+                        compteur_moyenne_evitement++;
+                    else
+                        compteur_moyenne_evitement = 0;
+                    
+                    if(compteur_moyenne_evitement > 100)
+                        {
+                            DETECTION = OFF;
+                            unbrake();
+                        }
+                }
+                
+                if((COMPTEUR_TEMPS_MATCH - timer_delai_evitement) > 5)
+                {//Si on dépasse le temps d'attente et qu'il y a toujours l'adversaire en face on change de strat
+                    FLAG_ASSERV.erreur = EVITEMENT;
+                    fin_deplacement();
                 }
             }
         }
-        else if (DETECTION == ON)
+        else if(DETECTION == ON)
         {
             DETECTION = OFF;
             unbrake();
         }
-        
-        compteur_temporisation_US++;
 }
 
 

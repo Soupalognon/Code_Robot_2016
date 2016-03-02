@@ -99,7 +99,13 @@
     int chemin_court=0;
     uint16_t compteur_evitement=0;
     int precedent_obstacle[7];
-
+    
+    uint8_t etape_tour_allie = 0;
+    uint8_t etape_tour_adversaire = 0;
+    uint8_t etape_poissons = 0;
+    uint8_t etape_coquillages = 0;
+    uint8_t fin_strategie_cause_evitement = 0;
+    uint8_t mouvement_AX12 = 0;
 
 /******************************************************************************/
 /******************************************************************************/
@@ -115,15 +121,13 @@ int main(int argc, char** argv)
     init_system();
     init_evitement();
     TIMER_DEBUG = DESACTIVE;
-    delay_ms(1500);
+    delay_ms(500);
     
     //init_decalage_AX12();
     //init_position_AX12();
     
     while(SYS_JACK);
-    //Init Supplémentaire
-#ifdef GROS_ROBOT
-#endif
+
     strategie();
     //reglage_odometrie();
    
@@ -151,19 +155,19 @@ int main(int argc, char** argv)
  * angle_AX12(OUVERTURE_FILET, 256, 300, SANS_ATTENTE);    //Position fermé
  * angle_AX12(OUVERTURE_FILET, 860, 300, SANS_ATTENTE);    //Position ouverte
  * 
- * angle_AX12(PINCE_D, 285, 300, SANS_ATTENTE); //Position rangé
- * angle_AX12(PINCE_D, 835, 300, SANS_ATTENTE); //Position où il attrappe
- * angle_AX12(PINCE_D, 720, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+ * angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
+ * angle_AX12(PINCE_D, 970, 300, SANS_ATTENTE); //Position où il attrappe
+ * angle_AX12(PINCE_D, 870, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
  * 
- * angle_AX12(PINCE_G, 735, 300, SANS_ATTENTE); //Position rangé
- * angle_AX12(PINCE_G, 200, 300, SANS_ATTENTE); //Positions où il attrappe
- * angle_AX12(PINCE_G, 320, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+ * angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
+ * angle_AX12(PINCE_G, 310, 300, SANS_ATTENTE); //Positions où il attrappe
+ * angle_AX12(PINCE_G, 400, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
  * 
  * angle_AX12(PARASOL, 350, 512, SANS_ATTENTE); //Position replié
  * 
- * angle_AX12(AX_US_GAUCHE, 100, 200, SANS_ATTENTE);    //Position regarde coté droit
- * angle_AX12(AX_US_GAUCHE, 650, 1023, SANS_ATTENTE);   //Position regarde derrière gauche
- * angle_AX12(AX_US_GAUCHE, 350, 1023, SANS_ATTENTE);   //Position regarde avant gauche
+ * angle_AX12(AX_US_GAUCHE, 465, 1023, SANS_ATTENTE);    //Position regarde coté droit
+ * angle_AX12(AX_US_GAUCHE, 950, 1023, SANS_ATTENTE);   //Position regarde derrière gauche
+ * angle_AX12(AX_US_GAUCHE, 750, 1023, SANS_ATTENTE);   //Position regarde avant gauche
  * 
  * angle_AX12(AX_US_DROIT, 100, 1023, SANS_ATTENTE);    //Position regarde derrière droit
  * angle_AX12(AX_US_DROIT, 400, 1023, SANS_ATTENTE);    //Position regarde avant droit

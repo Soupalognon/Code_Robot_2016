@@ -36,8 +36,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
         asserv();
 
 #ifdef GROS_ROBOT
-   if (FLAG_ACTION == A_MODIFIER)
-       COMPTEUR_MARCHE = COMPTEUR_MARCHE + 1;
 #endif
 
    static int led = 1, compteur = 0;
