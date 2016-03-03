@@ -87,8 +87,8 @@ void autom_10ms (void)
                 synchro_AX12(PORTE_D,  20, 1023, SANS_ATTENTE);
                 FLAG_ACTION = NE_RIEN_FAIRE;
             case OUVRIR_PORTES:
-                synchro_AX12(PORTE_D, -10, 1023, SANS_ATTENTE);
-                synchro_AX12(PORTE_G,  10, 1023, SANS_ATTENTE);
+                synchro_AX12(PORTE_D, -20, 1023, SANS_ATTENTE);
+                synchro_AX12(PORTE_G,  20, 1023, SANS_ATTENTE);
                 FLAG_ACTION = NE_RIEN_FAIRE;
             /*
              * Ecrire sequence lever de drapeaux

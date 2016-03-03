@@ -97,6 +97,9 @@
     int chemin_court=0;
     uint16_t compteur_evitement=0;
     int precedent_obstacle[7];
+    uint8_t pousser_tour;
+    uint8_t coquillage_phase_1;
+    uint8_t coquillage_phase_2;
 
 
 /******************************************************************************/

@@ -27,32 +27,8 @@ void strategie()
     /*
      * Definit la configuration des coquillages CONFIG_1 - CONFIG_5
      */
-    CONFIG_COQUILLAGE = CONFIG_1;
-    
-    #ifdef GROS_ROBOT
-        // Inits avant démarage du robot :
-        init_jack();
+    CONFIG_COQUILLAGE = CONFIG_5;
 
-        if (COULEUR == JAUNE)
-            synchro_AX12(AX_US, 45, 1023, SANS_ATTENTE);
-        else
-            synchro_AX12(AX_US, -45, 1023, SANS_ATTENTE);
-
-        while(!SYS_JACK);
-
-        // Démarage du match
-        TIMER_90s = ACTIVE;
-        EVITEMENT_ADV_AVANT = ON;
-        STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
-
-        init_position_robot(180., 988., 0.);
-        FLAG_ACTION = INIT_ASCENSEUR;
-
-        delay_ms(1000);
-        
-    #endif
-
-        
     #ifdef PETIT_ROBOT
         init_position_robot (175, 965, 270);
         EVITEMENT_ADV_AVANT = OFF;
@@ -63,77 +39,137 @@ void strategie()
 
         
         while(SYS_JACK);
-        delay_ms(2000); 
+        synchro_AX12(PORTE_D, 100, 1023, SANS_ATTENTE);
+        delay_ms(1000);
+        synchro_AX12(PORTE_G, -100, 1023, SANS_ATTENTE); 
         while(!SYS_JACK);
         TIMER_90s = ACTIVE;
 
         STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
+        FLAG_ACTION = POUSSER_TOUR;
         
-            synchro_AX12(PORTE_D, 90, 1023, SANS_ATTENTE);
-            delay_ms(1000);
-            synchro_AX12(PORTE_G, -90, 1023, SANS_ATTENTE);
-            delay_ms(2000);
-        
-        /*
-         * Pousser blocs du milieu jusqu'a la zone
-         */
-        
-            passe_part(500, 1050, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-            passe_part(750,1000,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-            passe_part(1200, 1000, MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
-            rejoindre(1050, 1000, MARCHE_ARRIERE, 100);
-            FLAG_ACTION=OUVRIR_PORTES;
             
-        /*
-         * Ecrire deplacement pour chacune des configurations possibles
-         * utiliser : FLAG_ACTION = FERMER_PORTES pour fermer les portes
-         */
+        pousser_tour = 0;
+        coquillage_phase_1 = 0;
+        coquillage_phase_2 = 0;
         
-        switch(CONFIG_COQUILLAGE)
-        {
-            case CONFIG_1:
-                passe_part(1410, 475, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE); /*  */
-                passe_part(1500, 150, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(230, 820, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                break;
-            case CONFIG_2:
-                passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                passe_part(900, 550, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(450, 350, MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                break;
-            case CONFIG_3:
-                passe_part(700, 750, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                passe_part(1200, 350, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(300, 350, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                break;
-            case CONFIG_4:
-                passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(250, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                break;
-            case CONFIG_5:
-                passe_part(700, 150, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                rejoindre(230,500, MARCHE_ARRIERE,100);
-                passe_part(700,750, MARCHE_AVANT,100, DEBUT_TRAJECTOIRE);
-                passe_part(230, 1000,MARCHE_AVANT,100,FIN_TRAJECTOIRE);
-                break;
-            default:
-                break;
+        while(1){
+            switch(FLAG_ACTION){
+            /*
+             * Pousser blocs du milieu jusqu'a la zone
+             */
+                case POUSSER_TOUR:
+                    if (pousser_tour == 0){
+                        passe_part(500, 1050, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                        pousser_tour = 1;
+                    }
+                    if (pousser_tour == 1){
+                        passe_part(750,1000,MARCHE_AVANT,85,MILIEU_TRAJECTOIRE);
+                        passe_part(1250, 1000, MARCHE_AVANT, 85, FIN_TRAJECTOIRE);
+                        pousser_tour = 2;
+                    }
+                    if (pousser_tour == 2){
+                        rejoindre(1000, 1000, MARCHE_ARRIERE, 100);
+                        pousser_tour = 3;
+                        FLAG_ACTION = COQUILLAGE_ALLIE;
+                    }
+
+                case COQUILLAGE_ALLIE:
+                    FLAG_ACTION=OUVRIR_PORTES;
+                    switch(CONFIG_COQUILLAGE){
+                        case CONFIG_1:
+                            if(coquillage_phase_1 == 0){
+                                passe_part(1200, 600, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                                passe_part(1410, 475, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                                passe_part(1730,350,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+                                passe_part(1600,100,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+                                passe_part(1500, 150, MARCHE_AVANT, 90, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 900, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
+                                rejoindre(550,550,MARCHE_ARRIERE,100);
+                                coquillage_phase_1 = 1;
+                            }
+                            if(coquillage_phase_1 == 1){
+                                passe_part(270, 380, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                coquillage_phase_1 = 2;
+                            }
+                            break;
+                        case CONFIG_2:
+                           if(coquillage_phase_1 == 0){
+                                passe_part(1200, 600, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                                passe_part(1410, 475, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                                passe_part(1500, 150, MARCHE_AVANT, 90, MILIEU_TRAJECTOIRE);
+                                passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                                passe_part(900, 550, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 900, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
+                                rejoindre(550,550,MARCHE_ARRIERE,100);
+                                coquillage_phase_1 = 1;
+                           }
+                           if(coquillage_phase_1 == 1){
+                                passe_part(270,380,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
+                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                coquillage_phase_1 = 2;
+                           }
+                            break;
+                        case CONFIG_3:
+                           if(coquillage_phase_1 == 0){
+                                passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                                passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(700, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                rejoindre(550,550,MARCHE_ARRIERE,100);
+                                coquillage_phase_1 = 1;
+                           }
+                           if(coquillage_phase_1 == 1){
+                                passe_part(270,380,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
+                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                coquillage_phase_1 = 2;
+                           }
+                            break;
+                        case CONFIG_4:
+                            if(coquillage_phase_1 == 0){
+                                passe_part(1200, 600, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                                 passe_part(1410, 475, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                                passe_part(1730,350,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+                                passe_part(1200, 250, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(700, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                rejoindre(550,550,MARCHE_ARRIERE,100);
+                                coquillage_phase_1 = 1;
+                            }
+                            if(coquillage_phase_1 == 1){
+                                passe_part(270,380,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
+                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                coquillage_phase_1 = 2;
+                            }
+                            break;
+                        case CONFIG_5:
+                            if(coquillage_phase_1 == 0){
+                            passe_part(700, 550, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                            passe_part(700, 230, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                            passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                            passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                            passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                            rejoindre(550,550, MARCHE_ARRIERE,100);
+                            coquillage_phase_1 = 1;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                default:
+                    break;
+            }
         }
-        
         /*
          * Strategie lever de drapeaux
          */

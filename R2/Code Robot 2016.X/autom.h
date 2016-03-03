@@ -114,6 +114,10 @@ extern "C" {
     #define FERMER_PORTES               2
     #define OUVRIR_PORTES               3
     #define LEVER_DRAPEAU               4
+    #define POUSSER_TOUR                5
+    #define COQUILLAGE_ALLIE            6
+    #define COQUILLAGE_ADVERSAIRE       7
+
 #endif
 
 #ifdef GROS_ROBOT

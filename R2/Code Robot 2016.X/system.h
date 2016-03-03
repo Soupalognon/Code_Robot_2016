@@ -224,6 +224,11 @@ extern "C" {
     extern int chemin_court;
     extern uint16_t compteur_evitement;
     extern int precedent_obstacle[7];
+    
+    // Phases de deplacement petit robot
+    extern uint8_t pousser_tour;
+    extern uint8_t coquillage_phase_1;
+    extern uint8_t coquillage_phase_2;
 
 
     // FLAG Automs

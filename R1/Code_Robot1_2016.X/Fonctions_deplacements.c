@@ -153,7 +153,7 @@ void delai_action(void)
     {//Mettre toutes les fonction de backup strat
         case TOUR_ALLIE:
             if(etape_tour_allie == 0)
-            {//positionne vers la barre, s'encastre dedant
+            {//positionne vers la barre, s'encastre dedans
                 EVITEMENT_ADV_AVANT = OFF;
                 EVITEMENT_ADV_ARRIERE = ON;
                 rejoindre(200, 1000, MARCHE_ARRIERE, 50);
