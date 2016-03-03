@@ -160,10 +160,12 @@ void delai_action(void)
                 FLAG_ACTION = POISSONS;
                 etape_tour_allie = 0;
             }
+
             else if(etape_tour_allie == 1)
             {//attrappe tour et recule (sort de la barre)
                 //Je suis obliger d'attendre
             }
+
             else if(etape_tour_allie == 2)
             {//recule encore, se positionne pour poser la tour
                 if(EVITEMENT_ADV_ARRIERE == ON)
@@ -173,6 +175,7 @@ void delai_action(void)
                     rejoindre(300, 1600, MARCHE_AVANT, 50);//On se cache
                     tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 3 sec pour attendre un peu avant de réessayer
                     while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
+
                     //Relance un peu les pinces pour pas qu'elles laches
                     angle_AX12(PINCE_D, 975, 800, SANS_ATTENTE); //Position où il attrappe
                     angle_AX12(PINCE_G, 290, 800, SANS_ATTENTE); //Positions où il attrappe
@@ -181,6 +184,7 @@ void delai_action(void)
                     EVITEMENT_ADV_ARRIERE = ON;
                     rejoindre(300, 1000, MARCHE_ARRIERE, 50);//on reprend ce qu'on fesait
                 }
+
                 else
                 {//Si on rencontre quelqu'un en allant se cacher
                     //Alors on fini l'étape 2 et on passe à la 3
@@ -189,6 +193,7 @@ void delai_action(void)
                     rejoindre(300, 1000, MARCHE_ARRIERE, 50);//on reprend ce qu'on fesait
                 }
             }
+
             else if(etape_tour_allie == 3)
             {//avance, va dans la zone de largage, pose la tour
                 compteur_evitement++;
@@ -198,6 +203,7 @@ void delai_action(void)
                 if(compteur_evitement > 10)//Si on a trop fait de fois des allés retour
                     FLAG_ACTION = POISSONS;
             }
+
             else if(etape_tour_allie == 4)
             {//recule pour ne pas renverser la tour
                 compteur_evitement++;
@@ -210,18 +216,20 @@ void delai_action(void)
 
 
         case TOUR_ADVERSAIRE:
-            if(etape_tour_adversaire == 0)
+			else if (etape_tour_adversaire == 0)
             {//positionne vers la barre, s'encastre dedant
                 EVITEMENT_ADV_AVANT = OFF;
                 EVITEMENT_ADV_ARRIERE = ON;
                 rejoindre(500, 1400, MARCHE_ARRIERE, 50);
                 FLAG_ACTION = TOUR_ALLIE;
             }
-            if(etape_tour_adversaire == 1)
+
+			else if (etape_tour_adversaire == 1)
             {//attrappe tour et recule (sort de la barre)
                 //On bloque pour pas casser le robot
             }
-            if(etape_tour_adversaire == 2)
+
+			else if (etape_tour_adversaire == 2)
             {//recule encore, se positionne pour poser la tour
                 if(EVITEMENT_ADV_ARRIERE == ON)
                 {//Alors on essai de faire le tour par l'autre côté (backup strat)
@@ -237,11 +245,12 @@ void delai_action(void)
                     
                 }
             }
-            if(etape_tour_adversaire == 3)
+
+			else if (etape_tour_adversaire == 3)
             {//avance, va dans la zone de largage, pose la tour
 
             }
-            if(etape_tour_adversaire == 4)
+			else if (etape_tour_adversaire == 4)
             {//recule pour ne pas renverser la tour
 
             }
@@ -257,12 +266,12 @@ void delai_action(void)
                 tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 3 sec pour attendre un peu avant de réessayer
                     while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
             }
-            if(etape_poissons == 1)
+			else if (etape_poissons == 1)
             {//recule, attrape les poissons et relève le filet
                 //Alors reculer pour laisser passer le robot (vers le bas du terrain)
                 //rejoindre(...);
             }
-            if(etape_poissons == 2)
+			else if (etape_poissons == 2)
             {//évite la barre de de la zone de largage des poissons, dépose les poissons
                 //Alors reculer pour laisser passer le robot (vers le bas du terrain)
                 //rejoindre(...);

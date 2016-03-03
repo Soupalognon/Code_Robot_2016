@@ -194,12 +194,8 @@ void autom_10ms (void)
                         }
                         else
                         {
-                            if(mouvement_AX12 == ACTIVE)
-                            {//Si on a activé le mouvement des AX12
                                 angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
                                 angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
-                                mouvement_AX12 = DESACTIVE;
-                            }
                         }
                     }
                     if(etape_tour_allie == 2)
@@ -302,7 +298,7 @@ void autom_10ms (void)
         if(EVITEMENT_ADV_AVANT == ON)
         {
             if ((CAPT_US_AV_DROIT == 0 || CAPT_US_AV_GAUCHE == 0) && DETECTION == OFF )
-            {
+            {//Si les capteurs avant detecte quelque chose
                 compteur = 0;
                 DETECTION = ON;
                 evitement_en_cours = OFF;
@@ -350,11 +346,12 @@ void autom_10ms (void)
                 if (compteur > 20)
                 {
                     if (CAPT_US_AV_DROIT == 1 && CAPT_US_AV_GAUCHE == 1)
-                        compteur_moyenne_evitement++;
+                        compteur_moyenne_evitement++;		//Si les capteurs ne voient rien après 10ms alors on incrémente
                     else
                         compteur_moyenne_evitement = 0;
-                    if(compteur_moyenne_evitement > 100)
-                        {
+
+                    if(compteur_moyenne_evitement > 100)	
+                        {			//Si on ne voit rien durant 1s complete alors on relance
                             DETECTION = OFF;
                             unbrake();
                         }
