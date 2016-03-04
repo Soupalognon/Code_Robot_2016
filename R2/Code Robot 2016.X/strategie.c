@@ -47,7 +47,7 @@ void strategie()
         EVITEMENT_ADV_AVANT = ON;
         EVITEMENT_ADV_ARRIERE = OFF;
 
-        STRATEGIE_EVITEMENT = STOP;
+        STRATEGIE_EVITEMENT = DELAI_ACTION;
         FLAG_ACTION = POUSSER_TOUR;
         
             
@@ -63,19 +63,16 @@ void strategie()
                 case POUSSER_TOUR:
                     if (pousser_tour == 0){
                         passe_part(500, 1050, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                        pousser_tour = 1;
-                    }
-                    if (pousser_tour == 1){
                         passe_part(750,1000,MARCHE_AVANT,85,MILIEU_TRAJECTOIRE);
                         EVITEMENT_ADV_AVANT = OFF;
                         passe_part(1250, 1000, MARCHE_AVANT, 85, FIN_TRAJECTOIRE);
-                        pousser_tour = 2;
+                        pousser_tour = 1;
                     }
-                    if (pousser_tour == 2){
+                    if (pousser_tour == 1){
                         EVITEMENT_ADV_ARRIERE = ON;
                         rejoindre(1000, 1000, MARCHE_ARRIERE, 100);
                         EVITEMENT_ADV_ARRIERE = OFF;
-                        pousser_tour = 3;
+                        pousser_tour = 2;
                         FLAG_ACTION = COQUILLAGE_ALLIE;
                     }
 
@@ -188,6 +185,7 @@ void strategie()
                 default:
                     break;
             }
+            fin_strategie_cause_evitement = 0;//Activation du Flag qui bloque les déplacement du à la backup strat
         }
         /*
          * Strategie lever de drapeaux

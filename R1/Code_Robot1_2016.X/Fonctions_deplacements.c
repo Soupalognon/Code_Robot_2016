@@ -216,7 +216,7 @@ void delai_action(void)
 
 
         case TOUR_ADVERSAIRE:
-			else if (etape_tour_adversaire == 0)
+			if (etape_tour_adversaire == 0)
             {//positionne vers la barre, s'encastre dedant
                 EVITEMENT_ADV_AVANT = OFF;
                 EVITEMENT_ADV_ARRIERE = ON;

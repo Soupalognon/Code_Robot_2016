@@ -100,6 +100,7 @@
     uint8_t pousser_tour;
     uint8_t coquillage_phase_1;
     uint8_t coquillage_phase_2;
+    uint8_t fin_strategie_cause_evitement = 0;
 
 
 /******************************************************************************/

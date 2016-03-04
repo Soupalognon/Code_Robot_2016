@@ -79,8 +79,12 @@ void carre (int8_t sens_marche);
 /******************* FONCTIONS ASSERV HAUT NIVEAU (EVITEMENT) *****************/
 /******************************************************************************/
 
+/**
+ * Fonctions de gestion des evitements
+ */
+void delai_action (void); //2016
 
-void action_evitement (void);
+void action_evitement (void); //2015
 
 /**
  * Fonction qui sert à cibler un point de coordonnées ( X, Y ) en mm !!!

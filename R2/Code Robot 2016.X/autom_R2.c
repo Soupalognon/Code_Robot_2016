@@ -154,6 +154,18 @@ void autom_10ms (void)
 
                 }
             }
+            else if(DETECTION == ON && STRATEGIE_EVITEMENT == DELAI_ACTION)
+            {
+                 compteur++;
+                if (compteur > 100)
+                {
+                    compteur = 100;
+                    if (CAPT_US_GAUCHE == 0 && CAPT_US_BALISE == 0 && CAPT_US_DROIT == 0)
+                    {
+                        DETECTION = OFF;
+                        unbrake();
+                    }
+                }
         }
 
         else if (EVITEMENT_ADV_ARRIERE == ON)
@@ -204,5 +216,5 @@ void autom_10ms (void)
             unbrake();
         }
 }
-
+}
 #endif

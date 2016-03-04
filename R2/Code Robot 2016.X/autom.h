@@ -50,6 +50,7 @@ extern "C" {
 
 #define ACTION_EVITEMENT    2
 #define EVITEMENT_NORMAL    3
+#define DELAI_ACTION        4
 #define STOP                5
 
 #define DISTANCE_STOP       5
