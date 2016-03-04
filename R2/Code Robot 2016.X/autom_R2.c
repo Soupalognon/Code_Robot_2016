@@ -125,9 +125,9 @@ void autom_10ms (void)
             if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {
                 compteur ++;
-                if (compteur > 20)
+                if (compteur > 100)
                 {
-                    compteur = 20;
+                    compteur = 100;
                     if (CAPT_US_GAUCHE == 0 && CAPT_US_BALISE == 0 && CAPT_US_DROIT == 0)
                     {
                         DETECTION = OFF;
@@ -169,9 +169,9 @@ void autom_10ms (void)
             if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {
                 compteur ++;
-                if (compteur > 20)
+                if (compteur > 100)
                 {
-                    compteur = 20;
+                    compteur = 100;
                     if (CAPT_IR_ARRIERE_CENTRE == 1 && CAPT_IR_ARRIERE_DROIT == 1 && CAPT_IR_ARRIERE_GAUCHE == 1)
                     {
                         DETECTION = OFF;

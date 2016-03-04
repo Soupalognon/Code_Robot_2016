@@ -130,12 +130,12 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0xb68          0x111c  (4380)
 .const                       0xd68                0x12            0x1b  (27)
-.text                        0xd7a              0x7826          0xb439  (46137)
-.dinit                      0x85a0                0x68            0x9c  (156)
-.init.delay32               0x8608                0x1c            0x2a  (42)
-.text                       0x8624                0x18            0x24  (36)
+.text                        0xd7a              0x7876          0xb4b1  (46257)
+.dinit                      0x85f0                0x68            0x9c  (156)
+.init.delay32               0x8658                0x1c            0x2a  (42)
+.text                       0x8674                0x18            0x24  (36)
 
-                     Total program memory used (bytes):         0xc65a  (50778) 38%
+                     Total program memory used (bytes):         0xc6d2  (50898) 38%
 
 
 Data Memory  [Origin = 0x800, Length = 0x4000]
@@ -451,40 +451,40 @@ External Symbols in Program Memory (by address):
                   0x0075b0                  _ConfigInterrupt
                   0x007894                  _ConfigADC
                   0x00789a                  _strategie
-                  0x007d64                  _homologation
-                  0x007d92                  _reglage_odometrie
-                  0x007dda                  _jack
-                  0x007df8                  _allumer_pompes
-                  0x007e06                  _eteindre_pompe
-                  0x007e12                  _son_evitement
-                  0x007e1a                  _porte
-                  0x007e26                  _init_pinces_jack
-                  0x007e2e                  _autom_10ms
-                  0x00801e                  _debug
-                  0x0081ac                  _ConfigPWM
-                  0x0081f4                  _envoit_pwm
-                  0x0082fc                  _alimenter_moteur_Y
-                  0x00831e                  _config_timer_reception_I2C
-                  0x00833c                  _get_flagCompteurDelayI2C
-                  0x008344                  _add_compteurDelayI2C
-                  0x008350                  _InitI2C
-                  0x00837c                  _envoiInformationI2C
-                  0x0083c6                  _lectureInformationI2C
-                  0x008470                  _receptionInformation
-                  0x008476                  _ConfigQEI
-                  0x0084cc                  _get_valeur_codeur
-                  0x008608                  ___delay32
-                  0x008624                  _main
+                  0x007db4                  _homologation
+                  0x007de2                  _reglage_odometrie
+                  0x007e2a                  _jack
+                  0x007e48                  _allumer_pompes
+                  0x007e56                  _eteindre_pompe
+                  0x007e62                  _son_evitement
+                  0x007e6a                  _porte
+                  0x007e76                  _init_pinces_jack
+                  0x007e7e                  _autom_10ms
+                  0x00806e                  _debug
+                  0x0081fc                  _ConfigPWM
+                  0x008244                  _envoit_pwm
+                  0x00834c                  _alimenter_moteur_Y
+                  0x00836e                  _config_timer_reception_I2C
+                  0x00838c                  _get_flagCompteurDelayI2C
+                  0x008394                  _add_compteurDelayI2C
+                  0x0083a0                  _InitI2C
+                  0x0083cc                  _envoiInformationI2C
+                  0x008416                  _lectureInformationI2C
+                  0x0084c0                  _receptionInformation
+                  0x0084c6                  _ConfigQEI
+                  0x00851c                  _get_valeur_codeur
+                  0x008658                  ___delay32
+                  0x008674                  _main
 
 External Symbols in Program Memory (by name):
 
                   0x007894                  _ConfigADC
                   0x0075b0                  _ConfigInterrupt
                   0x007428                  _ConfigMapping
-                  0x0081ac                  _ConfigPWM
+                  0x0081fc                  _ConfigPWM
                   0x007488                  _ConfigPorts
-                  0x008476                  _ConfigQEI
-                  0x008350                  _InitI2C
+                  0x0084c6                  _ConfigQEI
+                  0x0083a0                  _InitI2C
                   0x006086                  _InitUART
                   0x0062fa                  _IntToC
                   0x006410                  _LongToC
@@ -506,7 +506,7 @@ External Symbols in Program Memory (by name):
                   0x000474                  __U2RXInterrupt
                   0x000496                  __U2TXInterrupt
                   0x0004ae                  ___addsf3
-                  0x008608                  ___delay32
+                  0x008658                  ___delay32
                   0x000b56                  ___divdi3
                   0x000670                  ___divsf3
                   0x0006f4                  ___divsi3
@@ -549,11 +549,11 @@ External Symbols in Program Memory (by name):
                   0x000200                  __resetPRI
                   0x0008ae                  __sincosf
                   0x000f34                  _action_evitement
-                  0x008344                  _add_compteurDelayI2C
+                  0x008394                  _add_compteurDelayI2C
                   0x002de2                  _aiguillage_evitement
-                  0x0082fc                  _alimenter_moteur_Y
+                  0x00834c                  _alimenter_moteur_Y
                   0x006f1e                  _allumer_LED_AX12
-                  0x007df8                  _allumer_pompes
+                  0x007e48                  _allumer_pompes
                   0x006d3c                  _angle_AX12
                   0x0054ca                  _asserv
                   0x00560e                  _asserv_brake
@@ -563,7 +563,7 @@ External Symbols in Program Memory (by name):
                   0x005b3c                  _asserv_vitesse_orientation
                   0x000568                  _atan2f
                   0x0005a2                  _atanf
-                  0x007e2e                  _autom_10ms
+                  0x007e7e                  _autom_10ms
                   0x001018                  _avancer_reculer
                   0x006ec6                  _baud_AX12
                   0x0053f8                  _brake
@@ -585,7 +585,7 @@ External Symbols in Program Memory (by name):
                   0x007336                  _config_timer_5ms
                   0x007392                  _config_timer_90s
                   0x007374                  _config_timer_debug
-                  0x00831e                  _config_timer_reception_I2C
+                  0x00836e                  _config_timer_reception_I2C
                   0x006e24                  _configurer_status_returning_level
                   0x006e46                  _configurer_temps_de_reponse_AX12
                   0x0018d8                  _conversion_direction
@@ -593,16 +593,16 @@ External Symbols in Program Memory (by name):
                   0x006b4a                  _convertion_position
                   0x00066c                  _cosf
                   0x000d7a                  _couleur_depart
-                  0x00801e                  _debug
+                  0x00806e                  _debug
                   0x00153e                  _deplacement
                   0x003ee2                  _deplacement_arriere
                   0x004dce                  _detection_blocage
                   0x00169e                  _distance
                   0x004b94                  _ecretage_consignes
-                  0x00837c                  _envoiInformationI2C
-                  0x0081f4                  _envoit_pwm
+                  0x0083cc                  _envoiInformationI2C
+                  0x008244                  _envoit_pwm
                   0x006f38                  _eteindre_LED_AX12
-                  0x007e06                  _eteindre_pompe
+                  0x007e56                  _eteindre_pompe
                   0x002ff0                  _evitement
                   0x001200                  _faire_des_tours
                   0x0054b2                  _fin_deplacement
@@ -610,11 +610,11 @@ External Symbols in Program Memory (by name):
                   0x005c22                  _fonction_PID
                   0x004b72                  _get_X
                   0x004b7c                  _get_Y
-                  0x00833c                  _get_flagCompteurDelayI2C
+                  0x00838c                  _get_flagCompteurDelayI2C
                   0x004b88                  _get_orientation
-                  0x0084cc                  _get_valeur_codeur
+                  0x00851c                  _get_valeur_codeur
                   0x000e70                  _grand_demi_cercle
-                  0x007d64                  _homologation
+                  0x007db4                  _homologation
                   0x0049f6                  _init_X
                   0x004a12                  _init_Y
                   0x0073c2                  _init_clock
@@ -623,30 +623,30 @@ External Symbols in Program Memory (by name):
                   0x001726                  _init_evitement
                   0x004992                  _init_flag
                   0x004a30                  _init_orientation
-                  0x007e26                  _init_pinces_jack
+                  0x007e76                  _init_pinces_jack
                   0x006b38                  _init_position_AX12
                   0x0049d4                  _init_position_robot
                   0x0072d0                  _init_system
                   0x000d8e                  _inversion_couleur
-                  0x007dda                  _jack
+                  0x007e2a                  _jack
                   0x006dc4                  _lancer_autom_AX12
-                  0x0083c6                  _lectureInformationI2C
+                  0x008416                  _lectureInformationI2C
                   0x00728c                  _lecture_position_AX12
                   0x00190c                  _longement
-                  0x008624                  _main
+                  0x008674                  _main
                   0x006ee2                  _mode_rotation_AX12
                   0x0061ee                  _modifier_vitesse_com_uart
                   0x000f80                  _orienter
                   0x001040                  _passe_part
                   0x000dec                  _petit_demi_cercle
                   0x00423e                  _plus_court
-                  0x007e1a                  _porte
+                  0x007e6a                  _porte
                   0x002d7a                  _post_traitement
                   0x0071f6                  _read_data
-                  0x008470                  _receptionInformation
+                  0x0084c0                  _receptionInformation
                   0x006f52                  _reception_uart_ax12
                   0x005bdc                  _reglage_PID
-                  0x007d92                  _reglage_odometrie
+                  0x007de2                  _reglage_odometrie
                   0x004a70                  _reinit_asserv
                   0x007046                  _reinit_buffer
                   0x000fba                  _rejoindre
@@ -655,7 +655,7 @@ External Symbols in Program Memory (by name):
                   0x004d48                  _saturation_erreur_integralle_vitesse
                   0x004c22                  _saturation_vitesse_max
                   0x000980                  _sinf
-                  0x007e12                  _son_evitement
+                  0x007e62                  _son_evitement
                   0x000984                  _sqrtf
                   0x0073ba                  _start_timer_90s
                   0x00789a                  _strategie
@@ -937,7 +937,7 @@ __FUID3
  .debug_abbrev    0x000eea        0x169 build/default/production/system.o
  .debug_abbrev    0x001053        0x150 build/default/production/I2C.o
 
-.debug_line       0x000000       0x7193
+.debug_line       0x000000       0x722e
  *(.debug_line)
  .debug_line      0x000000       0x2a6f build/default/production/Fonctions_deplacements.o
  .debug_line      0x002a6f        0x63d build/default/production/Uart.o
@@ -950,9 +950,9 @@ __FUID3
  .debug_line      0x005521        0x448 build/default/production/interruptions.o
  .debug_line      0x005969         0xcd build/default/production/main.o
  .debug_line      0x005a36        0x2d0 build/default/production/pwm.o
- .debug_line      0x005d06        0x515 build/default/production/strategie.o
- .debug_line      0x00621b        0xc95 build/default/production/system.o
- .debug_line      0x006eb0        0x2e3 build/default/production/I2C.o
+ .debug_line      0x005d06        0x5b0 build/default/production/strategie.o
+ .debug_line      0x0062b6        0xc95 build/default/production/system.o
+ .debug_line      0x006f4b        0x2e3 build/default/production/I2C.o
 
 .debug_frame      0x000000        0xa34
  *(.debug_frame)
@@ -2664,7 +2664,7 @@ __c30_signature
  .const             0x8d68          0xc build/default/production/gestion_AX12.o
  .const             0x8d74          0x6 build/default/production/debug.o
 
-.text             0x000d7a       0x7826
+.text             0x000d7a       0x7876
  .text            0x000d7a       0x3c18 build/default/production/Fonctions_deplacements.o
                   0x000d7a                  _couleur_depart
                   0x000d8e                  _inversion_couleur
@@ -2784,43 +2784,43 @@ __c30_signature
                   0x007488                  _ConfigPorts
                   0x0075b0                  _ConfigInterrupt
                   0x007894                  _ConfigADC
- .text            0x00789a        0x540 build/default/production/strategie.o
+ .text            0x00789a        0x590 build/default/production/strategie.o
                   0x00789a                  _strategie
-                  0x007d64                  _homologation
-                  0x007d92                  _reglage_odometrie
- .text            0x007dda        0x244 build/default/production/autom_R2.o
-                  0x007dda                  _jack
-                  0x007df8                  _allumer_pompes
-                  0x007e06                  _eteindre_pompe
-                  0x007e12                  _son_evitement
-                  0x007e1a                  _porte
-                  0x007e26                  _init_pinces_jack
-                  0x007e2e                  _autom_10ms
- .text            0x00801e        0x18e build/default/production/debug.o
-                  0x00801e                  _debug
- .text            0x0081ac        0x172 build/default/production/pwm.o
-                  0x0081ac                  _ConfigPWM
-                  0x0081f4                  _envoit_pwm
-                  0x0082fc                  _alimenter_moteur_Y
- .text            0x00831e        0x158 build/default/production/I2C.o
-                  0x00831e                  _config_timer_reception_I2C
-                  0x00833c                  _get_flagCompteurDelayI2C
-                  0x008344                  _add_compteurDelayI2C
-                  0x008350                  _InitI2C
-                  0x00837c                  _envoiInformationI2C
-                  0x0083c6                  _lectureInformationI2C
-                  0x008470                  _receptionInformation
- .text            0x008476        0x12a build/default/production/codeurs.o
-                  0x008476                  _ConfigQEI
-                  0x0084cc                  _get_valeur_codeur
+                  0x007db4                  _homologation
+                  0x007de2                  _reglage_odometrie
+ .text            0x007e2a        0x244 build/default/production/autom_R2.o
+                  0x007e2a                  _jack
+                  0x007e48                  _allumer_pompes
+                  0x007e56                  _eteindre_pompe
+                  0x007e62                  _son_evitement
+                  0x007e6a                  _porte
+                  0x007e76                  _init_pinces_jack
+                  0x007e7e                  _autom_10ms
+ .text            0x00806e        0x18e build/default/production/debug.o
+                  0x00806e                  _debug
+ .text            0x0081fc        0x172 build/default/production/pwm.o
+                  0x0081fc                  _ConfigPWM
+                  0x008244                  _envoit_pwm
+                  0x00834c                  _alimenter_moteur_Y
+ .text            0x00836e        0x158 build/default/production/I2C.o
+                  0x00836e                  _config_timer_reception_I2C
+                  0x00838c                  _get_flagCompteurDelayI2C
+                  0x008394                  _add_compteurDelayI2C
+                  0x0083a0                  _InitI2C
+                  0x0083cc                  _envoiInformationI2C
+                  0x008416                  _lectureInformationI2C
+                  0x0084c0                  _receptionInformation
+ .text            0x0084c6        0x12a build/default/production/codeurs.o
+                  0x0084c6                  _ConfigQEI
+                  0x00851c                  _get_valeur_codeur
 
-.dinit            0x0085a0         0x68
- .dinit           0x0085a0         0x68 data_init
+.dinit            0x0085f0         0x68
+ .dinit           0x0085f0         0x68 data_init
 
-.init.delay32     0x008608         0x1c
- .init.delay32    0x008608         0x1c c:/program files (x86)/microchip/xc16/v1.25/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x008608                  ___delay32
+.init.delay32     0x008658         0x1c
+ .init.delay32    0x008658         0x1c c:/program files (x86)/microchip/xc16/v1.25/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x008658                  ___delay32
 
-.text             0x008624         0x18
- .text            0x008624         0x18 build/default/production/main.o
-                  0x008624                  _main
+.text             0x008674         0x18
+ .text            0x008674         0x18 build/default/production/main.o
+                  0x008674                  _main

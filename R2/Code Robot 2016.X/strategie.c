@@ -31,7 +31,7 @@ void strategie()
 
     #ifdef PETIT_ROBOT
         init_position_robot (175, 965, 270);
-        EVITEMENT_ADV_AVANT = OFF;
+        EVITEMENT_ADV_AVANT = ON;
         
 
         //Init départ
@@ -44,8 +44,10 @@ void strategie()
         synchro_AX12(PORTE_G, -100, 1023, SANS_ATTENTE); 
         while(!SYS_JACK);
         TIMER_90s = ACTIVE;
+        EVITEMENT_ADV_AVANT = ON;
+        EVITEMENT_ADV_ARRIERE = OFF;
 
-        STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
+        STRATEGIE_EVITEMENT = STOP;
         FLAG_ACTION = POUSSER_TOUR;
         
             
@@ -65,17 +67,21 @@ void strategie()
                     }
                     if (pousser_tour == 1){
                         passe_part(750,1000,MARCHE_AVANT,85,MILIEU_TRAJECTOIRE);
+                        EVITEMENT_ADV_AVANT = OFF;
                         passe_part(1250, 1000, MARCHE_AVANT, 85, FIN_TRAJECTOIRE);
                         pousser_tour = 2;
                     }
                     if (pousser_tour == 2){
+                        EVITEMENT_ADV_ARRIERE = ON;
                         rejoindre(1000, 1000, MARCHE_ARRIERE, 100);
+                        EVITEMENT_ADV_ARRIERE = OFF;
                         pousser_tour = 3;
                         FLAG_ACTION = COQUILLAGE_ALLIE;
                     }
 
                 case COQUILLAGE_ALLIE:
                     FLAG_ACTION=OUVRIR_PORTES;
+                    EVITEMENT_ADV_AVANT = ON;
                     switch(CONFIG_COQUILLAGE){
                         case CONFIG_1:
                             if(coquillage_phase_1 == 0){
@@ -85,7 +91,10 @@ void strategie()
                                 passe_part(1600,100,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
                                 passe_part(1500, 150, MARCHE_AVANT, 90, MILIEU_TRAJECTOIRE);
                                 passe_part(230, 900, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
+                                EVITEMENT_ADV_ARRIERE = ON;
+                                while(EVITEMENT_ADV_ARRIERE != ON);
                                 rejoindre(550,550,MARCHE_ARRIERE,100);
+                                EVITEMENT_ADV_ARRIERE = OFF;
                                 coquillage_phase_1 = 1;
                             }
                             if(coquillage_phase_1 == 1){
@@ -104,7 +113,9 @@ void strategie()
                                 passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
                                 passe_part(900, 550, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(230, 900, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
+                                EVITEMENT_ADV_ARRIERE = ON;
                                 rejoindre(550,550,MARCHE_ARRIERE,100);
+                                EVITEMENT_ADV_ARRIERE = OFF;
                                 coquillage_phase_1 = 1;
                            }
                            if(coquillage_phase_1 == 1){
@@ -121,7 +132,9 @@ void strategie()
                                 passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(700, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                EVITEMENT_ADV_ARRIERE = ON;
                                 rejoindre(550,550,MARCHE_ARRIERE,100);
+                                EVITEMENT_ADV_ARRIERE = OFF;
                                 coquillage_phase_1 = 1;
                            }
                            if(coquillage_phase_1 == 1){
@@ -141,7 +154,9 @@ void strategie()
                                 passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(700, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                EVITEMENT_ADV_ARRIERE = ON;
                                 rejoindre(550,550,MARCHE_ARRIERE,100);
+                                EVITEMENT_ADV_ARRIERE = OFF;
                                 coquillage_phase_1 = 1;
                             }
                             if(coquillage_phase_1 == 1){
@@ -159,7 +174,11 @@ void strategie()
                             passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                             passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                             passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                            EVITEMENT_ADV_AVANT = OFF;
+                            EVITEMENT_ADV_ARRIERE = ON;
                             rejoindre(550,550, MARCHE_ARRIERE,100);
+                            EVITEMENT_ADV_ARRIERE = OFF;
+                            EVITEMENT_ADV_AVANT = ON;
                             coquillage_phase_1 = 1;
                             }
                             break;
