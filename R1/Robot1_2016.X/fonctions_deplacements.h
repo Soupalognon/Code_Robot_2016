@@ -82,6 +82,8 @@ void carre (int8_t sens_marche);
 
 void action_evitement (void);
 
+void delai_action(void);
+
 /**
  * Fonction qui sert à cibler un point de coordonnées ( X, Y ) en mm !!!
  * @param x : Coordonée X en mm

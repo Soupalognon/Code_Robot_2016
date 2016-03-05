@@ -100,11 +100,11 @@
     uint16_t compteur_evitement=0;
     int precedent_obstacle[7];
     
-    uint8_t etape_tour_allie = 0;
-    uint8_t etape_tour_adversaire = 0;
-    uint8_t etape_poissons = 1;
-    uint8_t etape_coquillages = 0;
-    uint8_t fin_strategie_cause_evitement = 0;
+    uint8_t etape_tour_allie;
+    uint8_t etape_tour_adversaire;
+    uint8_t etape_poissons;
+    uint8_t etape_coquillages;
+    uint8_t fin_strategie_cause_evitement;
     uint8_t mouvement_AX12 = 0;
 
 /******************************************************************************/

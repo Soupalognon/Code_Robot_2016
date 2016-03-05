@@ -48,7 +48,7 @@ extern "C" {
 #define ACTIF               0
 #define INACTIF             1
 
-#define ACTION_EVITEMENT    2
+#define ACTION_EVITEMENT    2   //Implémenté pour pouvoir réagir 
 #define EVITEMENT_NORMAL    3
 #define STOP                5
 #define DELAI_ACTION        4

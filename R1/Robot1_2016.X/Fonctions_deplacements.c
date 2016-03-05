@@ -145,9 +145,10 @@ void action_evitement (void)
 
 void delai_action(void)
 {  
+    static uint8_t tempo = 0;
     static uint8_t compteur_evitement = 0; //Permet de connaitre le nombre de fois qu'on a eu le même évitement
                                     //Reset à chaque début d'étape
-    static uint8_t tempo = 0;
+        
     
     switch(FLAG_ACTION)
     {//Mettre toutes les fonction de backup strat
@@ -163,7 +164,6 @@ void delai_action(void)
                 angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
                 
                 FLAG_ACTION = POISSONS;
-                etape_tour_allie = 0;
             }
 
             else if(etape_tour_allie == 1)
@@ -178,8 +178,9 @@ void delai_action(void)
                     //EVITEMENT_ADV_AVANT = ON;
                     EVITEMENT_ADV_ARRIERE = OFF;
                     rejoindre(300, 1600, MARCHE_AVANT, 50);//On va à la cache 1
-                    tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 3 sec pour attendre un peu avant de réessayer
-                    while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
+                    delay_ms(2000);
+                    //tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 3 sec pour attendre un peu avant de réessayer
+                    //while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
 
                     //Relance un peu les pinces pour pas qu'elles laches
                     angle_AX12(PINCE_D, 975, 800, SANS_ATTENTE); //Position où il attrappe
@@ -266,21 +267,63 @@ void delai_action(void)
             if(etape_poissons == 0)
             {//avance vers le le bac à poissons
                 EVITEMENT_ADV_AVANT = OFF;
-                EVITEMENT_ADV_ARRIERE = ON;
-                rejoindre(900, 1000, MARCHE_ARRIERE, 50);
+                //EVITEMENT_ADV_ARRIERE = ON;
+                rejoindre(1200, 900, MARCHE_ARRIERE, 50);//On va à la chache 2
+                //delay_ms(2000);
                 tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 3 sec pour attendre un peu avant de réessayer
-                    while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
+                while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
             }
+            
+            
 			else if (etape_poissons == 1)
-            {//recule, attrape les poissons et relève le filet
-                //Alors reculer pour laisser passer le robot (vers le bas du terrain)
-                //rejoindre(...);
+            {//on sort le bras
             }
+            
+            
 			else if (etape_poissons == 2)
-            {//évite la barre de de la zone de largage des poissons, dépose les poissons
+            {//on recule un peu
                 //Alors reculer pour laisser passer le robot (vers le bas du terrain)
-                //rejoindre(...);
+                if(EVITEMENT_ADV_ARRIERE == ON)
+                {  //Si on est entrain de reculer alors n avance un peu
+                    EVITEMENT_ADV_AVANT = ON;
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    rejoindre(450, 150, MARCHE_AVANT, 50);//On avance un peu pour dégager la place
+                    //delay_ms(2000);
+                    tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
+                    while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
+                }
+                
+                else
+                {//Si on a eu un évitement pendant a backuo strat alors on repart sur la strat d'avant
+                    EVITEMENT_ADV_AVANT = OFF;
+                    EVITEMENT_ADV_ARRIERE = ON;
+                    rejoindre(640, 150, MARCHE_ARRIERE, 60);//On se place près du bac
+                }
             }
+            
+            
+            else if (etape_poissons == 3)
+            {//On avance dans le bac et on remonte le filet (on gère les cas d'impossibilité de remonter)
+                //Alors on se déplace dans le bac
+                EVITEMENT_ADV_AVANT = OFF;
+                EVITEMENT_ADV_ARRIERE = OFF;
+                rejoindre(640, 150, MARCHE_AVANT, 60);//On se place près du bac
+                //delay_ms(2000);
+                tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
+                while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
+            }
+            
+            
+            else if (etape_poissons == 4)
+            {//évite la barre de de la zone de largage des poissons, dépose les poissons
+                EVITEMENT_ADV_AVANT = ON;
+                EVITEMENT_ADV_ARRIERE = OFF;
+                rejoindre(640, 180, MARCHE_AVANT, 60);//On se place près du bac
+                //delay_ms(2000);
+                tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
+                while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
+            }
+            
             break;
 
 

@@ -56,7 +56,7 @@ void rotation_us_avant()
 {
     static char sens_D = 0, sens_G = 0;
     static uint16_t position_D = 0, position_G = 0;
-
+    
     if (sens_D == 0)
     {
         position_D += 10;
@@ -144,6 +144,11 @@ void init_depart()
     angle_AX12(AX_US_GAUCHE, 0, 1023, SANS_ATTENTE);    //Position regarde coté droit
     angle_AX12(AX_US_DROIT, 625, 1023, SANS_ATTENTE);    //Position regarde coté gauche
     angle_AX12(PARASOL, 0, 250, SANS_ATTENTE); //Position replié
+    
+    etape_tour_allie = 0;
+    etape_tour_adversaire = 0;
+    etape_poissons = 0;
+    etape_coquillages = 0;
 }
 
 /******************************************************************************/
@@ -167,12 +172,6 @@ void autom_10ms (void)
         /**********************************************************************/
         /******************************* Autom ********************************/
         /**********************************************************************/
-
-    if(COMPTEUR_TEMPS_MATCH == 90)
-    {
-        
-    }
-    
     
     //fonction qui definit les actions
     switch(FLAG_ACTION)
@@ -264,9 +263,13 @@ void autom_10ms (void)
             {//avance vers le le bac à poissons
                 if(get_X() < 600)
                     EVITEMENT_ADV_AVANT = OFF;
+                else
+                    EVITEMENT_ADV_AVANT = ON;
             }
+            
+            
             if(etape_poissons == 1)
-            {//recule, attrape les poissons et relève le filet
+            {//on sort le filet
                 if(mouvement_AX12 == ACTIVE)
                 {
                     angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 300, SANS_ATTENTE);   //Position déployé
@@ -275,15 +278,47 @@ void autom_10ms (void)
                         angle_AX12(OUVERTURE_FILET, 860, 400, SANS_ATTENTE);    //Position ouverte
 
                     if(read_data(OUVERTURE_FILET, LIRE_POSITION_ACTU) > 850)
-                    {
                         angle_AX12(ROT_FILET, 375, 200, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+                    
+                    if(read_data(ROT_FILET, LIRE_POSITION_ACTU) > 365)//On attend que le dernière AX12 est fini de bouger
                         mouvement_AX12 = DESACTIVE;
-                    }
                 }
             }
+            
+            
             if(etape_poissons == 2)
-            {//évite la barre de de la zone de largage des poissons, dépose les poissons
-
+            {//on recule un peu
+            }
+            
+            
+            if(etape_poissons == 3)
+            {//On positionne le filet dans le bac
+                if(mouvement_AX12 == ACTIVE)
+                {
+                    angle_AX12(ROT_FILET, 690, 150, SANS_ATTENTE);   //Position dans l'eau
+                    mouvement_AX12 = DESACTIVE;  
+                }
+            }
+            
+            
+            if(etape_poissons == 4)
+            {//On avance dans le bac et on remonte le filet (on gère les cas d'impossibilité de remonter)
+                if(mouvement_AX12 == ACTIVE)
+                {
+                    angle_AX12(ROT_FILET, 1005, 600, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+                    mouvement_AX12 = DESACTIVE;  
+                }
+            }
+            
+            
+            if(etape_poissons == 5)
+            {
+                if(mouvement_AX12 == ACTIVE)
+                {
+                    angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 150, SANS_ATTENTE);   //Position déployé
+                    angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+                    mouvement_AX12 = DESACTIVE;  
+                }
             }
             break;
 
@@ -305,14 +340,14 @@ void autom_10ms (void)
     }
 
         /**********************************************************************/
-        /**************************** Evitement *******************************/
+        /**************************** Evitement *******************************/        /* POUR CONNAITRE LES DIFFERENTS TYPES D'EVITEMENT QUI EXISTE ALORS ALLER DANS "autom.h" section Evitement*/
         /**********************************************************************/
 
 
-        //Fonction permettant de lancer la fonction d'évitement
+        //Permettant de lancer la fonction d'évitement
         if(EVITEMENT_ADV_AVANT == ON)
         {
-            if ((CAPT_US_AV_DROIT == 0 || CAPT_US_AV_GAUCHE == 0) && DETECTION == OFF )
+            if ((CAPT_US_AV_DROIT == 0 || CAPT_US_AV_GAUCHE == 0) && DETECTION == OFF)
             {//Si les capteurs avant detecte quelque chose
                 compteur = 0;
                 compteur_moyenne_evitement = 0;
@@ -359,20 +394,15 @@ void autom_10ms (void)
             
             else if(DETECTION == ON && STRATEGIE_EVITEMENT == DELAI_ACTION)
             {
-                compteur ++;
-                
-                if (compteur > 20)
-                {
-                    if (CAPT_US_AV_DROIT == 1 && CAPT_US_AV_GAUCHE == 1)
-                        compteur_moyenne_evitement++;		//Si les capteurs ne voient rien après 10ms alors on incrémente
-                    else
-                        compteur_moyenne_evitement = 0;
+                if (CAPT_US_AV_DROIT == 1 && CAPT_US_AV_GAUCHE == 1)
+                    compteur_moyenne_evitement++;		//Si les capteurs ne voient rien après 10ms alors on incrémente
+                else
+                    compteur_moyenne_evitement = 0;
 
-                    if(compteur_moyenne_evitement > 100)	
-                        {			//Si on ne voit rien durant 1s complete alors on relance
-                            DETECTION = OFF;
-                            unbrake();
-                        }
+                if(compteur_moyenne_evitement > 100)	
+                {			//Si on ne voit rien durant 1s complete alors on relance
+                    DETECTION = OFF;
+                    unbrake();
                 }
                 
                 if((COMPTEUR_TEMPS_MATCH - timer_delai_evitement) > 3)
@@ -387,7 +417,7 @@ void autom_10ms (void)
         
         
         //Evitement arrière
-        else if (EVITEMENT_ADV_ARRIERE == ON)
+        else if(EVITEMENT_ADV_ARRIERE == ON)
         {
             if ( (CAPT_US_AR_GAUCHE == 1 || CAPT_US_AR_DROITE == 1)  && DETECTION == OFF)
             {
@@ -438,20 +468,15 @@ void autom_10ms (void)
             
             else if(DETECTION == ON && STRATEGIE_EVITEMENT == DELAI_ACTION)
             {
-                compteur ++;
-                
-                if (compteur > 20)
+                if (CAPT_US_AR_GAUCHE == 0 && CAPT_US_AR_DROITE == 0)
+                    compteur_moyenne_evitement++;
+                else
+                    compteur_moyenne_evitement = 0;
+
+                if(compteur_moyenne_evitement > 100)
                 {
-                    if (CAPT_US_AR_GAUCHE == 0 && CAPT_US_AR_DROITE == 0)
-                        compteur_moyenne_evitement++;
-                    else
-                        compteur_moyenne_evitement = 0;
-                    
-                    if(compteur_moyenne_evitement > 100)
-                    {
-                        DETECTION = OFF;
-                        unbrake();
-                    }
+                    DETECTION = OFF;
+                    unbrake();
                 }
                 
                 if((COMPTEUR_TEMPS_MATCH - timer_delai_evitement) > 3)
