@@ -144,15 +144,31 @@ void delai_action(void){
     static uint8_t compteur_evitement = 0; //Permet de connaitre le nombre de fois qu'on a eu le même évitement
                                     //Reset à chaque début d'étape
     static uint8_t tempo = 0;
+    static uint8_t stop = 0;
     
     switch(FLAG_ACTION){
         case POUSSER_TOUR:
-            if (pousser_tour == 0 && EVITEMENT_ADV_AVANT == ON){
+            if (pousser_tour == 0 && EVITEMENT_ADV_AVANT == ON && stop == 0){
+                compteur_evitement++;
+                if(compteur_evitement > 5){
+                    FLAG_ACTION = COQUILLAGE_ALLIE;
+                    compteur_evitement = 0;
+                }
+                else{
+                    tempo = COMPTEUR_TEMPS_MATCH;
+                    while(COMPTEUR_TEMPS_MATCH - tempo < 2);
+                    stop = 1;
+                }
+            }
+            if (pousser_tour == 0 && EVITEMENT_ADV_AVANT == ON && stop ==1){
+                stop = 0;
                 EVITEMENT_ADV_AVANT = OFF;
                 EVITEMENT_ADV_ARRIERE = ON;
                 rejoindre(350,1000,MARCHE_ARRIERE,100);
                 tempo = COMPTEUR_TEMPS_MATCH;
                 while(COMPTEUR_TEMPS_MATCH - tempo < 2);
+                EVITEMENT_ADV_ARRIERE = OFF;
+                EVITEMENT_ADV_AVANT = ON;
                 pousser_tour = 0;
             }
             else if(pousser_tour == 0 &&  EVITEMENT_ADV_AVANT == OFF){
@@ -161,12 +177,70 @@ void delai_action(void){
                 pousser_tour = 0;
             }
             else if(pousser_tour == 1){
-                tempo = COMPTEUR_TEMPS_MATCH;
-                while(COMPTEUR_TEMPS_MATCH - tempo < 2);
-                pousser_tour = 1;
+                compteur_evitement++;
+                if(compteur_evitement > 5){
+                    orienter(270,100);
+                    FLAG_ACTION = COQUILLAGE_ALLIE;
+                    compteur_evitement = 0;
+                }
+                else{
+                    tempo = COMPTEUR_TEMPS_MATCH;
+                    while(COMPTEUR_TEMPS_MATCH - tempo < 2);
+                    pousser_tour = 1;    
+                }
             }
+            break;
+            
+        case COQUILLAGE_ALLIE:
+            if(coquillage_phase_1 == 0 && EVITEMENT_ADV_AVANT == ON){
+                compteur_evitement++;
+                if(compteur_evitement > 5){
+                  coquillage_phase_1 = 1;
+                  compteur_evitement = 0;
+                }
+                else{
+                    EVITEMENT_ADV_AVANT = OFF;
+                    EVITEMENT_ADV_ARRIERE = ON;
+                    avancer_reculer(-500,100);
+                    tempo = COMPTEUR_TEMPS_MATCH;
+                    while(COMPTEUR_TEMPS_MATCH - tempo < 2);
+                    EVITEMENT_ADV_AVANT = ON;
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    coquillage_phase_1 = 0;
+                }
+
+            }
+            else if (coquillage_phase_1 == 0 && EVITEMENT_ADV_ARRIERE == ON){
+                EVITEMENT_ADV_ARRIERE = OFF;
+                EVITEMENT_ADV_AVANT = ON;
+                coquillage_phase_1 = 0;
+            }
+            else if(coquillage_phase_1 == 1 && EVITEMENT_ADV_AVANT == ON){
+                compteur_evitement++;
+                if(compteur_evitement > 5){
+                  coquillage_phase_1 = 2;
+                  compteur_evitement = 0;
+                }
+                else{
+                    EVITEMENT_ADV_AVANT = OFF;
+                    EVITEMENT_ADV_ARRIERE = ON;
+                    avancer_reculer(-100,100);
+                    tempo = COMPTEUR_TEMPS_MATCH;
+                    while(COMPTEUR_TEMPS_MATCH - tempo < 2);
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    EVITEMENT_ADV_AVANT = ON;
+                    coquillage_phase_1 = 1;
+                }
+
+            }
+            else if (coquillage_phase_1 == 1 && EVITEMENT_ADV_ARRIERE == ON){
+                EVITEMENT_ADV_ARRIERE = OFF;
+                EVITEMENT_ADV_AVANT = ON;
+                coquillage_phase_1 = 1;
+            }
+            break;
     }
-    fin_strategie_cause_evitement = 1;//Activation du Flag qui bloque les déplacement dut à la backup strat
+    fin_strategie_cause_evitement = 1;//Activation du Flag qui bloque les déplacement du à la backup strat
 }
 
 void cibler (double x, double y, double pourcentage_vitesse)

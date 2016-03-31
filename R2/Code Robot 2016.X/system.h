@@ -224,7 +224,7 @@ extern "C" {
     extern int chemin_court;
     extern uint16_t compteur_evitement;
     extern int precedent_obstacle[7];
-    extern uint8_t fin_strategie_cause_evitement = 0;
+    extern uint8_t fin_strategie_cause_evitement;
     
     // Phases de deplacement petit robot
     extern uint8_t pousser_tour;

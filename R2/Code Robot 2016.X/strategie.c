@@ -27,7 +27,7 @@ void strategie()
     /*
      * Definit la configuration des coquillages CONFIG_1 - CONFIG_5
      */
-    CONFIG_COQUILLAGE = CONFIG_5;
+    CONFIG_COQUILLAGE = CONFIG_1;
 
     #ifdef PETIT_ROBOT
         init_position_robot (175, 965, 270);
@@ -88,10 +88,12 @@ void strategie()
                                 passe_part(1600,100,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
                                 passe_part(1500, 150, MARCHE_AVANT, 90, MILIEU_TRAJECTOIRE);
                                 passe_part(230, 900, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
+                                EVITEMENT_ADV_AVANT = OFF;
                                 EVITEMENT_ADV_ARRIERE = ON;
                                 while(EVITEMENT_ADV_ARRIERE != ON);
                                 rejoindre(550,550,MARCHE_ARRIERE,100);
                                 EVITEMENT_ADV_ARRIERE = OFF;
+                                EVITEMENT_ADV_AVANT = ON;
                                 coquillage_phase_1 = 1;
                             }
                             if(coquillage_phase_1 == 1){
@@ -110,9 +112,12 @@ void strategie()
                                 passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
                                 passe_part(900, 550, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(230, 900, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
+                                EVITEMENT_ADV_AVANT = OFF;
                                 EVITEMENT_ADV_ARRIERE = ON;
+                                while(EVITEMENT_ADV_ARRIERE != ON);
                                 rejoindre(550,550,MARCHE_ARRIERE,100);
                                 EVITEMENT_ADV_ARRIERE = OFF;
+                                EVITEMENT_ADV_AVANT = ON;
                                 coquillage_phase_1 = 1;
                            }
                            if(coquillage_phase_1 == 1){
@@ -129,9 +134,12 @@ void strategie()
                                 passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(700, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                EVITEMENT_ADV_AVANT = OFF;
                                 EVITEMENT_ADV_ARRIERE = ON;
+                                while(EVITEMENT_ADV_ARRIERE != ON);
                                 rejoindre(550,550,MARCHE_ARRIERE,100);
                                 EVITEMENT_ADV_ARRIERE = OFF;
+                                EVITEMENT_ADV_AVANT = ON;
                                 coquillage_phase_1 = 1;
                            }
                            if(coquillage_phase_1 == 1){
@@ -151,9 +159,12 @@ void strategie()
                                 passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(700, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                EVITEMENT_ADV_AVANT = OFF;
                                 EVITEMENT_ADV_ARRIERE = ON;
+                                while(EVITEMENT_ADV_ARRIERE != ON);
                                 rejoindre(550,550,MARCHE_ARRIERE,100);
                                 EVITEMENT_ADV_ARRIERE = OFF;
+                                EVITEMENT_ADV_AVANT = ON;
                                 coquillage_phase_1 = 1;
                             }
                             if(coquillage_phase_1 == 1){
@@ -173,6 +184,7 @@ void strategie()
                             passe_part(230, 900, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
                             EVITEMENT_ADV_AVANT = OFF;
                             EVITEMENT_ADV_ARRIERE = ON;
+                            while(EVITEMENT_ADV_ARRIERE != ON);
                             rejoindre(550,550, MARCHE_ARRIERE,100);
                             EVITEMENT_ADV_ARRIERE = OFF;
                             EVITEMENT_ADV_AVANT = ON;
@@ -182,6 +194,7 @@ void strategie()
                         default:
                             break;
                     }
+                    break;
                 default:
                     break;
             }
