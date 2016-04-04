@@ -157,6 +157,7 @@ void delai_action(void)
             {//positionne vers la barre, s'encastre dedant
                 EVITEMENT_ADV_AVANT = OFF;
                 EVITEMENT_ADV_ARRIERE = ON;
+                
                 rejoindre(200, 1000, MARCHE_ARRIERE, 50);
                 
                 //Range les pinces si on change de strat
@@ -176,12 +177,18 @@ void delai_action(void)
                 
                 //FLAG_ACTION = CACHE_1;
                 if(EVITEMENT_ADV_ARRIERE == ON)
-                {//2 cas en fonction qu'il soit en marche avant ou marche arrière            
+                {//2 cas en fonction qu'il soit en marche avant ou marche arrière 
+                    //EVITEMENT_ADV_AVANT = OFF;
+                    //EVITEMENT_ADV_ARRIERE = OFF;
+                    //orienter(95, 50);
+                    //EVITEMENT_ADV_AVANT = ON;
+                    
                     EVITEMENT_ADV_AVANT = OFF;
                     EVITEMENT_ADV_ARRIERE = OFF;
+                    
                     rejoindre(300, 1600, MARCHE_AVANT, 50);//On va à la cache 1
                     //delay_ms(2000);
-                    tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 3 sec pour attendre un peu avant de réessayer
+                    tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
                     while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
                     
                     //Relance un peu les pinces pour pas qu'elles laches
@@ -230,7 +237,7 @@ void delai_action(void)
                 
                 else if(EVITEMENT_ADV_ARRIERE == ON)
                 {   //On désactive tout pour qu'il reparte en avant
-                    EVITEMENT_ADV_AVANT = OFF;
+                    EVITEMENT_ADV_AVANT = ON;
                     EVITEMENT_ADV_ARRIERE = OFF;
                 }
             }
@@ -297,6 +304,10 @@ void delai_action(void)
         case POISSONS:
             if(ETAPE_POISSONS == 0)
             {//avance vers le le bac à poissons
+                
+                
+                
+                /*
                 EVITEMENT_ADV_AVANT = OFF;
                 EVITEMENT_ADV_ARRIERE = OFF;
                 
@@ -304,44 +315,39 @@ void delai_action(void)
                 //delay_ms(2000);
                 tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 3 sec pour attendre un peu avant de réessayer
                 while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
+                */
             }
             
             
             if(ETAPE_POISSONS == 1)
             {//avance vers le le bac à poissons
-                EVITEMENT_ADV_AVANT = OFF;
-                EVITEMENT_ADV_ARRIERE = OFF;
                 
-                rejoindre(1200, 800, MARCHE_ARRIERE, 50);//On va à la chache 2
-                //delay_ms(2000);
-                tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 3 sec pour attendre un peu avant de réessayer
-                while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
             }
             
             
 			else if(ETAPE_POISSONS == 2)
             {//on sort le filet
-                EVITEMENT_ADV_AVANT = OFF;
-                EVITEMENT_ADV_ARRIERE = OFF;
-                rejoindre(1200, 800, MARCHE_ARRIERE, 50);//On va à la chache 2
+                //Rien à faire car on ne bouge pas
             }
             
             
 			else if(ETAPE_POISSONS == 3)
             {//on recule un peu
-                //Alors reculer pour laisser passer le robot (vers le bas du terrain)
+                //Alors avance pour laisser passer le robot (vers le bas du terrain)
                 if(EVITEMENT_ADV_ARRIERE == ON)
                 {  //Si on est entrain de reculer alors n avance un peu
-                    EVITEMENT_ADV_AVANT = ON;
+                    
+                    EVITEMENT_ADV_AVANT = OFF;  //On désactive l'évitement car il n'y a pas la place pour un robot adverse
                     EVITEMENT_ADV_ARRIERE = OFF;
+                    
                     rejoindre(450, 150, MARCHE_AVANT, 50);//On avance un peu pour dégager la place
-                    //delay_ms(2000);
+
                     tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
                     while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
                 }
                 
                 else
-                {//Si on a eu un évitement pendant a backuo strat alors on repart sur la strat d'avant
+                {//Si on a eu un évitement pendant a backup strat alors on repart sur la strat d'avant
                     EVITEMENT_ADV_AVANT = OFF;
                     EVITEMENT_ADV_ARRIERE = ON;
                     rejoindre(640, 150, MARCHE_ARRIERE, 60);//On se place près du bac
@@ -359,7 +365,7 @@ void delai_action(void)
                 EVITEMENT_ADV_AVANT = OFF;
                 EVITEMENT_ADV_ARRIERE = OFF;
                 
-                rejoindre(650, 150, MARCHE_AVANT, 60);//On se place près du bac
+                rejoindre(640, 150, MARCHE_AVANT, 60);//On se place près du bac
                 //delay_ms(2000);
                 tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
                 while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
@@ -371,17 +377,23 @@ void delai_action(void)
                 //2 cas en fonction de si on est déjà en évitement
                 if(EVITEMENT_ADV_ARRIERE == ON)
                 {
+                    EVITEMENT_ADV_AVANT = OFF;
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    orienter(180,100);//Réoriente bien parallèle à la bordure
+                    
                     EVITEMENT_ADV_AVANT = ON;
                     EVITEMENT_ADV_ARRIERE = OFF;
-
-                    orienter(180,100);//Réoriente bien parallèle à la bordure
                     avancer_reculer(250, 60);  //avance un peu pour dégager le passage
-                    //delay_ms(2000);
+
                     tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
                     while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
                 }
                 else if(EVITEMENT_ADV_AVANT == ON)
                 {//Si on à un évitement avant alors il y a quelqu'un là où on voulait se dégager donc on reprend ce qu'on faisait
+                    EVITEMENT_ADV_AVANT = OFF;
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    orienter(180,100);//Réoriente bien parallèle à la bordure
+                    
                     EVITEMENT_ADV_AVANT = OFF;
                     EVITEMENT_ADV_ARRIERE = ON;
                     

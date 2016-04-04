@@ -206,7 +206,8 @@ void autom_10ms (void)
             }
             if(ETAPE_TOUR_ALLIE == 2)
             {//recule encore, se positionne pour poser la tour
-
+                //if(get_X() > 1500)  //Permet de ne pas détecter le poteau balise lors de la back up strat
+                    //EVITEMENT_ADV_AVANT = OFF;
             }
             if(ETAPE_TOUR_ALLIE == 3)
             {//avance, va dans la zone de largage

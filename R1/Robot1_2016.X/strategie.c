@@ -50,8 +50,8 @@ void strategie()
         EVITEMENT_ADV_ARRIERE = OFF;
         STRATEGIE_EVITEMENT = DELAI_ACTION;
 
-        FLAG_ACTION = POISSONS;
-        passe_part(700, 1000, MARCHE_ARRIERE, 70, DEBUT_TRAJECTOIRE);//A rajouter si on commence par les poissons
+        FLAG_ACTION = TOUR_ALLIE;
+        //passe_part(700, 1000, MARCHE_ARRIERE, 70, DEBUT_TRAJECTOIRE);//A rajouter si on commence par les poissons
                 
         while(1)
         {
@@ -71,6 +71,8 @@ void strategie()
                         if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
                             ETAPE_TOUR_ALLIE = 1;
                     }
+                    
+                    
                     else if(ETAPE_TOUR_ALLIE == 1)
                     {//attrappe tour et recule (sort de la barre)
                         MOUVEMENT_AX12 = ACTIVE;
@@ -84,6 +86,8 @@ void strategie()
                         if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
                             ETAPE_TOUR_ALLIE = 2;
                     }
+                    
+                    
                     else if(ETAPE_TOUR_ALLIE == 2)
                     {//recule encore, se positionne pour poser la tour
                         passe_part(895, 1500,MARCHE_ARRIERE, 40, DEBUT_TRAJECTOIRE);
@@ -91,6 +95,8 @@ void strategie()
                         passe_part(500, 950,MARCHE_ARRIERE, 40, FIN_TRAJECTOIRE);
                         ETAPE_TOUR_ALLIE = 3;
                     }
+                    
+                    
                     else if(ETAPE_TOUR_ALLIE == 3)
                     {//avance, va dans la zone de largage
                         EVITEMENT_ADV_ARRIERE = OFF;
@@ -102,6 +108,8 @@ void strategie()
                         if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
                             ETAPE_TOUR_ALLIE = 4;
                     }
+                    
+                    
                     else if(ETAPE_TOUR_ALLIE == 4)
                     {//pose la tour, recule pour ne pas renverser la tour
                         MOUVEMENT_AX12 = ACTIVE;
@@ -116,6 +124,8 @@ void strategie()
                         if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
                             ETAPE_TOUR_ALLIE = 5;
                     }
+                    
+                    
                     else if(ETAPE_TOUR_ALLIE == 5)
                     {//On range les pinces
                         MOUVEMENT_AX12 = ACTIVE;
@@ -126,23 +136,31 @@ void strategie()
                     
                     
                 case TOUR_ADVERSAIRE:
-                    if(ETAPE_TOUR_ALLIE == 0)
+                    if(ETAPE_TOUR_ADVERSAIRE == 0)
                     {//positionne vers la barre, s'encastre dedant
                         
                     }
-                    else if(ETAPE_TOUR_ALLIE == 1)
+                    
+                    
+                    else if(ETAPE_TOUR_ADVERSAIRE == 1)
                     {//attrappe tour et recule (sort de la barre)
                         
                     }
-                    else if(ETAPE_TOUR_ALLIE == 2)
+                    
+                    
+                    else if(ETAPE_TOUR_ADVERSAIRE == 2)
                     {//recule encore, se positionne pour poser la tour
                         
                     }
-                    else if(ETAPE_TOUR_ALLIE == 3)
+                    
+                    
+                    else if(ETAPE_TOUR_ADVERSAIRE == 3)
                     {//avance, va dans la zone de largage, pose la tour
                         
                     }
-                    else if(ETAPE_TOUR_ALLIE == 4)
+                    
+                    
+                    else if(ETAPE_TOUR_ADVERSAIRE == 4)
                     {//recule pour ne pas renverser la tour
                         
                     }
@@ -178,12 +196,13 @@ void strategie()
                     
                     else if(ETAPE_POISSONS == 2)
                     {//on sort le filet
-                        MOUVEMENT_AX12 = ACTIVE;
-                        EVITEMENT_ADV_ARRIERE = ON;
+                        EVITEMENT_ADV_ARRIERE = OFF;
                         EVITEMENT_ADV_AVANT = OFF;
+                        
+                        MOUVEMENT_AX12 = ACTIVE;
                         while(MOUVEMENT_AX12 == ACTIVE);//On attend le mouvement des AX12 pour continuer à bouger
                                               
-                        ETAPE_POISSONS = 2;
+                        ETAPE_POISSONS = 3;
                     }
                     
                     
@@ -196,7 +215,7 @@ void strategie()
                         rejoindre(640, 150, MARCHE_ARRIERE, 60);//On se place près du bac
                         
                         if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
-                            ETAPE_POISSONS = 3;
+                            ETAPE_POISSONS = 4;
                     }
                     
                     
@@ -211,13 +230,13 @@ void strategie()
                         temporisation = COMPTEUR_TEMPS_MATCH;
                         while(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 685)
                         {//Vérifie si il est bien dans le bac
-                            if((COMPTEUR_TEMPS_MATCH - temporisation) > 2) 
+                            if((COMPTEUR_TEMPS_MATCH - temporisation) > 2)
                             {//Si il ne l'est pas au bout de 2 sec alors on avance un peu
                                 temporisation = COMPTEUR_TEMPS_MATCH;
                                 rejoindre(660, 150, MARCHE_ARRIERE, 50);
                             }
                         }
-                        ETAPE_POISSONS = 4;
+                        ETAPE_POISSONS = 5;
                     }
                     
                     
@@ -229,72 +248,74 @@ void strategie()
                         
                         rejoindre(790, 150, MARCHE_ARRIERE, 50);//On se déplace dans tout le bac (pour récuperer les poissons)
                         
-                        //On désactive l'évitement car on ne veut pas qu'elle bloque la remonté du filet
-                        EVITEMENT_ADV_ARRIERE = OFF;
-                        EVITEMENT_ADV_AVANT = OFF;
-                        while(EVITEMENT_ADV_ARRIERE == ON);//On s'assure que la variable a été bien changé
-                        
-                        MOUVEMENT_AX12 = ACTIVE;
-                        while(MOUVEMENT_AX12 == ACTIVE);//On attend le mouvement des AX12 pour continuer à bouger
-                        
-                        temporisation = COMPTEUR_TEMPS_MATCH;
-                        short Compteur_Bloquage_Filet = 0;//Compte tout les bloquages que le filet à eut pour gerer les corrections
-                        
-                        while(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990)
-                        {// Gestion du cas ou le filet coince
-                            while((COMPTEUR_TEMPS_MATCH - temporisation) < 2 && read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990);//Attend 2 secondes tant que le filet n'a pas atteind sa position
-                            
-                            if(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990 && read_data(ROT_FILET, LIRE_MOUV_FLAG) == 0)
-                            {//Tjrs pas atteint le seuil alors reculer un peu
-                                EVITEMENT_ADV_ARRIERE = OFF;
-                                EVITEMENT_ADV_AVANT = ON;
-                                while(EVITEMENT_ADV_AVANT == OFF);//On s'assure que la variable a été bien changé
-                                
-                                rejoindre(740, 150, MARCHE_AVANT, 35);
-                                
-                                //On désactive encore pour être sur de pas géner le mouvement du filet
-                                EVITEMENT_ADV_ARRIERE = OFF;
-                                EVITEMENT_ADV_AVANT = OFF;
-                                while(EVITEMENT_ADV_AVANT == ON);//On s'assure que la variable a été bien changé
-                                
-                                if(get_X() < 750 && fin_strategie_cause_evitement == 0);   //On attend qu'il est atteind la zone à moins qu'il y est évitement
-                                    Compteur_Bloquage_Filet = 1;
-                            }
-                            else if(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990 && read_data(ROT_FILET, LIRE_MOUV_FLAG) == 0 && Compteur_Bloquage_Filet == 1)
-                            {//Augmente la patate!
-                                angle_AX12(ROT_FILET, 1005, 900, SANS_ATTENTE);  //Position Fin (poissons récupérés)
-                                Compteur_Bloquage_Filet = 2;
-                                temporisation = COMPTEUR_TEMPS_MATCH;
-                                while((COMPTEUR_TEMPS_MATCH - temporisation) < 2 && read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990); //On attend q'il est atteind la zone
-                            }
-                            else if(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990 && read_data(ROT_FILET, LIRE_MOUV_FLAG) == 0 && Compteur_Bloquage_Filet == 2)   
-                            {//Tjr pas atteint le seuil alors faire des accoups
-                                //angle_AX12(ROT_FILET, 790, 800, SANS_ATTENTE);  //Position Fin (poissons récupérés)
-                                unsigned short temp = 0;
-                                while(temp < 3)
-                                {//Répète le mouvement 3 fois
-                                    angle_AX12(DEPLOIMENT_BRAS_FILET, 590, 400, SANS_ATTENTE);   //Position déployé
-                                    delay_ms(150);
-                                    angle_AX12(DEPLOIMENT_BRAS_FILET, 460, 400, SANS_ATTENTE);   //Position déployé
-                                    delay_ms(150);
-                                    temp++;
+                        if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
+                        {
+                            //On désactive l'évitement car on ne veut pas qu'elle bloque la remonté du filet
+                            EVITEMENT_ADV_ARRIERE = OFF;
+                            EVITEMENT_ADV_AVANT = OFF;
+                            while(EVITEMENT_ADV_ARRIERE == ON);//On s'assure que la variable a été bien changé
+
+                            MOUVEMENT_AX12 = ACTIVE;
+                            while(MOUVEMENT_AX12 == ACTIVE);//On attend le mouvement des AX12 pour continuer à bouger
+
+                            temporisation = COMPTEUR_TEMPS_MATCH;
+                            short Compteur_Bloquage_Filet = 0;//Compte tout les bloquages que le filet à eut pour gerer les corrections
+
+                            while(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990)
+                            {// Gestion du cas ou le filet coince
+                                while((COMPTEUR_TEMPS_MATCH - temporisation) < 2 && read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990);//Attend 2 secondes tant que le filet n'a pas atteind sa position
+
+                                if(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990 && read_data(ROT_FILET, LIRE_MOUV_FLAG) == 0)
+                                {//Tjrs pas atteint le seuil alors reculer un peu
+                                    EVITEMENT_ADV_ARRIERE = OFF;
+                                    EVITEMENT_ADV_AVANT = ON;
+                                    while(EVITEMENT_ADV_AVANT == OFF);//On s'assure que la variable a été bien changé
+
+                                    rejoindre(740, 150, MARCHE_AVANT, 35);
+
+                                    //On désactive encore pour être sur de pas géner le mouvement du filet
+                                    EVITEMENT_ADV_ARRIERE = OFF;
+                                    EVITEMENT_ADV_AVANT = OFF;
+                                    while(EVITEMENT_ADV_AVANT == ON);//On s'assure que la variable a été bien changé
+
+                                    if(get_X() < 750 && fin_strategie_cause_evitement == 0);   //On attend qu'il est atteind la zone à moins qu'il y est évitement
+                                        Compteur_Bloquage_Filet = 1;
+                                }
+                                else if(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990 && read_data(ROT_FILET, LIRE_MOUV_FLAG) == 0 && Compteur_Bloquage_Filet == 1)
+                                {//Augmente la patate!
+                                    angle_AX12(ROT_FILET, 1005, 900, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+                                    Compteur_Bloquage_Filet = 2;
+                                    temporisation = COMPTEUR_TEMPS_MATCH;
+                                    while((COMPTEUR_TEMPS_MATCH - temporisation) < 2 && read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990); //On attend q'il est atteind la zone
+                                }
+                                else if(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 990 && read_data(ROT_FILET, LIRE_MOUV_FLAG) == 0 && Compteur_Bloquage_Filet == 2)   
+                                {//Tjr pas atteint le seuil alors faire des accoups
+                                    //angle_AX12(ROT_FILET, 790, 800, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+                                    unsigned short temp = 0;
+                                    while(temp < 3)
+                                    {//Répète le mouvement 3 fois
+                                        angle_AX12(DEPLOIMENT_BRAS_FILET, 590, 400, SANS_ATTENTE);   //Position déployé
+                                        delay_ms(150);
+                                        angle_AX12(DEPLOIMENT_BRAS_FILET, 460, 400, SANS_ATTENTE);   //Position déployé
+                                        delay_ms(150);
+                                        temp++;
+                                    }
                                 }
                             }
+                            if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
+                                angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 400, SANS_ATTENTE);   //Position intermédiaire (pour passer la barre du filet)
+
+                            temporisation = COMPTEUR_TEMPS_MATCH;
+                            while(read_data(DEPLOIMENT_BRAS_FILET, LIRE_POSITION_ACTU) < 590 && fin_strategie_cause_evitement == 0)
+                            {
+                                if((COMPTEUR_TEMPS_MATCH - temporisation) > 2)
+                                    angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 600, SANS_ATTENTE);   //Position intermédiaire (pour passer la barre du filet)
+                                if((COMPTEUR_TEMPS_MATCH - temporisation) > 4)
+                                    rejoindre(640, 150, MARCHE_AVANT, 60);//On recule un peu pour débloquer
+                            }
+
+                            ETAPE_POISSONS = 6;
                         }
-                        if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
-                            angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 400, SANS_ATTENTE);   //Position intermédiaire (pour passer la barre du filet)
-                        
-                        temporisation = COMPTEUR_TEMPS_MATCH;
-                        while(read_data(DEPLOIMENT_BRAS_FILET, LIRE_POSITION_ACTU) < 590 && fin_strategie_cause_evitement == 0)
-                        {
-                            if((COMPTEUR_TEMPS_MATCH - temporisation) > 2)
-                                angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 600, SANS_ATTENTE);   //Position intermédiaire (pour passer la barre du filet)
-                            if((COMPTEUR_TEMPS_MATCH - temporisation) > 4)
-                                rejoindre(640, 150, MARCHE_AVANT, 60);//On recule un peu pour débloquer
-                        }
-                        
-                        if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
-                            ETAPE_POISSONS = 5;
                     }
                     
                     
@@ -309,7 +330,7 @@ void strategie()
                         orienter(180,100);//Réoriente bien parallèle à la bordure
                         
                         if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
-                            ETAPE_POISSONS = 6;
+                            ETAPE_POISSONS = 7;
                             //FLAG_ACTION = NE_RIEN_FAIRE;
                     }
                     
@@ -446,24 +467,47 @@ void homologation()
 void reglage_odometrie()
 {
     delay_ms(2000);
-    //while(!SYS_JACK);
+    while(!SYS_JACK);
     COULEUR = couleur_depart();
     
     #ifdef GROS_ROBOT
-        init_jack();
+        //init_jack();
     #endif
     
     EVITEMENT_ADV_ARRIERE = OFF;
     EVITEMENT_ADV_AVANT = OFF;
 
     init_position_robot (0, 0, 0);
-    init_position_robot (-100, 0, 0);
+    //init_position_robot (-100, 0, 0);
+    
+    
+    
+    //faire_des_tours(32);
+    rejoindre(2000, 0, MARCHE_AVANT, 50);
+    
+    delay_ms(10000);
+    
+    PutsUART(UART_XBEE, "\n\n\n\r X : ");
+    PutLongUART((int32_t) get_X());
+    PutcUART(UART_XBEE, '.');
+    PutcUART(UART_XBEE, ((uint8_t)((int32_t) ((double) get_X() * 10)) - (((int32_t) get_X()) * 10 )) +48);
+    PutsUART(UART_XBEE, " Y : ");
+    PutLongUART((int32_t) get_Y());
+    PutcUART(UART_XBEE, '.');
+    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (get_Y() * 10))) - (((int32_t) get_Y()) * 10 )) +48);
+    PutsUART(UART_XBEE, " Teta : ");
+    PutLongUART((int32_t) get_orientation());
+    PutcUART(UART_XBEE, '.');
+    PutcUART(UART_XBEE, ((uint8_t)( (int32_t) ((double) (get_orientation() * 10))) - (((int32_t) get_orientation()) * 10 )) +48);
+    
+    /*
     rejoindre(0, 0, MARCHE_AVANT, 100);
     trapeze(MARCHE_AVANT);
     trapeze(MARCHE_AVANT);
     trapeze(MARCHE_AVANT);
     trapeze(MARCHE_AVANT);
     trapeze(MARCHE_AVANT);
+     * */
 
 //           faire_des_tours(-32);
             while(1);
@@ -541,6 +585,4 @@ void reglage_odometrie()
 //        rejoindre(300, 0, MARCHE_AVANT, 100);
 //        rejoindre(500, 0, MARCHE_AVANT, 100);
 //        TIMER_DEBUG = DESACTIVE;
-
-        delay_ms(10000);
 }

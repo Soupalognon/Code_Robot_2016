@@ -125,11 +125,10 @@ int main(int argc, char** argv)
     
     //init_decalage_AX12();
     //init_position_AX12();
-    
     while(SYS_JACK);
 
-    strategie();
-    //reglage_odometrie();
+    //strategie();
+    reglage_odometrie();
    
     while(1);
     return (EXIT_SUCCESS);
