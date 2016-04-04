@@ -482,8 +482,10 @@ void reglage_odometrie()
     
     
     
-    //faire_des_tours(32);
-    rejoindre(2000, 0, MARCHE_AVANT, 50);
+    //faire_des_tours(64);
+    //rejoindre(2000, 0, MARCHE_AVANT, 50);
+    //delay_ms(30000);
+    carre(MARCHE_AVANT);
     
     delay_ms(10000);
     

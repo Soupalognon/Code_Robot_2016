@@ -39,13 +39,13 @@ extern "C" {
     /**************************************************************************/
     /****************************** ODOMETRIE *********************************/
     /**************************************************************************/
-    #define _ENTRAXE_MM                  308.378 //308.264     //Pas assez tourné -> augmenter entraxe
+    #define _ENTRAXE_MM                  307.872 //308.378     //Pas assez tourné -> augmenter entraxe
     #define _DIAMETRE_ROUE_CODEUSE       0
     #define _PERIMETRE_ROUE_MM           194.455 //194.455      // Si distance parcourue trop grande -> Augmenter la taille des roues
 
         //+COEF_D -> + a droite
-    #define  _COEF_G                    (double) 1.00500 //1.00515      1.00500
-    #define  _COEF_D                    (double) 1.00007
+    #define  _COEF_G                    (double) 1.00437    //1.00500     //SI on augmente => décale vers la gauche
+    #define  _COEF_D                    (double) 1.00065    //1.00007
 
 
     /**************************************************************************/

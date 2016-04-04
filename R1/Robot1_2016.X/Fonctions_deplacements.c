@@ -31,7 +31,7 @@ uint8_t couleur_depart()
 
 double inversion_couleur (double param_inversable)
 {
-    if (COULEUR == VIOLET)
+    if (COULEUR == VERT)
         return param_inversable;
     else
         return (- param_inversable);
@@ -85,6 +85,7 @@ void carre (int8_t sens_marche)
     rejoindre (500, 500, sens_marche, 100);
     rejoindre (0  , 500, sens_marche, 100);
     rejoindre (0  , 0  , sens_marche, 100);
+    orienter(0, 100);
 }
 
 /******************************************************************************/
