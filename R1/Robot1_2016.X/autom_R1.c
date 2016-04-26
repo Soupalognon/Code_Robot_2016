@@ -193,8 +193,8 @@ void autom_10ms (void)
                 {//Alors on récupère la tour
                     if(MOUVEMENT_AX12 == ACTIVE)
                     {//Si on a activé le mouvement des AX12
-                        angle_AX12(PINCE_D, 985, 800, SANS_ATTENTE); //Position où il attrappe
-                        angle_AX12(PINCE_G, 280, 800, SANS_ATTENTE); //Positions où il attrappe
+                        angle_AX12(PINCE_D, 985, 850, SANS_ATTENTE); //Position où il attrappe
+                        angle_AX12(PINCE_G, 280, 850, SANS_ATTENTE); //Positions où il attrappe
                         angle_AX12(AX_CALAGE_CONE, 450, 1023, SANS_ATTENTE);    //Position déplié
                         //angle_AX12(ASCENSEUR, 200, 512, SANS_ATTENTE);   //Position haut
                         if (read_data(PINCE_G, LIRE_POSITION_ACTU) < 315)

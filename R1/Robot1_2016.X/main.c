@@ -160,7 +160,7 @@ int main(int argc, char** argv)
  * angle_AX12(PINCE_D, 870, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
  * 
  * angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
- * angle_AX12(PINCE_G, 310, 300, SANS_ATTENTE); //Positions où il attrappe
+ * angle_AX12(PINCE_G, 290, 300, SANS_ATTENTE); //Positions où il attrappe
  * angle_AX12(PINCE_G, 400, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
  * 
  * angle_AX12(PARASOL, 0, 250, SANS_ATTENTE); //Position replié

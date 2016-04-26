@@ -98,7 +98,7 @@ void strategie()
                         passe_part(890, 1600,MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
                         orienter(90,100);
                         //rejoindre(890, 1745, MARCHE_AVANT, 40);//895,1745
-                        avancer_reculer(155, 40); //CHANGEMENT DE LA VITESSE 60 TO 40
+                        avancer_reculer(154, 20); //CHANGEMENT DE LA VITESSE 60 TO 40
                         
                         if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
                             ETAPE_TOUR_ALLIE = 1;
@@ -139,22 +139,23 @@ void strategie()
                         EVITEMENT_ADV_AVANT = OFF;
                         EVITEMENT_ADV_ARRIERE = OFF;
                         
-                        passe_part(895, 1500,MARCHE_ARRIERE, 20, DEBUT_TRAJECTOIRE); // 100/100/70/70/70---
-                        passe_part(650, 1300,MARCHE_ARRIERE, 20, FIN_TRAJECTOIRE);
+                        passe_part(895, 1500, MARCHE_ARRIERE, 40, DEBUT_TRAJECTOIRE); // 100/100/70/70/70---
+                        passe_part(650, 1300, MARCHE_ARRIERE, 40, FIN_TRAJECTOIRE);
                         
                         //orienter(, 100);
-                        passe_part(600, 1500,MARCHE_AVANT, 20,DEBUT_TRAJECTOIRE);
-                        passe_part(600, 1860,MARCHE_AVANT, 20,MILIEU_TRAJECTOIRE);
+                        passe_part(600, 1500, MARCHE_AVANT, 40, DEBUT_TRAJECTOIRE);
+                        passe_part(600, 1860, MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
+                        passe_part(600, 1500, MARCHE_ARRIERE, 40, FIN_TRAJECTOIRE);
                         
+                        passe_part(350, 1500, MARCHE_AVANT, 40, DEBUT_TRAJECTOIRE);
+                        passe_part(350, 1860, MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
+                        passe_part(350, 1500, MARCHE_ARRIERE, 40, FIN_TRAJECTOIRE);
                         
-                        passe_part(600, 1500,MARCHE_ARRIERE, 20,MILIEU_TRAJECTOIRE);
-                        passe_part(250, 1500,MARCHE_AVANT, 20,FIN_TRAJECTOIRE);
-                        passe_part(250, 1860,MARCHE_AVANT, 20,DEBUT_TRAJECTOIRE);
-                        passe_part(250, 1500,MARCHE_ARRIERE, 20,FIN_TRAJECTOIRE);
-                        passe_part(650, 1500,MARCHE_AVANT, 20,DEBUT_TRAJECTOIRE);
-                        passe_part(700, 1000,MARCHE_AVANT, 20, MILIEU_TRAJECTOIRE);
-                        passe_part(800, 1000,MARCHE_AVANT, 20, MILIEU_TRAJECTOIRE);
-                        passe_part(1000, 1000,MARCHE_AVANT, 20, FIN_TRAJECTOIRE);
+                        passe_part(650, 1500, MARCHE_AVANT, 70, DEBUT_TRAJECTOIRE);
+                        passe_part(700, 1000, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
+                        passe_part(800, 1000, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
+                        passe_part(1000, 1000, MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
+                        
 //                        passe_part(450, 1600,MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
 //                        passe_part(245, 1500,MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
 //                        passe_part(245, 1400,MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
@@ -267,18 +268,18 @@ void strategie()
                         passe_part(300, 270, MARCHE_ARRIERE, 80, MILIEU_TRAJECTOIRE);
                         passe_part(350, 250, MARCHE_ARRIERE, 80, MILIEU_TRAJECTOIRE);
                         passe_part(430, 250, MARCHE_ARRIERE, 80, MILIEU_TRAJECTOIRE);
-                        passe_part(450, 220, MARCHE_ARRIERE, 80, MILIEU_TRAJECTOIRE);
+                        passe_part(450, 220, MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
                         passe_part(470, 200, MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
                         passe_part(500, 180, MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
                         passe_part(530, 180, MARCHE_ARRIERE, 70, FIN_TRAJECTOIRE);
-                        rejoindre(450, 160, MARCHE_AVANT, 50);
+                        rejoindre(450, 160, MARCHE_AVANT, 50);          /*!!!  ATTENTION - Il y a une translation donc un décalage d'odométrie - faire un calage   !!!*/
 //                        passe_part(1100, 300, MARCHE_AVANT, 50, DEBUT_TRAJECTOIRE);
 //                        passe_part(950, 250,MARCHE_AVANT, 60, MILIEU_TRAJECTOIRE);
 //                        passe_part(900, 200,MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
 //                        passe_part(800, 175,MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
 //                        passe_part(470, 150,MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
                         
-                        orienter(180,100);//Réoriente bien parallèle à la bordure
+//                        orienter(180,100);//Réoriente bien parallèle à la bordure
                         
                         if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
                             ETAPE_POISSONS = 2;
@@ -310,7 +311,9 @@ void strategie()
                         EVITEMENT_ADV_AVANT = OFF;
                         while(EVITEMENT_ADV_ARRIERE == OFF);
                         
-                        rejoindre(640, 150, MARCHE_ARRIERE, 60);//On se place près du bac
+                        rejoindre(625, 150, MARCHE_ARRIERE, 60);//On se place près du bac
+                        
+                        orienter(180,100);//Réoriente bien parallèle à la bordure
                         
                         if(fin_strategie_cause_evitement == 0)//Si il n'y a pas eu la backup strat
                             ETAPE_POISSONS = 5;
@@ -332,9 +335,11 @@ void strategie()
                             {//Si il ne l'est pas au bout de 2 sec alors on avance un peu
                                 //temporisation = COMPTEUR_TEMPS_MATCH;
                                 angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
-                                while(read_data(ROT_FILET, LIRE_POSITION_ACTU) > 365)
-                                rejoindre(660, 150, MARCHE_ARRIERE, 50);
-                                angle_AX12(ROT_FILET, 690, 300, SANS_ATTENTE);   //Position dans l'eau
+                                while(read_data(ROT_FILET, LIRE_POSITION_ACTU) > 385);
+                                rejoindre(640, 150, MARCHE_ARRIERE, 50);
+                                angle_AX12(ROT_FILET, 690, 150, SANS_ATTENTE);  //Position dans l'eau
+                                while(read_data(ROT_FILET, LIRE_POSITION_ACTU) < 685);
+                                
                             }
                         }
                         ETAPE_POISSONS = 6;
