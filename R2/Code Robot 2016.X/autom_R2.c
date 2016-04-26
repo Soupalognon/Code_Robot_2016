@@ -56,7 +56,9 @@ void porte (uint8_t ID, uint8_t etat)
 
 void init_pinces_jack()
 {
-    Nop();
+    angle_AX12(PORTE_D, 350, 1023, SANS_ATTENTE);
+    delay_ms(1000);
+    angle_AX12(PORTE_G, 655, 1023, SANS_ATTENTE);
 }
 
 /******************************************************************************/
@@ -83,13 +85,17 @@ void autom_10ms (void)
              * Ecrire fermeture des portes pour retenir coquillages
              */
             case FERMER_PORTES:
-                synchro_AX12(PORTE_G, - 20, 1023, SANS_ATTENTE);
-                synchro_AX12(PORTE_D,  20, 1023, SANS_ATTENTE);
-                FLAG_ACTION = NE_RIEN_FAIRE;
+                angle_AX12(PORTE_D, 350, 1023, SANS_ATTENTE);
+                delay_ms(1000);
+                angle_AX12(PORTE_G, 655, 1023, SANS_ATTENTE);
+                FLAG_ACTION = COQUILLAGE_ALLIE;
+                break;
+                
             case OUVRIR_PORTES:
                 synchro_AX12(PORTE_D, -20, 1023, SANS_ATTENTE);
                 synchro_AX12(PORTE_G,  20, 1023, SANS_ATTENTE);
-                FLAG_ACTION = NE_RIEN_FAIRE;
+                FLAG_ACTION = COQUILLAGE_ALLIE;
+                break;
             /*
              * Ecrire sequence lever de drapeaux
              */

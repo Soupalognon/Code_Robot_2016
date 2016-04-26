@@ -251,7 +251,7 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
  *                      Est en mouvement ?  : LIRE_MOUV_FLAG\n
  * @return Renvoit la donnée 
  */
-uint16_t read_data (uint8_t ID, uint8_t type_donnee);
+int16_t read_data (uint8_t ID, uint8_t type_donnee);
 
 
 /**

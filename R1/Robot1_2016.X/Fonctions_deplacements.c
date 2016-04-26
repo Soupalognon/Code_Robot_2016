@@ -216,7 +216,17 @@ void delai_action(void)
             else if(ETAPE_TOUR_ALLIE == 3)
             {//avance, va dans la zone de largage, pose la tour
                 //compteur_evitement++;
-                if(EVITEMENT_ADV_AVANT == ON)
+                if(EVITEMENT_ADV_ARRIERE == ON)
+                {   //On désactive tout pour qu'il reparte en avant
+                    EVITEMENT_ADV_AVANT = ON;
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    
+                    //Relance un peu les pinces pour pas qu'elles laches
+                    angle_AX12(PINCE_D, 975, 850, SANS_ATTENTE); //Position où il attrappe
+                    angle_AX12(PINCE_G, 290, 850, SANS_ATTENTE); //Positions où il attrappe
+                }
+                
+                else
                 {
                     EVITEMENT_ADV_AVANT = OFF;
                     EVITEMENT_ADV_ARRIERE = ON;
@@ -230,16 +240,10 @@ void delai_action(void)
                     //delay_ms(2000);
                
                     tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
-                    while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
+                    while((COMPTEUR_TEMPS_MATCH - tempo) < 4);
 
                     //if(compteur_evitement > 10)//Si on a trop fait de fois des allés retour
                         //FLAG_ACTION = POISSONS;
-                }
-                
-                else if(EVITEMENT_ADV_ARRIERE == ON)
-                {   //On désactive tout pour qu'il reparte en avant
-                    EVITEMENT_ADV_AVANT = ON;
-                    EVITEMENT_ADV_ARRIERE = OFF;
                 }
             }
 
@@ -305,7 +309,9 @@ void delai_action(void)
         case POISSONS:
             if(ETAPE_POISSONS == 0)
             {//avance vers le le bac à poissons
-                
+                EVITEMENT_ADV_AVANT = ON;
+                EVITEMENT_ADV_ARRIERE = OFF;
+                rejoindre(800, 1000, MARCHE_AVANT, 60);
                 
                 
                 /*
@@ -320,19 +326,25 @@ void delai_action(void)
             }
             
             
-            if(ETAPE_POISSONS == 1)
+            else if(ETAPE_POISSONS == 1)
             {//avance vers le le bac à poissons
                 
             }
             
             
-			else if(ETAPE_POISSONS == 2)
+            else if(ETAPE_POISSONS == 2)
+            {
+                
+            }
+            
+            
+			else if(ETAPE_POISSONS == 3)
             {//on sort le filet
                 //Rien à faire car on ne bouge pas
             }
             
             
-			else if(ETAPE_POISSONS == 3)
+			else if(ETAPE_POISSONS == 4)
             {//on recule un peu
                 //Alors avance pour laisser passer le robot (vers le bas du terrain)
                 if(EVITEMENT_ADV_ARRIERE == ON)
@@ -355,12 +367,12 @@ void delai_action(void)
                 }
             }
             
-            else if(ETAPE_POISSONS == 4)
+            else if(ETAPE_POISSONS == 5)
             {//On positionne le filet dans le bac
                 
             }
             
-            else if (ETAPE_POISSONS == 5)
+            else if (ETAPE_POISSONS == 6)
             {//On avance dans le bac et on remonte le filet (on gère les cas d'impossibilité de remonter)
                 //Alors on se déplace dans le bac
                 EVITEMENT_ADV_AVANT = OFF;
@@ -373,7 +385,7 @@ void delai_action(void)
             }
             
             
-            else if (ETAPE_POISSONS == 6)
+            else if (ETAPE_POISSONS == 7)
             {//évite la barre de de la zone de largage des poissons, dépose les poissons
                 //2 cas en fonction de si on est déjà en évitement
                 if(EVITEMENT_ADV_ARRIERE == ON)
@@ -403,7 +415,7 @@ void delai_action(void)
             }
             
             
-            else if (ETAPE_POISSONS == 7)
+            else if (ETAPE_POISSONS == 8)
             {
                 
             }

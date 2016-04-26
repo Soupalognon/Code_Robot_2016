@@ -134,6 +134,7 @@ void init_jack()
 
 void init_depart()
 {
+//    PutsUART(UART_XBEE, "Init des pinces : \n\r");
     angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
     angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
     //angle_AX12(ASCENSEUR, 183, 512, AVEC_ATTENTE);   //Position basse
@@ -172,7 +173,7 @@ void autom_10ms (void)
         /**********************************************************************/
         /******************************* Autom ********************************/
         /**********************************************************************/
-    
+
     //fonction qui definit les actions
     switch(FLAG_ACTION)
     {//Mettre toutes les fonctions de déplacement des AX12
@@ -185,17 +186,19 @@ void autom_10ms (void)
                 angle_AX12(PINCE_D, 870, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
                 angle_AX12(PINCE_G, 400, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
             }
-            if(ETAPE_TOUR_ALLIE == 1)
+            
+            else if(ETAPE_TOUR_ALLIE == 1)
             {//attrappe tour et recule (sort de la barre)
                 if(CAPT_PINCE == 0)
                 {//Alors on récupère la tour
                     if(MOUVEMENT_AX12 == ACTIVE)
                     {//Si on a activé le mouvement des AX12
-                        angle_AX12(PINCE_D, 975, 800, SANS_ATTENTE); //Position où il attrappe
-                        angle_AX12(PINCE_G, 290, 800, SANS_ATTENTE); //Positions où il attrappe
+                        angle_AX12(PINCE_D, 985, 800, SANS_ATTENTE); //Position où il attrappe
+                        angle_AX12(PINCE_G, 280, 800, SANS_ATTENTE); //Positions où il attrappe
                         angle_AX12(AX_CALAGE_CONE, 450, 1023, SANS_ATTENTE);    //Position déplié
                         //angle_AX12(ASCENSEUR, 200, 512, SANS_ATTENTE);   //Position haut
-                        MOUVEMENT_AX12 = DESACTIVE;
+                        if (read_data(PINCE_G, LIRE_POSITION_ACTU) < 315)
+                            MOUVEMENT_AX12 = DESACTIVE;
                     }
                 }
                 else
@@ -204,17 +207,20 @@ void autom_10ms (void)
                         angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
                 }
             }
-            if(ETAPE_TOUR_ALLIE == 2)
+            
+            else if(ETAPE_TOUR_ALLIE == 2)
             {//recule encore, se positionne pour poser la tour
                 //if(get_X() > 1500)  //Permet de ne pas détecter le poteau balise lors de la back up strat
                     //EVITEMENT_ADV_AVANT = OFF;
             }
-            if(ETAPE_TOUR_ALLIE == 3)
+            
+            else if(ETAPE_TOUR_ALLIE == 3)
             {//avance, va dans la zone de largage
                 if(get_X() > 800)
                     EVITEMENT_ADV_AVANT = OFF;
             }
-            if(ETAPE_TOUR_ALLIE == 4)
+            
+            else if(ETAPE_TOUR_ALLIE == 4)
             {//pose la tour, recule pour ne pas renverser la tour
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {//Si on a activé le mouvement des AX12
@@ -223,7 +229,8 @@ void autom_10ms (void)
                     MOUVEMENT_AX12 = DESACTIVE;
                 }
             }
-            if(ETAPE_TOUR_ALLIE == 5)
+            
+            else if(ETAPE_TOUR_ALLIE == 5)
             {
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {//Si on a activé le mouvement des AX12
@@ -240,18 +247,22 @@ void autom_10ms (void)
             {//positionne vers la barre, s'encastre dedant
 
             }
+            
             if(ETAPE_TOUR_ADVERSAIRE == 1)
             {//attrappe tour et recule (sort de la barre)
 
             }
+            
             if(ETAPE_TOUR_ADVERSAIRE == 2)
             {//recule encore, se positionne pour poser la tour
 
             }
+            
             if(ETAPE_TOUR_ADVERSAIRE == 3)
             {//avance, va dans la zone de largage, pose la tour
 
             }
+            
             if(ETAPE_TOUR_ADVERSAIRE == 4)
             {//recule pour ne pas renverser la tour
 
@@ -262,18 +273,32 @@ void autom_10ms (void)
         case POISSONS:
             if(ETAPE_POISSONS == 0)
             {//avance vers le le bac à poissons
+                angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
                if(get_X() < 600)
                     EVITEMENT_ADV_AVANT = OFF;
             }
             
+            else if(ETAPE_POISSONS == 1)
+            {
+                if(get_X() < 250 && get_Y() < 550)
+                {
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    EVITEMENT_ADV_AVANT = OFF;
+                }
+                else
+                {
+                    EVITEMENT_ADV_ARRIERE = ON;
+                    EVITEMENT_ADV_AVANT = OFF;
+                }
+            }
             
-            if(ETAPE_POISSONS == 1)
+            else if(ETAPE_POISSONS == 2)
             {
                 
             }
             
             
-            if(ETAPE_POISSONS == 2)
+            else if(ETAPE_POISSONS == 3)
             {//on sort le filet
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {
@@ -291,12 +316,12 @@ void autom_10ms (void)
             }
             
             
-            if(ETAPE_POISSONS == 3)
+            else if(ETAPE_POISSONS == 4)
             {//on recule un peu
             }
             
             
-            if(ETAPE_POISSONS == 4)
+            else if(ETAPE_POISSONS == 5)
             {//On positionne le filet dans le bac
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {
@@ -306,7 +331,7 @@ void autom_10ms (void)
             }
             
             
-            if(ETAPE_POISSONS == 5)
+            else if(ETAPE_POISSONS == 6)
             {//On avance dans le bac et on remonte le filet (on gère les cas d'impossibilité de remonter)
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {
@@ -316,7 +341,7 @@ void autom_10ms (void)
             }
             
             
-            if(ETAPE_POISSONS == 6)
+            else if(ETAPE_POISSONS == 7)
             {
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {
@@ -327,7 +352,7 @@ void autom_10ms (void)
             }
             
             
-            if(ETAPE_POISSONS == 7)
+            else if(ETAPE_POISSONS == 8)
             {
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {

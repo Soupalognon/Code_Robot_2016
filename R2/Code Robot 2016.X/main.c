@@ -112,7 +112,7 @@ int main(int argc, char** argv)
 {
     init_system();
     init_evitement();
-    //TIMER_DEBUG = ACTIVE;
+    TIMER_DEBUG = DESACTIVE;
     delay_ms(500);
 
     
@@ -125,6 +125,7 @@ int main(int argc, char** argv)
     synchro_AX12(AX_US, 0, 1023, SANS_ATTENTE);
 #endif
     
+    while(SYS_JACK);
 
     strategie();
 
@@ -134,3 +135,12 @@ int main(int argc, char** argv)
     return (EXIT_SUCCESS);
 }
 
+
+
+/*
+ angle_AX12(PORTE_D, 350, 1023, SANS_ATTENTE);  //Position Fermé
+ * angle_AX12(PORTE_G, 655, 1023, SANS_ATTENTE);//Position Fermé
+ 
+ 
+ 
+ */

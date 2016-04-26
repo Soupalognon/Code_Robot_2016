@@ -465,6 +465,7 @@ void traitement_reception_ax12 ()
         if (ax12.timer > TIME_LIMIT)
         {
             ax12.erreur = TIME_OUT;
+            //PutsUART(UART_XBEE, "ERREUR Time Out \r\n");
             break;
         }
     }
@@ -478,6 +479,7 @@ void traitement_reception_ax12 ()
 
         if (checksum != ax12.buffer[CHSUM])
         {
+            
             ax12.erreur = ERREUR_CS;
             //PutsUART(UART_XBEE, "ERREUR Checksum \r\n");
         }
@@ -503,7 +505,8 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
 {
     uint8_t check_sum = calcul_checksum(ID, longueur, instruction, param1, param2, param3, param4, param5);
     uint8_t octets_a_recevoir;
-
+    static uint16_t nb1=0, nb2 =0;
+    
     static uint64_t nb3 = 0;
 
     //Détermnation du nombre d'octects à recevoir
@@ -559,7 +562,7 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
 
         PutcUART(UART_AX12, check_sum);
 
-         ax12.nb_octet_attente = octets_a_recevoir;
+        ax12.nb_octet_attente = octets_a_recevoir;
         while(ax12.etat_uart != ENVOIT_FINI);
 
         if (octets_a_recevoir > 0)
@@ -580,19 +583,19 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
 //        son_evitement(10);
 //    }
 
-//    if(ax12.erreur != PAS_D_ERREUR)
-//    {
-//        nb1++;
-//    }
-//    else
-//    {
-//        nb2++;
-//    }
+    if(ax12.erreur != PAS_D_ERREUR)
+    {
+        nb1++;
+    }
+    else
+    {
+        nb2++;
+    }
 //    PutIntUART(nb1);
 //    PutsUART(UART_XBEE, " ");
 //    PutIntUART(nb2);
-//    //PutsUART(UART_XBEE, " ");
-//    //PutIntUART(nb3 - (nb1 + nb2));
+//    PutsUART(UART_XBEE, " ");
+//    PutIntUART(nb3 - (nb1 + nb2));
 //    PutsUART(UART_XBEE, "\r");
 }
 
@@ -630,7 +633,7 @@ uint8_t calcul_checksum (uint8_t ID, uint8_t longueur, uint8_t instruction, uint
 }
 
 
-uint16_t read_data (uint8_t ID, uint8_t type_donnee)
+int16_t read_data (uint8_t ID, uint8_t type_donnee)
 {
     uint8_t nombre_octets_a_recevoir = 0;
     uint16_t buffer;
@@ -660,7 +663,7 @@ uint16_t read_data (uint8_t ID, uint8_t type_donnee)
     commande_AX12(ID, _4PARAM,  READ_DATA, type_donnee, nombre_octets_a_recevoir, NC, NC, NC);
 
     if (ax12.erreur != PAS_D_ERREUR)
-    {
+    {   //Si il y a une erreur
         return -1;
     }
     else

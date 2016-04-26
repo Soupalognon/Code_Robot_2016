@@ -126,9 +126,10 @@ int main(int argc, char** argv)
     //init_decalage_AX12();
     //init_position_AX12();
     while(SYS_JACK);
-
-    //strategie();
-    reglage_odometrie();
+    
+    PutsUART(UART_XBEE, "\n\n\n\n\n\nDebut du code : \n\r");
+    strategie();
+    //reglage_odometrie();
    
     while(1);
     return (EXIT_SUCCESS);

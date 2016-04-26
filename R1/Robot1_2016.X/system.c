@@ -60,7 +60,6 @@ void init_system (void)
     COMPTEUR_TEMPS_MATCH = 0;
 
     TIMER_5ms = ACTIVE;
-    TIMER_10ms = ACTIVE;
 
 #ifdef PETIT_ROBOT
     TRISCbits.TRISC2 = 0;
