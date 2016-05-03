@@ -81,8 +81,8 @@ extern "C" {
     //Pince
      #define PINCE_D                19
      #define PINCE_G                25
-     #define ASCENSEUR              13
-     #define AX_CALAGE_CONE         17
+     #define ASCENSEUR              12
+     #define CALAGE_CONE            17
     
      //Capteurs Avant     
     #define AX_US_DROIT             14
@@ -183,9 +183,11 @@ extern "C" {
 #ifdef GROS_ROBOT
     #define TOUR_ALLIE                  2
     #define TOUR_ADVERSAIRE             3
+    #define PORTES                      10
     #define POISSONS                    4
     #define OUVERTURE_PARASOL           5
     #define COQUILLAGES                 6
+    #define DEFONCER_DUNE               11
     #define CACHE_1                     7
     #define CACHE_2                     8
     #define CACHE_3                     9

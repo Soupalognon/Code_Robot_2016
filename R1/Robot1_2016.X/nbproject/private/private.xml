@@ -5,12 +5,10 @@
         <group>
             <file>file:/C:/Users/azerty/Documents/GitHub/Code_Robot_2016/R1/Robot1_2016.X/Fonctions_deplacements.c</file>
             <file>file:/C:/Users/azerty/Documents/GitHub/Code_Robot_2016/R1/Robot1_2016.X/strategie.c</file>
-            <file>file:/C:/Users/azerty/Documents/GitHub/Code_Robot_2016/R1/Robot1_2016.X/autom.h</file>
-            <file>file:/C:/Users/azerty/Documents/GitHub/Code_Robot_2016/R1/Robot1_2016.X/fonctions_deplacements.h</file>
             <file>file:/C:/Users/azerty/Documents/GitHub/Code_Robot_2016/R1/Robot1_2016.X/autom_R1.c</file>
             <file>file:/C:/Users/azerty/Documents/GitHub/Code_Robot_2016/R1/Robot1_2016.X/main.c</file>
-            <file>file:/C:/Users/azerty/Documents/GitHub/Code_Robot_2016/R1/Robot1_2016.X/asserv.c</file>
-            <file>file:/C:/Users/azerty/Documents/GitHub/Code_Robot_2016/R1/Robot1_2016.X/asserv.h</file>
+            <file>file:/C:/Users/azerty/Documents/GitHub/Code_Robot_2016/R1/Robot1_2016.X/system.h</file>
+            <file>file:/C:/Users/azerty/Documents/GitHub/Code_Robot_2016/R1/Robot1_2016.X/Config_robots.h</file>
         </group>
     </open-files>
 </project-private>

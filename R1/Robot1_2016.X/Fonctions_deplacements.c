@@ -24,9 +24,9 @@
 uint8_t couleur_depart()
 {
     if (SYS_COULEUR == 0)
-        return VIOLET;
-    else
         return VERT;
+    else
+        return VIOLET;
 }
 
 double inversion_couleur (double param_inversable)
@@ -144,12 +144,13 @@ void action_evitement (void)
 }
 
 
+uint16_t compt_evitement = 0; //Permet de connaitre le nombre de fois qu'on a eu le même évitement
+                                    //Reset à chaque début d'étape
 void delai_action(void)
 {  
     static uint8_t tempo = 0;
-    static uint8_t compteur_evitement = 0; //Permet de connaitre le nombre de fois qu'on a eu le même évitement
-                                    //Reset à chaque début d'étape
         
+    //TIMER_10ms = DESACTIVE;
     
     switch(FLAG_ACTION)
     {//Mettre toutes les fonction de backup strat
@@ -170,13 +171,24 @@ void delai_action(void)
 
             else if(ETAPE_TOUR_ALLIE == 1)
             {//attrappe tour et recule (sort de la barre)
-                //Je suis obliger d'attendre
+                compt_evitement++;
+                if(compt_evitement > 250)
+                {
+                    compt_evitement = 0;
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    rejoindre(895, 1450, MARCHE_ARRIERE, 5);
+                    orienter(140, 5);
+                    ETAPE_TOUR_ALLIE = 2;
+                }
             }
 
             else if(ETAPE_TOUR_ALLIE == 2)
-            {//recule encore, se positionne pour poser la tour
+            {//Ferme les portes des cabines
                 
-                //FLAG_ACTION = CACHE_1;
+                
+                //POUR HOMOLOGATION
+                /************************************/
+                /*
                 if(EVITEMENT_ADV_ARRIERE == ON)
                 {//2 cas en fonction qu'il soit en marche avant ou marche arrière 
                     //EVITEMENT_ADV_AVANT = OFF;
@@ -187,7 +199,7 @@ void delai_action(void)
                     EVITEMENT_ADV_AVANT = OFF;
                     EVITEMENT_ADV_ARRIERE = OFF;
                     
-                    rejoindre(300, 1600, MARCHE_AVANT, 50);//On va à la cache 1
+                    rejoindre(300, 1600, MARCHE_AVANT, 30);//On va à la cache 1
                     //delay_ms(2000);
                     tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
                     while((COMPTEUR_TEMPS_MATCH - tempo) < 2);
@@ -211,6 +223,8 @@ void delai_action(void)
                     angle_AX12(PINCE_D, 975, 850, SANS_ATTENTE); //Position où il attrappe
                     angle_AX12(PINCE_G, 290, 850, SANS_ATTENTE); //Positions où il attrappe
                 }
+                 * */
+                /************************************/
             }
 
             else if(ETAPE_TOUR_ALLIE == 3)
@@ -224,6 +238,9 @@ void delai_action(void)
                     //Relance un peu les pinces pour pas qu'elles laches
                     angle_AX12(PINCE_D, 975, 850, SANS_ATTENTE); //Position où il attrappe
                     angle_AX12(PINCE_G, 290, 850, SANS_ATTENTE); //Positions où il attrappe
+                    
+                    rejoindre(1000, 1000, MARCHE_AVANT, 90);
+                    ETAPE_TOUR_ALLIE = 4;
                 }
                 
                 else
@@ -235,13 +252,16 @@ void delai_action(void)
                     angle_AX12(PINCE_D, 975, 850, SANS_ATTENTE); //Position où il attrappe
                     angle_AX12(PINCE_G, 290, 850, SANS_ATTENTE); //Positions où il attrappe
 
-                    rejoindre(250, 1100, MARCHE_ARRIERE, 50);//On recule pour liberer le robot adverse
-
-                    //delay_ms(2000);
-               
+                    rejoindre(400, 1000, MARCHE_ARRIERE, 40);//On recule pour liberer le robot adverse
+                    
                     tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
                     while((COMPTEUR_TEMPS_MATCH - tempo) < 4);
 
+                    EVITEMENT_ADV_AVANT = ON;
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    
+                    rejoindre(1000, 1000, MARCHE_AVANT, 90);
+                    ETAPE_TOUR_ALLIE = 4;
                     //if(compteur_evitement > 10)//Si on a trop fait de fois des allés retour
                         //FLAG_ACTION = POISSONS;
                 }
@@ -249,10 +269,17 @@ void delai_action(void)
 
             else if(ETAPE_TOUR_ALLIE == 4)
             {//recule pour ne pas renverser la tour
-                //compteur_evitement++;
+                compt_evitement++;
                 
-                //if(compteur_evitement > 10)
-                    //FLAG_ACTION = POISSONS;
+                if(compt_evitement > 250)
+                {
+                    compt_evitement = 0;
+                    angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE);        //Position rangé
+                    angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE);        //Position rangé
+                    angle_AX12(CALAGE_CONE, 50, 512, SANS_ATTENTE);      //Position replié
+                    ETAPE_POISSONS = 10;
+                    FLAG_ACTION = POISSONS;
+                }
             }
             
             
@@ -268,45 +295,151 @@ void delai_action(void)
             {//positionne vers la barre, s'encastre dedant
                 EVITEMENT_ADV_AVANT = OFF;
                 EVITEMENT_ADV_ARRIERE = ON;
-                rejoindre(500, 1400, MARCHE_ARRIERE, 50);
+                rejoindre(800, 1400, MARCHE_ARRIERE, 50);
                 FLAG_ACTION = TOUR_ALLIE;
             }
 
 			else if (ETAPE_TOUR_ADVERSAIRE == 1)
             {//attrappe tour et recule (sort de la barre)
-                //On bloque pour pas casser le robot
+                compt_evitement++;
+                if(compt_evitement > 250)
+                {
+                    compt_evitement = 0;
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    delay_ms(10);
+                    rejoindre(2130, 1500, MARCHE_ARRIERE, 5);
+                    orienter(0, 5);
+                    ETAPE_TOUR_ADVERSAIRE = 2;
+                }
             }
 
 			else if (ETAPE_TOUR_ADVERSAIRE == 2)
             {//recule encore, se positionne pour poser la tour
-                if(EVITEMENT_ADV_ARRIERE == ON)
-                {//Alors on essai de faire le tour par l'autre côté (backup strat)
-                    EVITEMENT_ADV_AVANT = ON;
-                    EVITEMENT_ADV_ARRIERE = OFF;
-                    
-                    rejoindre(2300, 1400, MARCHE_AVANT, 50);
-                    rejoindre(2300, 700, MARCHE_AVANT, 50);
-                    rejoindre(1500, 700, MARCHE_AVANT, 50);
-                    rejoindre(1500, 1000, MARCHE_AVANT, 50);
-                }
-                else
-                {//Si on est bloqué aussi de l'autre côté on retente la strat normal
-                    
-                }
+                
             }
 
 			else if (ETAPE_TOUR_ADVERSAIRE == 3)
             {//avance, va dans la zone de largage, pose la tour
+                if(EVITEMENT_ADV_ARRIERE == ON)
+                {   //On désactive tout pour qu'il reparte en avant
+                    EVITEMENT_ADV_AVANT = ON;
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    
+                    //Relance un peu les pinces pour pas qu'elles laches
+                    angle_AX12(PINCE_D, 975, 850, SANS_ATTENTE); //Position où il attrappe
+                    angle_AX12(PINCE_G, 290, 850, SANS_ATTENTE); //Positions où il attrappe
+                    
+                    rejoindre(1000, 1000, MARCHE_AVANT, 90);
+                    ETAPE_TOUR_ALLIE = 4;
+                }
+                
+                else
+                {
+                    EVITEMENT_ADV_AVANT = OFF;
+                    EVITEMENT_ADV_ARRIERE = ON;
 
+                    //Relance un peu les pinces pour pas qu'elles laches
+                    angle_AX12(PINCE_D, 975, 850, SANS_ATTENTE); //Position où il attrappe
+                    angle_AX12(PINCE_G, 290, 850, SANS_ATTENTE); //Positions où il attrappe
+
+                    rejoindre(400, 1000, MARCHE_ARRIERE, 40);//On recule pour liberer le robot adverse
+                    
+                    tempo = COMPTEUR_TEMPS_MATCH;//Lance un timer de 2 sec pour attendre un peu avant de réessayer
+                    while((COMPTEUR_TEMPS_MATCH - tempo) < 4);
+
+                    EVITEMENT_ADV_AVANT = ON;
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    
+                    rejoindre(1000, 1000, MARCHE_AVANT, 90);
+                    ETAPE_TOUR_ALLIE = 4;
+                    //if(compteur_evitement > 10)//Si on a trop fait de fois des allés retour
+                        //FLAG_ACTION = POISSONS;
+                }
             }
 			else if (ETAPE_TOUR_ADVERSAIRE == 4)
             {//recule pour ne pas renverser la tour
-
+                compt_evitement++;
+                
+                if(compt_evitement > 250)
+                {
+                    compt_evitement = 0;
+                    angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE);        //Position rangé
+                    angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE);        //Position rangé
+                    angle_AX12(CALAGE_CONE, 50, 512, SANS_ATTENTE);      //Position replié
+                    ETAPE_POISSONS = 10;
+                    FLAG_ACTION = POISSONS;
+                }
             }
             break;
-
+            
+            
+        case PORTES:
+            if(ETAPE_PORTES == 0)
+            {
+                
+            }
+            
+            if(ETAPE_PORTES == 1)
+            {
+                
+//                rejoindre(600, 1800, MARCHE_AVANT, 30);
+                
+                compt_evitement++;
+                
+                if(compt_evitement > 250)
+                {
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    compt_evitement = 0;
+                    rejoindre(320, 1500, MARCHE_ARRIERE, 5);
+                    ETAPE_PORTES = 2;
+                }
+            }
+            
+            if(ETAPE_PORTES == 2)
+            {
+                
+            }
+            
+            if(ETAPE_PORTES == 3)
+            {
+                EVITEMENT_ADV_ARRIERE = OFF;
+                delay_ms(7);
+            }
+            
+            if(ETAPE_PORTES == 4)
+            {
+//                
+//                rejoindre(600, 1860, MARCHE_AVANT, 30);
+                
+                compt_evitement++;
+                
+                if(compt_evitement > 250)
+                {
+                    EVITEMENT_ADV_ARRIERE = OFF;
+                    compt_evitement = 0;
+                    rejoindre(320, 1500, MARCHE_ARRIERE, 5);
+                    FLAG_ACTION = TOUR_ALLIE;
+                }
+            }
+            break;
+            
 
         case POISSONS:
+            if(ETAPE_POISSONS == 10)
+            {
+                EVITEMENT_ADV_AVANT = OFF;
+                EVITEMENT_ADV_ARRIERE = ON;
+                delay_ms(10);
+                
+                rejoindre(1000, 800, MARCHE_ARRIERE, 40);         //A CHECKER!!!!!!!!!!
+            }
+            
+            else if(ETAPE_POISSONS == 11)
+            {
+                if(get_X() < 650)
+                    EVITEMENT_ADV_AVANT = OFF;
+            }
+            
             if(ETAPE_POISSONS == 0)
             {//avance vers le le bac à poissons
                 EVITEMENT_ADV_AVANT = ON;
@@ -422,6 +555,15 @@ void delai_action(void)
             
             break;
 
+            
+        case DEFONCER_DUNE:
+            EVITEMENT_ADV_AVANT = OFF;
+            EVITEMENT_ADV_ARRIERE = OFF;
+            delay_ms(11);
+            rejoindre(800, 1400,MARCHE_ARRIERE, 70);
+            
+            FLAG_ACTION = TOUR_ALLIE;
+            break;
 
         case COQUILLAGES:
             break;
@@ -430,6 +572,8 @@ void delai_action(void)
         default:
             break;
     }
+    
+    //TIMER_10ms = ACTIVE;
     fin_strategie_cause_evitement = 1;//Activation du Flag qui bloque les déplacement dut à la backup strat
 }
 

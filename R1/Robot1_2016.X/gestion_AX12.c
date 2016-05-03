@@ -473,6 +473,13 @@ void traitement_reception_ax12 ()
     if (ax12.erreur != TIME_OUT)
     {
         ax12.erreur = ax12.buffer[4];
+        
+        if (CHECK_LIMITATION_COURANT == ON)
+        {   //Si on active la limitation de courant dans le configRobot.h
+            if((ax12.erreur & (1<<5)) == 1)   //Permet de savoir si l'ax12 entre en limatation de courant. Alors on réinit l'alim
+                ax12.erreur = LIMITATION_COURANT;
+        }
+        
         uint8_t checksum = calcul_checksum(ax12.buffer[_ID], ax12.buffer[LONGUEUR], ax12.erreur, ax12.buffer[PARAM1], ax12.buffer[PARAM2], ax12.buffer[PARAM3], ax12.buffer[PARAM4], ax12.buffer[PARAM5]);
 
         ax12.buffer[CHSUM] = ax12.buffer[ax12.offset - 1];
@@ -505,6 +512,7 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
 {
     uint8_t check_sum = calcul_checksum(ID, longueur, instruction, param1, param2, param3, param4, param5);
     uint8_t octets_a_recevoir;
+    uint8_t reinit_alim = 0;
     static uint16_t nb1=0, nb2 =0;
     
     static uint64_t nb3 = 0;
@@ -574,8 +582,19 @@ void commande_AX12 (uint8_t ID, uint8_t longueur, uint8_t instruction, uint8_t p
         };
 
         //delay_us(10);
+        /*
+        if (ax12.erreur == LIMITATION_COURANT)
+        {
+            INHIBIT_AX12 = ETEINT;
+            delay_ms(1000);
+            ax12.tentatives = 0;
+            reinit_alim++;
+            INHIBIT_AX12 = ALLUME;
+            delay_ms(500);
+        }
+         * */
 
-    }while (ax12.erreur != PAS_D_ERREUR && ax12.tentatives < MAX_TENTATIVES );
+    }while (ax12.erreur != PAS_D_ERREUR && ax12.tentatives < MAX_TENTATIVES && reinit_alim < MAX_REINIT_ALIM);
 
 
 //    if (ax12.erreur != PAS_D_ERREUR)

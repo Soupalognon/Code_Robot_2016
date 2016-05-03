@@ -27,7 +27,7 @@ void strategie()
     /*
      * Definit la configuration des coquillages CONFIG_1 - CONFIG_5
      */
-    CONFIG_COQUILLAGE = CONFIG_3;
+    CONFIG_COQUILLAGE = CONFIG_1;
 
     #ifdef PETIT_ROBOT
         init_position_robot (83., 1229., 0.);
@@ -36,9 +36,9 @@ void strategie()
         //Init départ
         init_pinces_jack();
         
-        rejoindre(175 , 1229, MARCHE_AVANT, 30);
-        orienter(270, 30);
-        rejoindre(175 , 985, MARCHE_AVANT, 30);
+        rejoindre(175 , 1229, MARCHE_AVANT, 20);
+        orienter(270, 20);
+        rejoindre(175 , 986, MARCHE_AVANT, 20);
         
         while(!SYS_JACK);
         
@@ -92,7 +92,7 @@ void strategie()
                     FLAG_ACTION=OUVRIR_PORTES;
                     while(FLAG_ACTION == OUVRIR_PORTES);
                     
-                    EVITEMENT_ADV_AVANT = OFF;
+                    EVITEMENT_ADV_AVANT = ON;
                     
                     switch(CONFIG_COQUILLAGE){
                         case CONFIG_1:
@@ -102,13 +102,23 @@ void strategie()
                                 synchro_AX12(PORTE_G,0,1023,SANS_ATTENTE);
                                 passe_part(1410, 475, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 FLAG_ACTION = OUVRIR_PORTES;
-                                passe_part(1730,350,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+                                coquillage_phase_1 = 1;
+                            }
+                            if(coquillage_phase_1 == 1)
+                            {
+                                 passe_part(1730,350,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
                                 passe_part(1600,200,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
                                 passe_part(1460, 200, MARCHE_AVANT, 90, MILIEU_TRAJECTOIRE);
                                 synchro_AX12(PORTE_D,0,1023,SANS_ATTENTE);
                                 synchro_AX12(PORTE_G,0,1023,SANS_ATTENTE);
+                                coquillage_phase_1 = 2;
+                            }
+                            if(coquillage_phase_1 == 2)
+                            {
+                                EVITEMENT_ADV_AVANT = OFF;      //Pour qu'il ne détecte pas la zone de construction
                                 passe_part(1300,700,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
                                 FLAG_ACTION = OUVRIR_PORTES;
+                                EVITEMENT_ADV_AVANT = ON;
                                 passe_part(900,650,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
                                 passe_part(230, 1100, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
 //                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
@@ -118,9 +128,11 @@ void strategie()
                                 while(EVITEMENT_ADV_ARRIERE != ON);
                                 rejoindre(550,550,MARCHE_ARRIERE,100);
                                 EVITEMENT_ADV_ARRIERE = OFF;
-                                coquillage_phase_1 = 1;
+                                coquillage_phase_1 = 3;                                
                             }
-                            if(coquillage_phase_1 == 1){
+                                
+                            
+                            if(coquillage_phase_1 == 3){
                                 passe_part(270, 380, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
                                 passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
                                 passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
@@ -128,7 +140,7 @@ void strategie()
 //                                rejoindre(1200, 500, MARCHE_AVANT, 100);
 //                                orienter(180,100);
 //                                rejoindre(230,1100,MARCHE_AVANT,100);
-                                coquillage_phase_1 = 2;
+                                coquillage_phase_1 = 4;
                             }
                             break;
                             
@@ -258,7 +270,7 @@ void strategie()
                         default:
                             break;
                     }
-                    if(coquillage_phase_1 == 2){
+                    if(coquillage_phase_1 == 2 || coquillage_phase_1 == 4){
                         //EVITEMENT_ADV_ARRIERE = ON;
                         //while(!EVITEMENT_ADV_ARRIERE == ON);
                         rejoindre(550,550,MARCHE_ARRIERE,100);

@@ -165,6 +165,152 @@ void delai_action(void){
                 while(COMPTEUR_TEMPS_MATCH - tempo < 2);
                 pousser_tour = 1;
             }
+            break;
+            
+        case COQUILLAGE_ALLIE:
+            switch(CONFIG_COQUILLAGE)
+            {
+                        case CONFIG_1://backup strat pour la config 1 OK
+                            if(coquillage_phase_1 == 0)
+                            {
+                                //le robot est stoppé en phase 0, il passe à la phase suivante
+                                FLAG_ACTION = OUVRIR_PORTES;
+                                 passe_part(1730,350,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+                                passe_part(1600,200,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+                                passe_part(1460, 200, MARCHE_AVANT, 90, MILIEU_TRAJECTOIRE);
+                                synchro_AX12(PORTE_D,0,1023,SANS_ATTENTE);
+                                synchro_AX12(PORTE_G,0,1023,SANS_ATTENTE);
+                                coquillage_phase_1 = 2;
+                            }
+                            if(coquillage_phase_1 == 1)
+                            {
+                                
+                                orienter(270, 20); // pb avec l'orienter, à revoir !!
+                               EVITEMENT_ADV_AVANT = OFF;      //Pour qu'il ne détecte pas la zone de construction
+                                passe_part(1300,700,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+                                FLAG_ACTION = OUVRIR_PORTES;
+                                EVITEMENT_ADV_AVANT = ON;
+                                passe_part(900,650,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
+                                passe_part(230, 1100, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
+//                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+//                                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+//                                passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                EVITEMENT_ADV_ARRIERE = ON;
+                                while(EVITEMENT_ADV_ARRIERE != ON);
+                                rejoindre(550,550,MARCHE_ARRIERE,100);
+                                EVITEMENT_ADV_ARRIERE = OFF;
+                                coquillage_phase_1 = 3;   
+                            }
+                            if(coquillage_phase_1 == 2)
+                            {
+                                passe_part(270, 380, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
+                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                coquillage_phase_1 = 4;
+                                
+                            }
+                            if(coquillage_phase_1 == 3)
+                            {// le robot est coupé en phase 3, il retourne à la zone de départ pour déposer les coquillages déjà pris
+                                rejoindre(230, 1100, MARCHE_AVANT, 100);
+                            }
+                            if(coquillage_phase_1 == 4)
+                            {
+                                //ne fait rien
+                                
+                            }
+                            break;
+                            
+                        case CONFIG_2:
+                            if(coquillage_phase_1 == 0)
+                            {// le robot est stoppé en phase 0, il passe à la phase suivante
+                                                           {
+                                passe_part(270,380,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
+                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                
+                                coquillage_phase_1 = 2;
+                                
+                            }
+                            if(coquillage_phase_1 == 1)
+                            {// le robot est stoppé en phase 1, il retourne à la zone de départ pour déposer les coquillages déjà pris
+                                rejoindre(230, 1100, MARCHE_AVANT, 100);
+                            }
+                            if(coquillage_phase_1 == 2)
+                            {
+                                //le robot est stoppé à la fin, on ne fait rien
+                            }
+                            break;
+                            
+                        case CONFIG_3:
+                            if(coquillage_phase_1 == 0)
+                            {// le robot est stoppé en phase 0, il passe à la phase suivante
+                                passe_part(270,380,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
+                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230,1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                coquillage_phase_1 = 2;
+                            }
+                                
+                            }
+                            if(coquillage_phase_1 == 1)
+                            {
+                                //le robot est stoppé en phase 1, il retourne à la zone de départ
+                                rejoindre(230, 1100, MARCHE_AVANT, 100);
+                            }
+                            if(coquillage_phase_1 == 2)
+                            {
+                                //le robot est stoppé à la fin, on ne fait rien
+                            }
+                            break;
+                            
+                        case CONFIG_4:
+                            if(coquillage_phase_1 == 0)
+                            {// le robot est stoppé en phase 0, il passe à la phase suivante
+                                passe_part(270,380,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
+                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
+                                passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
+                                coquillage_phase_1 = 2;
+                                
+                            }
+                            if(coquillage_phase_1 == 1)
+                            { //le robot est stoppé en phase 1, il retourne à la zone de départ
+                                rejoindre(230, 1100, MARCHE_AVANT, 100);
+                            }
+                            if(coquillage_phase_1 == 2)
+                            {
+                                //do nothing...
+                            }
+                            break;
+                            
+                        case CONFIG_5:
+                            if(coquillage_phase_1 == 0)
+                            {// le robot est en phase 0, il passe à l'étape suivante 
+                                rejoindre(700, 700, MARCHE_AVANT, 100);
+                                orienter(180,100);
+                                rejoindre(230,1100,MARCHE_AVANT,100);
+                                coquillage_phase_1 = 2;
+                            }
+                            if(coquillage_phase_1 == 1)
+                            {
+                                
+                            }
+                            if(coquillage_phase_1 == 2)
+                            {//le robot est stoppé en phase 1, il retourne à la zone de départ
+                                rejoindre(230, 1100, MARCHE_AVANT, 100);
+                                
+                            }
+                            if(coquillage_phase_1 == 3)
+                            {
+                                //do nothing...
+                            }
+                            break;
+                            
+                            
+            }
+            break;
     }
     fin_strategie_cause_evitement = 1;//Activation du Flag qui bloque les déplacement dut à la backup strat
 }

@@ -102,18 +102,20 @@
     
     uint8_t ETAPE_TOUR_ALLIE;
     uint8_t ETAPE_TOUR_ADVERSAIRE;
+    uint8_t ETAPE_PORTES;
     uint8_t ETAPE_POISSONS;
     uint8_t ETAPE_COQUILLAGE;
     volatile uint8_t fin_strategie_cause_evitement;
     uint8_t MOUVEMENT_AX12 = 0;
+    uint8_t ACTIVE_ROTATION_AX12 = 0;
 
 /******************************************************************************/
 /******************************************************************************/
 /******************************************************************************/
 
     /*
-     LEs capteur avant sont à l'état bas pour activé
-     * Les capteurs arrières sont à l'état haut pour activé
+     Les capteur avant sont à l'état bas pour activé
+     Les capteurs arrières sont à l'état haut pour activé
      
      */
 int main(int argc, char** argv)
@@ -122,14 +124,15 @@ int main(int argc, char** argv)
     init_evitement();
     TIMER_DEBUG = DESACTIVE;
     delay_ms(500);
-    
+
     //init_decalage_AX12();
     //init_position_AX12();
     while(SYS_JACK);
     
     PutsUART(UART_XBEE, "\n\n\n\n\n\nDebut du code : \n\r");
-    strategie();
+//    strategie();
     //reglage_odometrie();
+    homologation();       //ACTIVER LES BACKUP STRAT MANQUANTES!!!
    
     while(1);
     return (EXIT_SUCCESS);
@@ -137,14 +140,14 @@ int main(int argc, char** argv)
 
 
 /*
- * angle_AX12(AX_CALAGE_CONE, 450, 1023, SANS_ATTENTE);    //Position déplié
- * angle_AX12(AX_CALAGE_CONE, 750, 1023, SANS_ATTENTE);    //Position replié
+ * angle_AX12(CALAGE_CONE, 50, 512, SANS_ATTENTE);      //Position replié
+ * angle_AX12(CALAGE_CONE, 495, 512, SANS_ATTENTE);     //Position déplié
  * 
  * angle_AX12(ASCENSEUR, 315, 512, SANS_ATTENTE);   //Position haut
  * angle_AX12(ASCENSEUR, 183, 512, SANS_ATTENTE);   //Position basse
  * 
  * angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 200, SANS_ATTENTE);   //Position déployé
- * angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
+ * angle_AX12(DEPLOIMENT_BRAS_FILET, 842, 200, SANS_ATTENTE);   //Position remonté
  * angle_AX12(DEPLOIMENT_BRAS_FILET, 600, 150, SANS_ATTENTE);   //Position intermédiaire (pour passé la barre du filet)
  * 
  * angle_AX12(ROT_FILET, 85, 300, SANS_ATTENTE);    //Position relevé (Tout début)
@@ -155,13 +158,16 @@ int main(int argc, char** argv)
  * angle_AX12(OUVERTURE_FILET, 256, 300, SANS_ATTENTE);    //Position fermé
  * angle_AX12(OUVERTURE_FILET, 860, 300, SANS_ATTENTE);    //Position ouverte
  * 
+                        
  * angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
- * angle_AX12(PINCE_D, 970, 300, SANS_ATTENTE); //Position où il attrappe
+ * angle_AX12(PINCE_D, 985, 850, SANS_ATTENTE); //Position où il attrappe
  * angle_AX12(PINCE_D, 870, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+ * angle_AX12(PINCE_D, 640, 300, SANS_ATTENTE); //Position intermédiaire (où il ferme les cabines)
  * 
  * angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
- * angle_AX12(PINCE_G, 290, 300, SANS_ATTENTE); //Positions où il attrappe
+ * angle_AX12(PINCE_G, 280, 850, SANS_ATTENTE); //Positions où il attrappe
  * angle_AX12(PINCE_G, 400, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+ * angle_AX12(PINCE_G, 620, 300, SANS_ATTENTE); //Position intermédiaire (où il ferme les cabines)
  * 
  * angle_AX12(PARASOL, 0, 250, SANS_ATTENTE); //Position replié
  * angle_AX12(PARASOL, 490, 250, SANS_ATTENTE); //Position déplié
@@ -169,10 +175,12 @@ int main(int argc, char** argv)
  * angle_AX12(AX_US_GAUCHE, 465, 1023, SANS_ATTENTE);    //Position regarde coté droit
  * angle_AX12(AX_US_GAUCHE, 950, 1023, SANS_ATTENTE);   //Position regarde derrière gauche
  * angle_AX12(AX_US_GAUCHE, 750, 1023, SANS_ATTENTE);   //Position regarde avant gauche
+ * angle_AX12(AX_US_GAUCHE, 95, 1023, SANS_ATTENTE);    //Position regarde devant
  * 
  * angle_AX12(AX_US_DROIT, 100, 1023, SANS_ATTENTE);    //Position regarde derrière droit
  * angle_AX12(AX_US_DROIT, 400, 1023, SANS_ATTENTE);    //Position regarde avant droit
  * angle_AX12(AX_US_DROIT, 625, 1023, SANS_ATTENTE);    //Position regarde coté gauche
+ * angle_AX12(AX_US_DROIT, 505, 1023, SANS_ATTENTE);    //Position regarde devant
  */
 
 
@@ -241,7 +249,7 @@ void Action_attraper_cubes()
         delay_ms(20);
         angle_AX12(PINCE_G, 735, 300, AVEC_ATTENTE); //Position rangé
         delay_ms(20);
-        angle_AX12(AX_CALAGE_CONE, 750, 1023, AVEC_ATTENTE);    //Position replié
+        angle_AX12(CALAGE_CONE, 750, 1023, AVEC_ATTENTE);    //Position replié
         delay_ms(20);
         angle_AX12(ASCENSEUR, 265, 512, AVEC_ATTENTE);   //Position basse
         delay_ms(20);
@@ -259,7 +267,7 @@ void Action_attraper_cubes()
         delay_ms(10);
         lancer_autom_AX12();
         delay_ms(1500);
-        angle_AX12(AX_CALAGE_CONE, 450, 1023, SANS_ATTENTE);    //Position déplié
+        angle_AX12(CALAGE_CONE, 450, 1023, SANS_ATTENTE);    //Position déplié
         delay_ms(1500);
         angle_AX12(ASCENSEUR, 500, 200, SANS_ATTENTE);   //Position haut
         delay_ms(3000);
@@ -304,7 +312,7 @@ void recuperer_poissons()
     angle_AX12(ASCENSEUR, 235, 512, AVEC_ATTENTE);   //Position basse
     angle_AX12(ROT_FILET, 85, 300, AVEC_ATTENTE);    //Position relevé (Tout début)
     angle_AX12(OUVERTURE_FILET, 256, 300, AVEC_ATTENTE);    //Position fermé
-    angle_AX12(AX_CALAGE_CONE, 750, 1023, AVEC_ATTENTE);
+    angle_AX12(CALAGE_CONE, 750, 1023, AVEC_ATTENTE);
     lancer_autom_AX12();
     angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
     delay_ms(100);    

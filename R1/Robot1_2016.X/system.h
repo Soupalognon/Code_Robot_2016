@@ -137,6 +137,8 @@ extern "C" {
 #define TENSION_MOTEUR_GAUCHE   _TENSION_MOTEUR_GAUCHE
 
 #define TENSION_SORTIE_PTN      _TENSION_SORTIE_PTN
+    
+#define CHECK_LIMITATION_COURANT   _CHECK_LIMITATION_COURANT
 
 /******************************************************************************/
 /******************************* Interruptions  *******************************/
@@ -227,6 +229,7 @@ extern "C" {
     
     extern uint8_t ETAPE_TOUR_ALLIE;
     extern uint8_t ETAPE_TOUR_ADVERSAIRE;
+    extern uint8_t ETAPE_PORTES;
     extern uint8_t ETAPE_POISSONS;
     extern uint8_t ETAPE_COQUILLAGE;
     extern volatile uint8_t fin_strategie_cause_evitement;
@@ -240,6 +243,7 @@ extern "C" {
     extern uint8_t COMPTEUR_TEMPS_MATCH;
     extern uint8_t CONFIG_COQUILLAGE;
     extern uint8_t MOUVEMENT_AX12;
+    extern uint8_t ACTIVE_ROTATION_AX12;
 
     extern _ax12 ax12;
 

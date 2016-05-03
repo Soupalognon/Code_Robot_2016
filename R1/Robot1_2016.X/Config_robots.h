@@ -110,7 +110,9 @@ extern "C" {
 
     #define _TENSION_MOTEUR_X            12L
 
-    #define _TENSION_SORTIE_PTN          34L 
+    #define _TENSION_SORTIE_PTN          34L
+    
+    #define _CHECK_LIMITATION_COURANT   ON
 
 
     /**************************************************************************/
@@ -163,10 +165,11 @@ extern "C" {
     //Dans le fichier system.h
     
     #define CAPT_US_BALISE              CAPTEUR8
-    #define CAPT_PINCE                  CAPTEUR3
+    #define CAPT_PINCE                  CAPTEUR7
+    #define CAPT_PINCE2                 CAPTEUR8
     #define CAPT_US_AR_GAUCHE           CAPTEUR4
     #define CAPT_US_AR_DROITE           CAPTEUR1
-    #define CAPT_US_ARRIERE             CAPTEUR7
+    #define CAPT_US_ARRIERE             CAPTEUR3
     #define CAPT_US_AV_GAUCHE           CAPTEUR2
     #define CAPT_US_AV_DROIT            CAPTEUR5
     #define CAPT_US_AV                  CAPTEUR8
@@ -271,6 +274,8 @@ extern "C" {
     #define _TENSION_MOTEUR_X            12L
 
     #define _TENSION_SORTIE_PTN          17L
+
+    #define _CHECK_LIMITATION_COURANT   ON
 
 
     /**************************************************************************/

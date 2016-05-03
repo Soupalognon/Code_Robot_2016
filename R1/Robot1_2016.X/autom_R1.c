@@ -136,21 +136,42 @@ void init_depart()
 {
 //    PutsUART(UART_XBEE, "Init des pinces : \n\r");
     angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
+    delay_ms(5);
     angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
-    //angle_AX12(ASCENSEUR, 183, 512, AVEC_ATTENTE);   //Position basse
+    delay_ms(5);
+    angle_AX12(CALAGE_CONE, 50, 512, SANS_ATTENTE);      //Position Replié    angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
+    delay_ms(5);
     angle_AX12(ROT_FILET, 85, 300, SANS_ATTENTE);    //Position relevé (Tout début)
+    delay_ms(5);
     angle_AX12(OUVERTURE_FILET, 256, 300, SANS_ATTENTE);    //Position fermé
-    angle_AX12(AX_CALAGE_CONE, 750, 1023, SANS_ATTENTE);    //Position replié
-    angle_AX12(DEPLOIMENT_BRAS_FILET, 820, 200, SANS_ATTENTE);   //Position remonté
-    angle_AX12(AX_US_GAUCHE, 0, 1023, SANS_ATTENTE);    //Position regarde coté droit
+    delay_ms(5);
+    angle_AX12(AX_US_GAUCHE, 100, 1023, SANS_ATTENTE);    //Position regarde coté droit
+    delay_ms(5);
     angle_AX12(AX_US_DROIT, 625, 1023, SANS_ATTENTE);    //Position regarde coté gauche
+    delay_ms(5);
     angle_AX12(PARASOL, 0, 250, SANS_ATTENTE); //Position replié
+    delay_ms(5);
+    angle_AX12(DEPLOIMENT_BRAS_FILET, 862, 200, SANS_ATTENTE);   //Position remonté
+    delay_ms(5);
+    angle_AX12(ASCENSEUR, 1023, 512, SANS_ATTENTE);   //Position haut
+    delay_ms(1000);
+    angle_AX12(ASCENSEUR, 725, 512, SANS_ATTENTE);   //Position haut
     
     ETAPE_TOUR_ALLIE = 0;
     ETAPE_TOUR_ADVERSAIRE = 0;
+    ETAPE_PORTES = 0;
     ETAPE_POISSONS = 0;
     ETAPE_COQUILLAGE = 0;
+    
+    ACTIVE_ROTATION_AX12 = ACTIVE;
 }
+
+void attrapper_cubes()
+{
+    angle_AX12(PINCE_D, 990, 855, SANS_ATTENTE); //Position où il attrappe
+    angle_AX12(PINCE_G, 285, 855, SANS_ATTENTE); //Positions où il attrappe
+}
+
 
 /******************************************************************************/
 /******************************** FONCTIONS AUTOM *****************************/
@@ -169,7 +190,7 @@ void autom_10ms (void)
     static uint8_t  evitement_en_cours = OFF;
     static uint8_t compteur_moyenne_evitement = 0;
     static uint8_t timer_delai_evitement = 0;
-    
+     static uint8_t detecter = 0;   //Permet de ne pas relancer le fin_de_deplacement dans le case PORTES
         /**********************************************************************/
         /******************************* Autom ********************************/
         /**********************************************************************/
@@ -189,22 +210,27 @@ void autom_10ms (void)
             
             else if(ETAPE_TOUR_ALLIE == 1)
             {//attrappe tour et recule (sort de la barre)
-                if(CAPT_PINCE == 0)
-                {//Alors on récupère la tour
-                    if(MOUVEMENT_AX12 == ACTIVE)
-                    {//Si on a activé le mouvement des AX12
-                        angle_AX12(PINCE_D, 985, 850, SANS_ATTENTE); //Position où il attrappe
-                        angle_AX12(PINCE_G, 280, 850, SANS_ATTENTE); //Positions où il attrappe
-                        angle_AX12(AX_CALAGE_CONE, 450, 1023, SANS_ATTENTE);    //Position déplié
+                if(MOUVEMENT_AX12 == ACTIVE)
+                {//Si on a activé le mouvement des AX12
+                    if(CAPT_PINCE == 0)
+                    {//Alors on récupère la tour
+                        angle_AX12(CALAGE_CONE, 495, 512, SANS_ATTENTE);     //Position déplié
+//                        angle_AX12(PINCE_D, 985, 860, SANS_ATTENTE); //Position où il attrappe
+//                        angle_AX12(PINCE_G, 280, 860, SANS_ATTENTE); //Positions où il attrappe
+//                        angle_AX12(PINCE_D, 990, 850, SANS_ATTENTE); //Position où il attrappe
+//                        angle_AX12(PINCE_G, 285, 850, SANS_ATTENTE); //Positions où il attrappe
+                        attrapper_cubes();
                         //angle_AX12(ASCENSEUR, 200, 512, SANS_ATTENTE);   //Position haut
-                        if (read_data(PINCE_G, LIRE_POSITION_ACTU) < 315)
+                        if(read_data(PINCE_G, LIRE_POSITION_ACTU) < 315)
                             MOUVEMENT_AX12 = DESACTIVE;
                     }
-                }
-                else
-                {
+                    else
+                    {
                         angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
                         angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
+                        if(read_data(PINCE_G, LIRE_POSITION_ACTU) > 850)
+                            MOUVEMENT_AX12 = DESACTIVE;
+                    }
                 }
             }
             
@@ -212,20 +238,31 @@ void autom_10ms (void)
             {//recule encore, se positionne pour poser la tour
                 //if(get_X() > 1500)  //Permet de ne pas détecter le poteau balise lors de la back up strat
                     //EVITEMENT_ADV_AVANT = OFF;
+                attrapper_cubes();
+//                angle_AX12(PINCE_D, 985, 850, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 280, 850, SANS_ATTENTE); //Positions où il attrappe
+//                angle_AX12(PINCE_D, 990, 900, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 285, 900, SANS_ATTENTE); //Positions où il attrappe
             }
             
             else if(ETAPE_TOUR_ALLIE == 3)
             {//avance, va dans la zone de largage
                 if(get_X() > 800)
                     EVITEMENT_ADV_AVANT = OFF;
+                attrapper_cubes();
+//                angle_AX12(PINCE_D, 985, 850, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 280, 850, SANS_ATTENTE); //Positions où il attrappe
+//                angle_AX12(PINCE_D, 985, 900, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 280, 900, SANS_ATTENTE); //Positions où il attrappe
             }
             
             else if(ETAPE_TOUR_ALLIE == 4)
             {//pose la tour, recule pour ne pas renverser la tour
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {//Si on a activé le mouvement des AX12
-                    angle_AX12(PINCE_D, 870, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
-                    angle_AX12(PINCE_G, 400, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+                    angle_AX12(PINCE_D, 870, 1023, SANS_ATTENTE);        //Position intermédiaire (où il est sur le point d'attraper)
+                    angle_AX12(PINCE_G, 400, 1023, SANS_ATTENTE);        //Position intermédiaire (où il est sur le point d'attraper)
+                    angle_AX12(CALAGE_CONE, 50, 512, SANS_ATTENTE);      //Position replié
                     MOUVEMENT_AX12 = DESACTIVE;
                 }
             }
@@ -234,8 +271,9 @@ void autom_10ms (void)
             {
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {//Si on a activé le mouvement des AX12
-                    angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
-                    angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
+                    angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE);        //Position rangé
+                    angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE);        //Position rangé
+                    angle_AX12(CALAGE_CONE, 50, 512, SANS_ATTENTE);      //Position replié
                     MOUVEMENT_AX12 = DESACTIVE;
                 }
             }
@@ -245,30 +283,190 @@ void autom_10ms (void)
         case TOUR_ADVERSAIRE:
             if(ETAPE_TOUR_ADVERSAIRE == 0)
             {//positionne vers la barre, s'encastre dedant
-
+                if(get_X() > 800 && get_X() < 2000)
+                    EVITEMENT_ADV_AVANT = ON;
+                if(get_X() > 2000)
+                    EVITEMENT_ADV_AVANT = OFF;
+                
+                if(MOUVEMENT_AX12 == ACTIVE)
+                {
+                    angle_AX12(AX_US_GAUCHE, 95, 1023, SANS_ATTENTE);    //Position regarde devant
+                    angle_AX12(AX_US_DROIT, 505, 1023, SANS_ATTENTE);    //Position regarde devant
+                    MOUVEMENT_AX12 = DESACTIVE;
+                }
             }
             
-            if(ETAPE_TOUR_ADVERSAIRE == 1)
+            
+            else if(ETAPE_TOUR_ADVERSAIRE == 50)
+            {
+                if(MOUVEMENT_AX12 == ACTIVE)
+                {
+                    angle_AX12(PINCE_D, 870, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+                    angle_AX12(PINCE_G, 400, 300, SANS_ATTENTE); //Position intermédiaire (où il est sur le point d'attraper)
+                    MOUVEMENT_AX12 = DESACTIVE;
+                }
+            }
+            
+            
+            else if(ETAPE_TOUR_ADVERSAIRE == 1)
             {//attrappe tour et recule (sort de la barre)
-
+                if(MOUVEMENT_AX12 == ACTIVE)
+                {//Si on a activé le mouvement des AX12
+                    if(CAPT_PINCE == 0)
+                    {//Alors on récupère la tour
+                        angle_AX12(CALAGE_CONE, 495, 512, SANS_ATTENTE);     //Position déplié
+                        attrapper_cubes();
+//                        angle_AX12(PINCE_D, 985, 840, SANS_ATTENTE); //Position où il attrappe
+//                        angle_AX12(PINCE_G, 280, 840, SANS_ATTENTE); //Positions où il attrappe
+//                        angle_AX12(PINCE_D, 990, 900, SANS_ATTENTE); //Position où il attrappe
+//                        angle_AX12(PINCE_G, 285, 900, SANS_ATTENTE); //Positions où il attrappe
+                        //angle_AX12(ASCENSEUR, 200, 512, SANS_ATTENTE);   //Position haut
+                        if(read_data(PINCE_G, LIRE_POSITION_ACTU) < 315)
+                            MOUVEMENT_AX12 = DESACTIVE;
+                    }
+                    else
+                    {
+                        angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE); //Position rangé
+                        angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE); //Position rangé
+                        if(read_data(PINCE_G, LIRE_POSITION_ACTU) > 850)
+                            MOUVEMENT_AX12 = DESACTIVE;
+                    }
+                }
             }
             
-            if(ETAPE_TOUR_ADVERSAIRE == 2)
+            
+            else if(ETAPE_TOUR_ADVERSAIRE == 2)
             {//recule encore, se positionne pour poser la tour
-
+                if(get_X() > 800)
+                    EVITEMENT_ADV_AVANT = OFF;
+                attrapper_cubes();
+//                angle_AX12(PINCE_D, 985, 840, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 280, 840, SANS_ATTENTE); //Positions où il attrappe
+//                angle_AX12(PINCE_D, 990, 850, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 285, 850, SANS_ATTENTE); //Positions où il attrappe
             }
             
-            if(ETAPE_TOUR_ADVERSAIRE == 3)
+            else if(ETAPE_TOUR_ADVERSAIRE == 3)
             {//avance, va dans la zone de largage, pose la tour
-
+                if(MOUVEMENT_AX12 == ACTIVE)
+                {//Si on a activé le mouvement des AX12
+                    angle_AX12(PINCE_D, 870, 1023, SANS_ATTENTE);        //Position intermédiaire (où il est sur le point d'attraper)
+                    angle_AX12(PINCE_G, 400, 1023, SANS_ATTENTE);        //Position intermédiaire (où il est sur le point d'attraper)
+                    angle_AX12(CALAGE_CONE, 50, 512, SANS_ATTENTE);      //Position replié
+                    MOUVEMENT_AX12 = DESACTIVE;
+                }
             }
             
-            if(ETAPE_TOUR_ADVERSAIRE == 4)
+            
+            else if(ETAPE_TOUR_ADVERSAIRE == 4)
             {//recule pour ne pas renverser la tour
-
+                if(MOUVEMENT_AX12 == ACTIVE)
+                {//Si on a activé le mouvement des AX12
+                    angle_AX12(PINCE_D, 405, 300, SANS_ATTENTE);        //Position rangé
+                    angle_AX12(PINCE_G, 860, 300, SANS_ATTENTE);        //Position rangé
+                    angle_AX12(CALAGE_CONE, 50, 512, SANS_ATTENTE);      //Position replié
+                    MOUVEMENT_AX12 = DESACTIVE;
+                }
             }
             break;
 
+            
+        case PORTES:
+            if(ETAPE_PORTES == 10)
+            {
+                if(MOUVEMENT_AX12 == ACTIVE)
+                {
+                    angle_AX12(PINCE_D, 640, 300, SANS_ATTENTE); //Position intermédiaire (où il ferme les cabines)
+                    angle_AX12(PINCE_G, 620, 300, SANS_ATTENTE); //Position intermédiaire (où il ferme les cabines)
+                    MOUVEMENT_AX12 = DESACTIVE;
+                }
+                if(CAPT_PINCE == 0)
+                {
+                    if(detecter == 0)
+                    {
+                        delay_ms(500);
+                        fin_deplacement();
+                        detecter = 1;
+                        ETAPE_PORTES = 11;
+                    }
+                }
+            }
+            
+            else if(ETAPE_PORTES == 0)
+            {
+                
+                if(CAPT_PINCE == 0)
+                {
+                    attrapper_cubes();
+//                    angle_AX12(PINCE_D, 985, 850, SANS_ATTENTE); //Position où il attrappe
+//                    angle_AX12(PINCE_G, 280, 850, SANS_ATTENTE); //Positions où il attrappe
+//                    angle_AX12(PINCE_D, 990, 900, SANS_ATTENTE); //Position où il attrappe
+//                    angle_AX12(PINCE_G, 285, 900, SANS_ATTENTE); //Positions où il attrappe
+                    
+                    if(CAPT_PINCE2 == 0)
+                    {
+                        delay_ms(250);
+                        fin_deplacement();
+                        ETAPE_PORTES = 1;
+                    }
+                }
+                
+                
+            }
+            
+            else if(ETAPE_PORTES == 1)
+            {
+//                angle_AX12(PINCE_D, 985, 840, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 280, 840, SANS_ATTENTE); //Positions où il attrappe
+                if(CAPT_PINCE == 0)
+                {
+                    attrapper_cubes();
+//                    angle_AX12(PINCE_D, 990, 850, SANS_ATTENTE); //Position où il attrappe
+//                    angle_AX12(PINCE_G, 285, 850, SANS_ATTENTE); //Positions où il attrappe
+                }   
+            }
+            
+            else if(ETAPE_PORTES == 2)
+            {
+//                angle_AX12(PINCE_D, 985, 840, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 280, 840, SANS_ATTENTE); //Positions où il attrappe
+                if(CAPT_PINCE == 0)
+                {
+                    attrapper_cubes();
+//                    angle_AX12(PINCE_D, 990, 850, SANS_ATTENTE); //Position où il attrappe
+//                    angle_AX12(PINCE_G, 285, 850, SANS_ATTENTE); //Positions où il attrappe
+                }       
+            }
+            
+            else if(ETAPE_PORTES == 3)
+            {
+//                angle_AX12(PINCE_D, 985, 840, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 280, 840, SANS_ATTENTE); //Positions où il attrappe
+                if(CAPT_PINCE == 0)
+                {
+                    attrapper_cubes();
+//                    angle_AX12(PINCE_D, 990, 850, SANS_ATTENTE); //Position où il attrappe
+//                    angle_AX12(PINCE_G, 285, 850, SANS_ATTENTE); //Positions où il attrappe
+                    
+                    if(CAPT_PINCE2 == 0)
+                    {
+                        delay_ms(250);
+                        fin_deplacement();
+                        ETAPE_PORTES = 4;
+                    }
+                }      
+            }
+            
+            else if(ETAPE_PORTES == 4)
+            {
+                attrapper_cubes();
+//                angle_AX12(PINCE_D, 985, 840, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 280, 840, SANS_ATTENTE); //Positions où il attrappe
+//                angle_AX12(PINCE_D, 990, 850, SANS_ATTENTE); //Position où il attrappe
+//                angle_AX12(PINCE_G, 285, 850, SANS_ATTENTE); //Positions où il attrappe
+            }
+            break;
+            
 
         case POISSONS:
             if(ETAPE_POISSONS == 0)
@@ -300,18 +498,36 @@ void autom_10ms (void)
             
             else if(ETAPE_POISSONS == 3)
             {//on sort le filet
+                
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {
-                    angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 300, SANS_ATTENTE);   //Position déployé
+                    if(COULEUR == VERT)     //Signifie VIOLET
+                    {
+                        angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 300, SANS_ATTENTE);   //Position déployé
 
-                    if(read_data(DEPLOIMENT_BRAS_FILET, LIRE_POSITION_ACTU) < 540)
-                        angle_AX12(OUVERTURE_FILET, 860, 400, SANS_ATTENTE);    //Position ouverte
+                        if(read_data(DEPLOIMENT_BRAS_FILET, LIRE_POSITION_ACTU) < 540)
+                            angle_AX12(OUVERTURE_FILET, 860, 400, SANS_ATTENTE);    //Position ouverte
 
-                    if(read_data(OUVERTURE_FILET, LIRE_POSITION_ACTU) > 850)
-                        angle_AX12(ROT_FILET, 375, 200, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+                        if(read_data(OUVERTURE_FILET, LIRE_POSITION_ACTU) > 850)
+                            angle_AX12(ROT_FILET, 375, 200, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+
+                        if(read_data(ROT_FILET, LIRE_POSITION_ACTU) > 365)//On attend que le dernière AX12 est fini de bouger
+                            MOUVEMENT_AX12 = DESACTIVE;
+                    }
                     
-                    if(read_data(ROT_FILET, LIRE_POSITION_ACTU) > 365)//On attend que le dernière AX12 est fini de bouger
-                        MOUVEMENT_AX12 = DESACTIVE;
+                    else if(COULEUR == VIOLET)  //Signifie VERT
+                    {
+                        angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 300, SANS_ATTENTE);   //Position déployé
+
+                        if(read_data(DEPLOIMENT_BRAS_FILET, LIRE_POSITION_ACTU) < 545)
+                            angle_AX12(OUVERTURE_FILET, 860, 400, SANS_ATTENTE);    //Position ouverte
+
+                        if(read_data(OUVERTURE_FILET, LIRE_POSITION_ACTU) > 845)
+                            angle_AX12(ROT_FILET, 1005, 200, SANS_ATTENTE);  //Position Fin (poissons récupérés)    (INVERSE POUR COTE VERT)
+
+                        if(read_data(ROT_FILET, LIRE_POSITION_ACTU) > 990)//On attend que le dernière AX12 est fini de bouger
+                            MOUVEMENT_AX12 = DESACTIVE;
+                    }
                 }
             }
             
@@ -326,7 +542,7 @@ void autom_10ms (void)
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {
                     angle_AX12(ROT_FILET, 690, 150, SANS_ATTENTE);   //Position dans l'eau
-                    MOUVEMENT_AX12 = DESACTIVE;  
+                    MOUVEMENT_AX12 = DESACTIVE; 
                 }
             }
             
@@ -335,20 +551,20 @@ void autom_10ms (void)
             {//On avance dans le bac et on remonte le filet (on gère les cas d'impossibilité de remonter)
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {
-                    angle_AX12(ROT_FILET, 1005, 600, SANS_ATTENTE);  //Position Fin (poissons récupérés)
-                    MOUVEMENT_AX12 = DESACTIVE;  
+                    if(COULEUR == VERT)     //Signifie VIOLET
+                        angle_AX12(ROT_FILET, 1005, 600, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+                    
+                    else if(COULEUR == VIOLET)     //Signifie VERT
+                        angle_AX12(ROT_FILET, 375, 600, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+
+                    MOUVEMENT_AX12 = DESACTIVE;
                 }
             }
             
             
             else if(ETAPE_POISSONS == 7)
             {
-                if(MOUVEMENT_AX12 == ACTIVE)
-                {
-                    angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 150, SANS_ATTENTE);   //Position déployé
-                    angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
-                    MOUVEMENT_AX12 = DESACTIVE;  
-                }
+                
             }
             
             
@@ -357,13 +573,34 @@ void autom_10ms (void)
                 if(MOUVEMENT_AX12 == ACTIVE)
                 {
                     angle_AX12(DEPLOIMENT_BRAS_FILET, 530, 150, SANS_ATTENTE);   //Position déployé
-                    angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+                    if(COULEUR == VERT)     //Signifie Violet
+                        angle_AX12(ROT_FILET, 375, 300, SANS_ATTENTE);   //Position Intermédiaire (avant de rentrer dans l'eau)
+                    
+                    else if(COULEUR == VIOLET)       //Signifie Vert
+                        angle_AX12(ROT_FILET, 1005, 600, SANS_ATTENTE);  //Position Fin (poissons récupérés)
+                    
                     MOUVEMENT_AX12 = DESACTIVE;  
                 }
             }
             
             break;
 
+            
+            case DEFONCER_DUNE:
+                if(get_X() > 700 && get_X() < 900)
+                    EVITEMENT_ADV_AVANT = ON;
+                if(get_X() > 900)
+                    EVITEMENT_ADV_AVANT = OFF;
+                
+                
+                if(MOUVEMENT_AX12 == ACTIVE)
+                {
+                    angle_AX12(AX_US_GAUCHE, 200, 1023, SANS_ATTENTE);    //Position regarde devant
+                    angle_AX12(AX_US_DROIT, 625, 1023, SANS_ATTENTE);    //Position regarde devant
+                    MOUVEMENT_AX12 = DESACTIVE;
+                }
+                break;
+                
 
         case COQUILLAGES:
             break;
@@ -453,7 +690,8 @@ void autom_10ms (void)
                     fin_deplacement();
                 }
             }
-            rotation_us_avant();
+            if(ACTIVE_ROTATION_AX12 == ACTIVE)
+                rotation_us_avant();
         }
         
         

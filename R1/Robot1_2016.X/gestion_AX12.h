@@ -41,6 +41,7 @@ extern "C" {
 
 #define PAS_D_ERREUR            0
 #define TIME_OUT                1
+#define LIMITATION_COURANT      4
 #define REPONSE_OK              2
 #define PAS_DE_REPONSE          3
 
@@ -49,6 +50,7 @@ extern "C" {
     #define RECEPTION           0
 
 #define MAX_TENTATIVES          10
+#define MAX_REINIT_ALIM         3
 
 #define ETEINT                  0
 #define ALLUME                  1

@@ -71,6 +71,8 @@ void autom_10ms (void)
 
         static uint16_t compteur = 0;
         static uint8_t  evitement_en_cours = OFF;
+        static uint8_t compteur_moyenne_evitement = 0;
+        static uint8_t timer_delai_evitement = 0;
 
         /**********************************************************************/
         /******************************* Autom ********************************/
@@ -119,9 +121,12 @@ void autom_10ms (void)
                 if ( DETECTION == OFF)
                 {
                     compteur = 0;
+                    compteur_moyenne_evitement = 0;
+                    timer_delai_evitement = COMPTEUR_TEMPS_MATCH;
                     DETECTION = ON;
                     evitement_en_cours = OFF;
-                    FLAG_ASSERV.erreur = EVITEMENT;
+                    if(STRATEGIE_EVITEMENT != DELAI_ACTION) //On ne veut pas le lancer maintenant pour ce type d'évitement
+                        FLAG_ASSERV.erreur = EVITEMENT;
                     brake();
                     son_evitement(49);
                 }
@@ -162,28 +167,41 @@ void autom_10ms (void)
             }
             else if(DETECTION == ON && STRATEGIE_EVITEMENT == DELAI_ACTION)
             {
-                 compteur++;
-                if (compteur > 100)
-                {
-                    compteur = 100;
-                    if (CAPT_US_GAUCHE == 0 && CAPT_US_BALISE == 0 && CAPT_US_DROIT == 0)
-                    {
-                        DETECTION = OFF;
-                        unbrake();
-                    }
-                }
-        }
+                if (CAPT_US_GAUCHE == 0 && CAPT_US_BALISE == 0 && CAPT_US_DROIT == 0)
+                    compteur_moyenne_evitement++;		//Si les capteurs ne voient rien après 10ms alors on incrémente
+                else
+                    compteur_moyenne_evitement = 0;
 
+                if(compteur_moyenne_evitement > 50)	
+                {			//Si on ne voit rien durant 1s complete alors on relance
+                    DETECTION = OFF;
+                    unbrake();
+                }
+                
+                if((COMPTEUR_TEMPS_MATCH - timer_delai_evitement) > 3)
+                {//Si on dépasse le temps d'attente et qu'il y a toujours l'adversaire en face on change de strat
+                    FLAG_ASSERV.erreur = EVITEMENT;
+                    fin_deplacement();
+                }
+            }
+        }
+        
+        
         else if (EVITEMENT_ADV_ARRIERE == ON)
         {
             if ( (CAPT_IR_ARRIERE_CENTRE == 0 || CAPT_IR_ARRIERE_DROIT == 0 || CAPT_IR_ARRIERE_GAUCHE == 0)  && DETECTION == OFF)
             {
                 compteur = 0;
+                compteur_moyenne_evitement = 0;
+                timer_delai_evitement = COMPTEUR_TEMPS_MATCH;
                 DETECTION = ON;
                 evitement_en_cours = OFF;
-                FLAG_ASSERV.erreur = EVITEMENT;
+                if(STRATEGIE_EVITEMENT != DELAI_ACTION) //On ne veut pas le lancer maintenant pour ce type d'évitement
+                    FLAG_ASSERV.erreur = EVITEMENT;
                 brake();
             }
+            
+            
             if (DETECTION == ON && STRATEGIE_EVITEMENT == STOP)
             {
                 compteur ++;
@@ -197,6 +215,8 @@ void autom_10ms (void)
                     }
                 }
             }
+            
+            
             else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
             {
                 if (evitement_en_cours == OFF)
@@ -215,12 +235,35 @@ void autom_10ms (void)
                     }
                 }
             }
+            
+            
+            else if(DETECTION == ON && STRATEGIE_EVITEMENT == DELAI_ACTION)
+            {
+                if ((CAPT_IR_ARRIERE_CENTRE == 0 && CAPT_IR_ARRIERE_DROIT == 0 && CAPT_IR_ARRIERE_GAUCHE == 0))
+                    compteur_moyenne_evitement++;
+                else
+                    compteur_moyenne_evitement = 0;
+
+                if(compteur_moyenne_evitement > 50)
+                {
+                    DETECTION = OFF;
+                    unbrake();
+                }
+
+                if((COMPTEUR_TEMPS_MATCH - timer_delai_evitement) > 3)
+                {//Si on dépasse le temps d'attente et qu'il y a toujours l'adversaire en face on change de strat
+                    FLAG_ASSERV.erreur = EVITEMENT;
+                    fin_deplacement();
+                }
+            }
         }
+        
+        
         else if (DETECTION == ON)
         {
             DETECTION = OFF;
             unbrake();
         }
-}
+
 }
 #endif
