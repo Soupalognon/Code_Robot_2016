@@ -10,4 +10,5 @@ pwm.h  \
 fonctions_deplacements.h  \
 gestion_AX12.h  \
  autom.h  \
-I2C.h 
+I2C.h  \
+evitement.h 

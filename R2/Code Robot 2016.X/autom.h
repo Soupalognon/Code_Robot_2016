@@ -48,13 +48,11 @@ extern "C" {
 #define ACTIF               0
 #define INACTIF             1
 
-#define ACTION_EVITEMENT    2
-#define EVITEMENT_NORMAL    3
-#define DELAI_ACTION        4
-#define STOP                5
+#define EVITEMENT_BACKUP    2
+#define STOP                3
 
-#define DISTANCE_STOP       5
-#define ANGLE_STOP          5
+#define DISTANCE_STOP       3
+#define ANGLE_STOP          3
     
 #define CONFIG_1            1
 #define CONFIG_2            2

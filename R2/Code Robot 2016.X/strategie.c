@@ -21,279 +21,89 @@
 /******************************************************************************/
 
 
+/******************************************************************************/
+/***************************PHASES DE JEU**************************************/
+/******************************************************************************/
+
+void init_phase_1(){
+    
+}
+
+void phase_1(){
+    init_phase_1();
+    /*
+     * Fonctions de deplacement
+     */
+    if(ARRET_DEPLACEMENT == 0){
+        PHASE_STRATEGIE = 2;
+    }
+}
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/
+
 void strategie()
 {
-    COULEUR = couleur_depart();
-    /*
-     * Definit la configuration des coquillages CONFIG_1 - CONFIG_5
+    
+/******************************************************************************/
+/***************ACTIONS A EFFECTUER AVANT RETRAIT DU JACK**********************/
+/******************************************************************************/
+    
+    /**
+     * Set la couleur de depart
      */
-    CONFIG_COQUILLAGE = CONFIG_1;
+    COULEUR = couleur_depart();
+        
+    /**
+     * Init des pinces 
+     */
+    init_pinces_jack();
+       
+    /**
+     * Attend que le jack soit retire
+     */
+    while(!SYS_JACK);
 
-    #ifdef PETIT_ROBOT
-        init_position_robot (83., 1229., 0.);
-        //init_position_robot (175., 965., 270.);
-        
-        //Init départ
-        init_pinces_jack();
-        
-        rejoindre(175 , 1229, MARCHE_AVANT, 20);
-        orienter(270, 20);
-        rejoindre(175 , 986, MARCHE_AVANT, 20);
-        
-        while(!SYS_JACK);
-        
-        TIMER_10ms = ACTIVE;
-        TIMER_90s = ACTIVE;
-        STRATEGIE_EVITEMENT = DELAI_ACTION;
-        
-        EVITEMENT_ADV_AVANT = ON;
-        EVITEMENT_ADV_ARRIERE = OFF;
-        
-        FLAG_ACTION = POUSSER_TOUR;
-          
-        pousser_tour = 0;
-        coquillage_phase_1 = 0;
-        coquillage_phase_2 = 0;
-        
-        //rejoindre(175, 935, MARCHE_AVANT, 100);
-        //passe_part(500, 935, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-        
-        while(1){
-            switch(FLAG_ACTION){
-            /*
-             * Pousser blocs du milieu jusqu'a la zone
-             */
-                case POUSSER_TOUR:
-                    FLAG_ACTION=FERMER_PORTES;
-                    while(FLAG_ACTION == FERMER_PORTES);
-                    
-                    if (pousser_tour == 0){
-                        passe_part(500, 1100, MARCHE_AVANT, 70, DEBUT_TRAJECTOIRE);
-                        passe_part(600, 1100, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
-                        passe_part(750,1030,MARCHE_AVANT,65,MILIEU_TRAJECTOIRE);
-                        EVITEMENT_ADV_AVANT = OFF;
-                        passe_part(1250, 1010, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
-                        pousser_tour = 1;
-                    }
-                    if (pousser_tour == 1)
-                    {
-                        EVITEMENT_ADV_ARRIERE = ON;
-                        rejoindre(900, 1010, MARCHE_ARRIERE, 100);
-                        EVITEMENT_ADV_ARRIERE = OFF;
-                        
-//                        passe_part(1200,350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-//                        passe_part(2000,350, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-//                        passe_part(2000,800, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                        pousser_tour = 2;
-                        FLAG_ACTION = COQUILLAGE_ALLIE;
-                    }
-                    break;
-                case COQUILLAGE_ALLIE:
-                    FLAG_ACTION=OUVRIR_PORTES;
-                    while(FLAG_ACTION == OUVRIR_PORTES);
-                    
-                    EVITEMENT_ADV_AVANT = ON;
-                    
-                    switch(CONFIG_COQUILLAGE){
-                        case CONFIG_1:
-                            if(coquillage_phase_1 == 0){
-                                passe_part(1200, 600, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                                synchro_AX12(PORTE_D,0,1023,SANS_ATTENTE);
-                                synchro_AX12(PORTE_G,0,1023,SANS_ATTENTE);
-                                passe_part(1410, 475, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                FLAG_ACTION = OUVRIR_PORTES;
-                                coquillage_phase_1 = 1;
-                            }
-                            if(coquillage_phase_1 == 1)
-                            {
-                                 passe_part(1730,350,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-                                passe_part(1600,200,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-                                passe_part(1460, 200, MARCHE_AVANT, 90, MILIEU_TRAJECTOIRE);
-                                synchro_AX12(PORTE_D,0,1023,SANS_ATTENTE);
-                                synchro_AX12(PORTE_G,0,1023,SANS_ATTENTE);
-                                coquillage_phase_1 = 2;
-                            }
-                            if(coquillage_phase_1 == 2)
-                            {
-                                EVITEMENT_ADV_AVANT = OFF;      //Pour qu'il ne détecte pas la zone de construction
-                                passe_part(1300,700,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-                                FLAG_ACTION = OUVRIR_PORTES;
-                                EVITEMENT_ADV_AVANT = ON;
-                                passe_part(900,650,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-                                passe_part(230, 1100, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
-//                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-//                                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-//                                passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                                EVITEMENT_ADV_ARRIERE = ON;
-                                while(EVITEMENT_ADV_ARRIERE != ON);
-                                rejoindre(550,550,MARCHE_ARRIERE,100);
-                                EVITEMENT_ADV_ARRIERE = OFF;
-                                coquillage_phase_1 = 3;                                
-                            }
-                                
-                            
-                            if(coquillage_phase_1 == 3){
-                                passe_part(270, 380, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-//                                rejoindre(1200, 500, MARCHE_AVANT, 100);
-//                                orienter(180,100);
-//                                rejoindre(230,1100,MARCHE_AVANT,100);
-                                coquillage_phase_1 = 4;
-                            }
-                            break;
-                            
-                        case CONFIG_2:
-                           if(coquillage_phase_1 == 0)
-                           {
-//                               passe_part(200, 450, MARCHE_AVANT, 60, DEBUT_TRAJECTOIRE);
-//                               passe_part(1000, 220, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-//                               passe_part(1500, 220, MARCHE_AVANT, 90, MILIEU_TRAJECTOIRE);
-//                               passe_part(1560, 300, MARCHE_AVANT, 90, MILIEU_TRAJECTOIRE);
-//                               passe_part(1500, 400, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-//                               passe_part(1200, 400, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-//                               passe_part(900, 500, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-//                               passe_part(270, 800, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-//                               passe_part(220, 1229, MARCHE_AVANT, 80, FIN_TRAJECTOIRE);
-                               
-                               
-                                passe_part(1200, 600, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                                passe_part(1410, 475, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                                passe_part(1500, 150, MARCHE_AVANT, 90, MILIEU_TRAJECTOIRE);
-                                passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                                passe_part(900, 550, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(230, 1100, MARCHE_AVANT, 60, FIN_TRAJECTOIRE);
-                                EVITEMENT_ADV_ARRIERE = ON;
-                                while(!EVITEMENT_ADV_ARRIERE == ON);
-                                rejoindre(550,550,MARCHE_ARRIERE,100);
-                                EVITEMENT_ADV_ARRIERE = OFF;
-                                
-                                coquillage_phase_1 = 1;
-                           }
-                           if(coquillage_phase_1 == 1)
-                           {
-                                passe_part(270,380,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
-                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                                
-                                coquillage_phase_1 = 2;
-                           }
-                            break;
-                            
-                        case CONFIG_3:
-                           if(coquillage_phase_1 == 0)
-                           {
-//                               passe_part(200, 600, MARCHE_AVANT, 70, DEBUT_TRAJECTOIRE);
-//                               passe_part(700, 650, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
-//                               passe_part(1100, 700, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
-//                               passe_part(1300, 600, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
-//                               passe_part(1200, 400, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
-//                               passe_part(800, 400, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
-//                               passe_part(650, 450, MARCHE_AVANT, 70, MILIEU_TRAJECTOIRE);
-//                               passe_part(300, 450, MARCHE_AVANT, 40, MILIEU_TRAJECTOIRE);
-//                               passe_part(320,420 , MARCHE_ARRIERE, 70, MILIEU_TRAJECTOIRE);
-//                               passe_part(200,600 , MARCHE_AVANT, 70, FIN_TRAJECTOIRE);
-//                               
-//                            
-//                               
-////                               rejoindre(300, 830, MARCHE_ARRIERE, 100);
-//                               avancer_reculer(-200, 70);
-//                               FLAG_ACTION = POUSSER_TOUR;
-                               
-                               
-                                passe_part(1200, 350, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                                passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(700, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                                EVITEMENT_ADV_ARRIERE = ON;
-                                while(!EVITEMENT_ADV_ARRIERE == ON);
-                                rejoindre(550,550,MARCHE_ARRIERE,100);
-                                EVITEMENT_ADV_ARRIERE = OFF;
-                                coquillage_phase_1 = 1;
-                           }
-                           if(coquillage_phase_1 == 1){
-                                passe_part(270,380,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
-                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(250, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(230,1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                                coquillage_phase_1 = 2;
-                           }
-                            break;
-                            
-                        case CONFIG_4:
-                            if(coquillage_phase_1 == 0){
-                                passe_part(1200, 600, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                                 passe_part(1410, 475, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-                                passe_part(1730,350,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-                                passe_part(1200, 250, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(700, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(700, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                                EVITEMENT_ADV_ARRIERE = ON;
-                                rejoindre(550,550,MARCHE_ARRIERE,100);
-                                EVITEMENT_ADV_ARRIERE = OFF;
-                                coquillage_phase_1 = 1;
-                            }
-                            if(coquillage_phase_1 == 1){
-                                passe_part(270,380,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
-                                passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                                passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                                coquillage_phase_1 = 2;
-                            }
-                            break;
-                            
-                        case CONFIG_5:
-                            if(coquillage_phase_1 == 0){
-//                            passe_part(700, 750, MARCHE_AVANT, 100, DEBUT_TRAJECTOIRE);
-//                            passe_part(500,350,MARCHE_AVANT,100,MILIEU_TRAJECTOIRE);
-                            passe_part(1200,350,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
-                            passe_part(700, 230, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                            passe_part(230, 450, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                            passe_part(230, 750, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                            passe_part(230, 1100, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                            EVITEMENT_ADV_ARRIERE = ON;
-                            while(!EVITEMENT_ADV_ARRIERE == ON);
-                            rejoindre(550,550,MARCHE_ARRIERE,100);
-                            EVITEMENT_ADV_ARRIERE = OFF;
-                            coquillage_phase_1 = 1;
-                            }
-                            if(coquillage_phase_1 == 1){
-                                rejoindre(700, 700, MARCHE_AVANT, 100);
-                                orienter(180,100);
-                                rejoindre(230,1100,MARCHE_AVANT,100);
-                                coquillage_phase_1 = 2;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    if(coquillage_phase_1 == 2 || coquillage_phase_1 == 4){
-                        //EVITEMENT_ADV_ARRIERE = ON;
-                        //while(!EVITEMENT_ADV_ARRIERE == ON);
-                        rejoindre(550,550,MARCHE_ARRIERE,100);
-                        //EVITEMENT_ADV_ARRIERE = OFF;
-                        passe_part(700,700,MARCHE_AVANT,100,DEBUT_TRAJECTOIRE);
-                        passe_part(1200,350, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-//                        angle_AX12(PORTE_D, 350, 1023, SANS_ATTENTE);
-//                        delay_ms(500);
-//                        angle_AX12(PORTE_G, 655, 1023, SANS_ATTENTE);
-                        passe_part(2000,350, MARCHE_AVANT, 100, MILIEU_TRAJECTOIRE);
-                        passe_part(2000,800, MARCHE_AVANT, 100, FIN_TRAJECTOIRE);
-                        coquillage_phase_1 = 3;
-                    } 
-                default:
-                    break;
-            }
-            fin_strategie_cause_evitement = 0;//Activation du Flag qui bloque les déplacement du à la backup strat
+/******************************************************************************/
+/***************ACTIONS A EFFECTUER APRES RETRAIT DU JACK**********************/
+/******************************************************************************/
+    
+    /**
+     * Demarrage du timer
+     */
+    TIMER_10ms = ACTIVE;
+    TIMER_90s = ACTIVE;
+    
+    /**
+     * Definit la strategie d'evitement
+     */
+    STRATEGIE_EVITEMENT = EVITEMENT_BACKUP;
+    
+    /**
+     * Evitement a definir en fonction de la direction du mouvement
+     */
+    EVITEMENT_ADV_AVANT = ON;
+    EVITEMENT_ADV_ARRIERE = OFF;
+    
+    /**
+     * Definit la phase de strategie actuelle
+     */
+    PHASE_STRATEGIE = 1;
+    
+    /**
+     * Boucle principale
+     */
+    while(1){
+        switch(PHASE_STRATEGIE){
+            case 1:
+                phase_1();
+                break;
+            default:
+                break;
         }
-        /*
-         * Strategie lever de drapeaux
-         */
+        ARRET_DEPLACEMENT = 0;
+    }
         
-    #endif
 }
 
 
@@ -336,7 +146,7 @@ void homologation()
         while(!SYS_JACK);
         TIMER_90s = ACTIVE;
 
-        STRATEGIE_EVITEMENT = EVITEMENT_NORMAL;
+        STRATEGIE_EVITEMENT = EVITEMENT_BACKUP;
 
     #endif
 

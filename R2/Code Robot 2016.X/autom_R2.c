@@ -83,26 +83,6 @@ void autom_10ms (void)
         {
             case NE_RIEN_FAIRE:
                 break;
-            /*
-             * Ecrire fermeture des portes pour retenir coquillages
-             */
-            case FERMER_PORTES:
-                angle_AX12(PORTE_D, 350, 1023, SANS_ATTENTE);
-                delay_ms(1000);
-                angle_AX12(PORTE_G, 655, 1023, SANS_ATTENTE);
-                FLAG_ACTION = COQUILLAGE_ALLIE;
-                break;
-                
-            case OUVRIR_PORTES:
-                synchro_AX12(PORTE_D, -20, 1023, SANS_ATTENTE);
-                synchro_AX12(PORTE_G,  20, 1023, SANS_ATTENTE);
-                FLAG_ACTION = COQUILLAGE_ALLIE;
-                break;
-            /*
-             * Ecrire sequence lever de drapeaux
-             */
-            case LEVER_DRAPEAU:
-                break;
                 
             default :
                 break;
@@ -125,7 +105,7 @@ void autom_10ms (void)
                     timer_delai_evitement = COMPTEUR_TEMPS_MATCH;
                     DETECTION = ON;
                     evitement_en_cours = OFF;
-                    if(STRATEGIE_EVITEMENT != DELAI_ACTION) //On ne veut pas le lancer maintenant pour ce type d'évitement
+                    if(STRATEGIE_EVITEMENT != EVITEMENT_BACKUP) //On ne veut pas le lancer maintenant pour ce type d'évitement
                         FLAG_ASSERV.erreur = EVITEMENT;
                     brake();
                     son_evitement(49);
@@ -146,26 +126,7 @@ void autom_10ms (void)
                     }
                 }
             }
-            else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
-            {
-                if (evitement_en_cours == OFF)
-                {
-                    compteur ++;
-                    if (compteur > 40)
-                    {
-                        evitement_en_cours = ON;
-                        compteur = 0;
-                        fin_deplacement();
-                        son_evitement(30);
-                    }
-                    else
-                    {
-                        son_evitement(2);
-                    }
-
-                }
-            }
-            else if(DETECTION == ON && STRATEGIE_EVITEMENT == DELAI_ACTION)
+            else if(DETECTION == ON && STRATEGIE_EVITEMENT == EVITEMENT_BACKUP)
             {
                 if (CAPT_US_GAUCHE == 0 && CAPT_US_BALISE == 0 && CAPT_US_DROIT == 0)
                     compteur_moyenne_evitement++;		//Si les capteurs ne voient rien après 10ms alors on incrémente
@@ -196,7 +157,7 @@ void autom_10ms (void)
                 timer_delai_evitement = COMPTEUR_TEMPS_MATCH;
                 DETECTION = ON;
                 evitement_en_cours = OFF;
-                if(STRATEGIE_EVITEMENT != DELAI_ACTION) //On ne veut pas le lancer maintenant pour ce type d'évitement
+                if(STRATEGIE_EVITEMENT != EVITEMENT_BACKUP) //On ne veut pas le lancer maintenant pour ce type d'évitement
                     FLAG_ASSERV.erreur = EVITEMENT;
                 brake();
             }
@@ -216,28 +177,7 @@ void autom_10ms (void)
                 }
             }
             
-            
-            else if (DETECTION == ON && (STRATEGIE_EVITEMENT == ACTION_EVITEMENT || STRATEGIE_EVITEMENT == EVITEMENT_NORMAL ))
-            {
-                if (evitement_en_cours == OFF)
-                {
-                    compteur ++;
-                    if (compteur > 40)
-                    {
-                        evitement_en_cours = ON;
-                        compteur = 0;
-                        fin_deplacement();
-                        son_evitement(30);
-                    }
-                     else
-                     {
-                        son_evitement(2);
-                    }
-                }
-            }
-            
-            
-            else if(DETECTION == ON && STRATEGIE_EVITEMENT == DELAI_ACTION)
+            else if(DETECTION == ON && STRATEGIE_EVITEMENT == EVITEMENT_BACKUP)
             {
                 if ((CAPT_IR_ARRIERE_CENTRE == 0 && CAPT_IR_ARRIERE_DROIT == 0 && CAPT_IR_ARRIERE_GAUCHE == 0))
                     compteur_moyenne_evitement++;

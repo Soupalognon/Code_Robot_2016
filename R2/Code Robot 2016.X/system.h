@@ -206,6 +206,7 @@ extern "C" {
     extern uint8_t EVITEMENT_ADV_AVANT;
     extern uint8_t EVITEMENT_ADV_ARRIERE;
     extern uint8_t STRATEGIE_EVITEMENT;
+    extern uint8_t ARRET_DEPLACEMENT;
 
     extern int obstacle[x_max][y_max];
     extern int curseur;
@@ -227,9 +228,7 @@ extern "C" {
     extern uint8_t fin_strategie_cause_evitement;
     
     // Phases de deplacement petit robot
-    extern uint8_t pousser_tour;
-    extern uint8_t coquillage_phase_1;
-    extern uint8_t coquillage_phase_2;
+    extern uint8_t PHASE_STRATEGIE;
 
 
     // FLAG Automs
